@@ -1,0 +1,472 @@
+---
+import { getCollection } from "astro:content";
+import Icon from "../components/Icon.astro";
+import { toTelHref } from "../lib/phone";
+import { url } from "../lib/url";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = "Aéroclub du Grand Lyon - Formation au pilotage et vols découverte à Lyon Bron",
+  ogImage = "/images/hero-bg.jpg",
+} = Astro.props;
+
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+const currentPath = Astro.url.pathname.slice(basePath.length) || "/";
+const siteOrigin = Astro.site?.origin ?? "https://www.acgl.fr";
+const canonicalUrl = Astro.url.href;
+const ogImageUrl = `${siteOrigin}${url(ogImage)}`;
+const currentYear = new Date().getFullYear();
+
+const contactEntries = await getCollection("contactSettings");
+const contact = contactEntries[0]?.data;
+const socialEntries = await getCollection("socialLinksSettings");
+const social = socialEntries[0]?.data;
+
+type NavItem = { href?: string; label: string; children?: { href: string; label: string }[] };
+
+const navLinks: NavItem[] = [
+  { href: "/", label: "Accueil" },
+  {
+    label: "Parcours",
+    children: [
+      { href: "/vol-decouverte", label: "Découvrir" },
+      { href: "/ecole-de-pilotage", label: "Apprendre" },
+      { href: "/deja-pilote", label: "Voler" },
+      { href: "/progresser", label: "Progresser" },
+    ],
+  },
+  { href: "/club", label: "Club" },
+  { href: "/flotte", label: "Flotte" },
+  { href: "/tarifs", label: "Tarifs" },
+  { href: "/contact", label: "Contact" },
+  { href: "/partenaires", label: "Partenaires" },
+];
+
+function isLinkActive(href: string) {
+  const pathname = href.split("#")[0];
+  return currentPath === pathname || (pathname !== "/" && currentPath.startsWith(pathname));
+}
+
+const footerLinks = navLinks.flatMap((item) =>
+  item.children ? item.children : [{ href: item.href!, label: item.label }],
+);
+
+const sameAs = [social?.facebookUrl, social?.instagramUrl].filter(Boolean);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": ["SportsClub", "LocalBusiness"],
+  name: "Aéroclub du Grand Lyon",
+  alternateName: "ACGL",
+  url: siteOrigin,
+  ...(contact?.phone && { telephone: toTelHref(contact.phone) }),
+  ...(contact?.email && { email: contact.email }),
+  ...(contact?.address && {
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: contact.address.street,
+      addressLocality: contact.address.city,
+      postalCode: contact.address.postalCode,
+      addressCountry: "FR",
+    },
+  }),
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 45.7267,
+    longitude: 5.0814,
+  },
+  openingHours: "24h/24",
+  sport: "Aviation",
+  ...(sameAs.length > 0 && { sameAs }),
+};
+---
+
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#04205a" />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Aéroclub du Grand Lyon" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href={url("/logo-acgl.svg")} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      />
+    </noscript>
+
+    <title>{title}</title>
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <slot name="head" />
+  </head>
+  <body>
+    <a href="#main-content" class="absolute -top-full left-4 z-[200] rounded-b-lg bg-brand px-4 py-2 text-sm font-semibold text-white no-underline transition-[top] duration-100 ease-in-out focus:top-0 focus:outline-2 focus:outline-white focus:outline-offset-2">Aller au contenu principal</a>
+
+    <header class="site-header">
+      <div class="container">
+        <div class="flex items-center justify-between py-[0.65rem]">
+          <a href={url("/")} class="brand flex shrink-0 items-center gap-3 no-underline">
+            <img src={url("/logo-acgl.svg")} alt="Logo ACGL" class="size-12" width="48" height="48" />
+            <div class="leading-snug">
+              <div class="font-display text-lg uppercase font-bold tracking-tight">Aéroclub du Grand Lyon</div>
+              <div class="brand-sub text-xs tracking-label">
+                Aéroport Lyon Bron
+              </div>
+            </div>
+          </a>
+
+          <nav id="main-nav" aria-label="Navigation principale" class="main-nav hidden lg:block">
+            <ul class="m-0 flex list-none gap-0.5 p-0" role="list">
+              {navLinks.map((item) =>
+                item.children ? (
+                  <li class="nav-dropdown-wrap">
+                    <button
+                      type="button"
+                      class:list={[
+                        "nav-dropdown-trigger flex cursor-pointer items-center gap-1 rounded-lg border-none bg-transparent px-2.5 py-[0.45rem] text-sm font-medium",
+                        item.children.some((c) => isLinkActive(c.href)) && "is-parent-active",
+                      ]}
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                    >
+                      {item.label}
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="size-3" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
+                    </button>
+                    <div class="nav-dropdown absolute top-full left-0 z-50 mt-1 min-w-[14rem] rounded-lg border border-line bg-surface p-1.5 shadow-acgl-lg">
+                      {item.children.map((child) => (
+                        <a
+                          href={url(child.href)}
+                          class="nav-dropdown-link block rounded-md px-3 py-2 text-sm font-medium text-ink no-underline transition-[background-color,color] duration-150 ease-in-out hover:bg-light-frost hover:text-brand aria-[current=page]:bg-light-frost aria-[current=page]:text-brand aria-[current=page]:font-semibold"
+                          aria-current={isLinkActive(child.href) ? "page" : undefined}
+                        >
+                          {child.label}
+                        </a>
+                      ))}
+                    </div>
+                  </li>
+                ) : (
+                  <li>
+                    <a
+                      href={url(item.href!)}
+                      class="block rounded-lg px-2.5 py-[0.45rem] text-sm font-medium"
+                      aria-current={isLinkActive(item.href!) ? "page" : undefined}
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                )
+              )}
+            </ul>
+          </nav>
+
+          <button
+            id="nav-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="nav-mobile"
+            aria-label="Ouvrir le menu de navigation"
+            class="nav-toggle-btn flex size-9 flex-col items-center justify-center gap-[5px] rounded-lg p-1.5 lg:hidden"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div id="nav-backdrop" class="fixed inset-0 z-[98] bg-black/35 opacity-0 pointer-events-none transition-opacity duration-[250ms] ease-in-out [&.is-open]:opacity-100 [&.is-open]:pointer-events-auto lg:hidden" aria-hidden="true"></div>
+
+    <nav id="nav-mobile" aria-label="Menu de navigation mobile" aria-hidden="true" class="fixed inset-x-0 top-header-h z-[99] border-b border-line bg-surface px-4 py-2 pb-3 shadow-acgl-lg lg:hidden">
+      <ul class="m-0 flex list-none flex-col gap-0.5 p-0" role="list">
+        {navLinks.map((item) =>
+          item.children ? (
+            <li>
+              <button
+                type="button"
+                class="nav-mobile-parent flex w-full cursor-pointer items-center justify-between rounded-lg border-none bg-transparent px-3 py-[0.7rem] text-left text-sm font-medium text-ink"
+                aria-expanded="false"
+              >
+                {item.label}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-muted transition-transform duration-150" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
+              </button>
+              <ul class="m-0 hidden list-none flex-col gap-0.5 p-0 pb-1 pl-4 [&.is-open]:flex" role="list">
+                {item.children.map((child) => (
+                  <li>
+                    <a
+                      href={url(child.href)}
+                      class="block rounded-lg px-3 py-[0.55rem] pl-7 text-xs font-medium text-ink no-underline transition-[background-color,color] duration-150 ease-in-out hover:bg-light-frost hover:text-brand aria-[current=page]:bg-light-frost aria-[current=page]:text-brand aria-[current=page]:font-semibold"
+                      aria-current={isLinkActive(child.href) ? "page" : undefined}
+                    >
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ) : (
+            <li>
+              <a
+                href={url(item.href!)}
+                class="block rounded-lg px-3 py-[0.7rem] text-sm font-medium text-ink no-underline transition-[background-color,color] duration-150 ease-in-out hover:bg-light-frost hover:text-brand aria-[current=page]:bg-light-frost aria-[current=page]:text-brand aria-[current=page]:font-semibold"
+                aria-current={isLinkActive(item.href!) ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          )
+        )}
+      </ul>
+    </nav>
+
+    <div class="flex min-h-dvh flex-col pt-header-h">
+      <main class="w-full flex-1" id="main-content">
+        <slot />
+      </main>
+
+      <footer class="shrink-0 border-t-[3px] border-signal bg-navy text-sm text-white/75">
+        <div class="container">
+          <div class="grid gap-12 py-14 md:grid-cols-[1fr_auto_auto] md:gap-16 md:py-16 lg:gap-20">
+            <div class="flex flex-col items-center gap-5 md:flex-row md:items-start md:gap-6">
+              <div class="shrink-0">
+                <img src={url("/logo-acgl.svg")} class="size-40 rounded-full bg-white p-2 md:size-28" alt="ACGL" />
+              </div>
+              <div class="flex flex-col items-center gap-4 md:items-start">
+                <div class="flex flex-col gap-1">
+                  <span class="text-center font-display text-lg font-bold uppercase leading-tight text-white md:text-left">Aéroclub du Grand Lyon</span>
+                  <span class="text-center text-xs tracking-label-wide text-white/50 md:text-left">LFLY · Aéroport Lyon Bron</span>
+                </div>
+                {contact?.address && (
+                  <p class="text-center text-sm leading-relaxed text-white/65 md:text-left">
+                    {`${contact.address.street}`}
+                    <br />
+                    {`${contact.address.postalCode} ${contact.address.city}`}
+                  </p>
+                )}
+                <div class="flex flex-col items-center gap-1.5 md:items-start">
+                  {contact?.phone && (
+                    <a
+                      href={`tel:${toTelHref(contact.phone)}`}
+                      class="text-sm text-white/65 no-underline hover:text-white"
+                    >
+                      {contact.phone}
+                    </a>
+                  )}
+                  {contact?.email && (
+                    <a
+                      href={`mailto:${contact.email}`}
+                      class="text-sm text-white/65 no-underline hover:text-white"
+                    >
+                      {contact.email}
+                    </a>
+                  )}
+                </div>
+                <div class="flex gap-3">
+                  {social?.facebookUrl && (
+                    <a
+                      href={social.facebookUrl}
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                      aria-label="ACGL sur Facebook"
+                      class="flex size-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-white/20 hover:text-white"
+                    >
+                      <Icon name="facebook" size="size-4" />
+                    </a>
+                  )}
+                  {social?.instagramUrl && (
+                    <a
+                      href={social.instagramUrl}
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                      aria-label="ACGL sur Instagram"
+                      class="flex size-9 items-center justify-center rounded-full bg-white/10 text-white/70 transition-colors hover:bg-white/20 hover:text-white"
+                    >
+                      <Icon name="instagram" size="size-4" stroke-width="2" />
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <nav aria-label="Navigation secondaire">
+              <p class="mb-4 text-xs font-semibold uppercase tracking-label text-white/50">Navigation</p>
+              <ul class="m-0 grid list-none grid-cols-2 gap-x-10 gap-y-3 p-0">
+                {footerLinks.map(({ href, label }) => (
+                  <li>
+                    <a href={url(href)} class="text-sm text-white/75 no-underline hover:text-white">
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 py-5 text-xs text-white/50 max-md:flex-col max-md:text-center">
+            <span>&copy; {currentYear} Aéroclub du Grand Lyon · Association loi 1901</span>
+            <span>LFLY · Aéroport de Lyon Bron</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script is:inline>
+      (function () {
+        var header = document.querySelector(".site-header");
+        if (!header) return;
+        var fadePx = 72;
+        var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var ticking = false;
+        function apply() {
+          ticking = false;
+          var y = window.scrollY;
+          var t;
+          if (reduceMotion) {
+            t = y > 12 ? 1 : 0;
+          } else {
+            t = Math.min(1, Math.max(0, y / fadePx));
+          }
+          header.style.setProperty("--header-blend", t.toFixed(4));
+          header.classList.toggle("is-scrolled", t >= 0.62);
+        }
+        function onScroll() {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(apply);
+          }
+        }
+        apply();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", function (e) {
+          reduceMotion = e.matches;
+          apply();
+        });
+
+        var dropdownWraps = header.querySelectorAll(".nav-dropdown-wrap");
+        dropdownWraps.forEach(function (wrap) {
+          var trigger = wrap.querySelector(".nav-dropdown-trigger");
+          if (!trigger) return;
+          trigger.addEventListener("click", function () {
+            var expanded = trigger.getAttribute("aria-expanded") === "true";
+            closeAllDropdowns();
+            if (!expanded) trigger.setAttribute("aria-expanded", "true");
+          });
+          wrap.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") {
+              trigger.setAttribute("aria-expanded", "false");
+              trigger.focus();
+            }
+          });
+        });
+        function closeAllDropdowns() {
+          dropdownWraps.forEach(function (w) {
+            var t = w.querySelector(".nav-dropdown-trigger");
+            if (t) t.setAttribute("aria-expanded", "false");
+          });
+        }
+        document.addEventListener("click", function (e) {
+          dropdownWraps.forEach(function (w) {
+            if (!w.contains(e.target)) {
+              var t = w.querySelector(".nav-dropdown-trigger");
+              if (t) t.setAttribute("aria-expanded", "false");
+            }
+          });
+        });
+
+        var navToggle = document.getElementById("nav-toggle");
+        var navMobile = document.getElementById("nav-mobile");
+        var navBackdrop = document.getElementById("nav-backdrop");
+        if (!navToggle || !navMobile || !navBackdrop) return;
+
+        var mobileParents = navMobile.querySelectorAll(".nav-mobile-parent");
+
+        function openNav() {
+          navToggle.setAttribute("aria-expanded", "true");
+          navToggle.setAttribute("aria-label", "Fermer le menu de navigation");
+          navToggle.classList.add("nav-open");
+          navMobile.classList.add("is-open");
+          navMobile.setAttribute("aria-hidden", "false");
+          navBackdrop.classList.add("is-open");
+          document.body.style.overflow = "hidden";
+          var firstLink = navMobile.querySelector("a, button");
+          if (firstLink) firstLink.focus();
+        }
+
+        function closeNav() {
+          navToggle.setAttribute("aria-expanded", "false");
+          navToggle.setAttribute("aria-label", "Ouvrir le menu de navigation");
+          navToggle.classList.remove("nav-open");
+          navMobile.classList.remove("is-open");
+          navMobile.setAttribute("aria-hidden", "true");
+          navBackdrop.classList.remove("is-open");
+          document.body.style.overflow = "";
+          mobileParents.forEach(function (btn) {
+            btn.setAttribute("aria-expanded", "false");
+            var sub = btn.nextElementSibling;
+            if (sub) sub.classList.remove("is-open");
+          });
+        }
+
+        mobileParents.forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var expanded = btn.getAttribute("aria-expanded") === "true";
+            btn.setAttribute("aria-expanded", expanded ? "false" : "true");
+            var sub = btn.nextElementSibling;
+            if (sub) sub.classList.toggle("is-open", !expanded);
+          });
+        });
+
+        navToggle.addEventListener("click", function () {
+          navToggle.getAttribute("aria-expanded") === "true" ? closeNav() : openNav();
+        });
+
+        navBackdrop.addEventListener("click", closeNav);
+
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape" && navToggle.getAttribute("aria-expanded") === "true") {
+            closeNav();
+            navToggle.focus();
+          }
+        });
+
+        navMobile.querySelectorAll("a").forEach(function (a) {
+          a.addEventListener("click", closeNav);
+        });
+      })();
+    </script>
+  </body>
+</html>

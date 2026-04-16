@@ -1,0 +1,210 @@
+---
+import { getCollection } from "astro:content";
+import ButtonLink from "../components/ButtonLink.astro";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import Card from "../components/Card.astro";
+import Badge from "../components/Badge.astro";
+import Icon from "../components/Icon.astro";
+import CtaBanner from "../components/CtaBanner.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import { url } from "../lib/url";
+
+const allBoard = (await getCollection("board")).sort((a, b) => a.data.order - b.data.order);
+const executive = allBoard.filter((m) => m.data.group === "executive");
+const council = allBoard.filter((m) => m.data.group === "council");
+
+const instructors = (await getCollection("instructors")).sort((a, b) => a.data.order - b.data.order);
+
+const commitmentEntries = await getCollection("commitments");
+const commitments = commitmentEntries[0]?.data.items ?? [];
+
+const clubEventsEntries = await getCollection("clubEvents");
+const clubEvents = clubEventsEntries[0]?.data.items ?? [];
+---
+
+<MainLayout
+  title="Le Club - Aéroclub du Grand Lyon | Bureau, instructeurs et engagements"
+  description="Découvrez l'équipe de l'Aéroclub du Grand Lyon : bureau élu, conseil d'administration, 15 instructeurs qualifiés et nos engagements associatifs (HandiBron, Ailes du Petit Prince)."
+>
+  <PageHero
+    title="Le Club"
+    description="Une association de loi 1901 fondée par des passionnés d'aviation, au service de ses membres depuis 1993."
+  />
+
+  <Section labelledby="identity-heading" bg="surface">
+    <div class="flex flex-col gap-10 lg:flex-row lg:gap-16">
+      <div class="flex-1">
+        <h2 id="identity-heading" class="mb-4">Une association de pilotes passionnés</h2>
+        <p class="mb-4 text-base leading-relaxed text-muted">
+          Fondé en 1993, l'Aéroclub du Grand Lyon est une association loi 1901 à but non lucratif, gérée par ses membres et pour ses membres. En plus de trente ans d'existence, le club a formé des centaines de pilotes et accueilli des milliers de curieux pour leurs premiers vols au-dessus de Lyon.
+        </p>
+        <p class="text-base leading-relaxed text-muted">
+          Basé sur l'aéroport de Lyon Bron (LFLY), l'un des rares terrains contrôlés en zone urbaine dense de France, l'ACGL offre un environnement de formation exigeant et stimulant : contact radio avec la tour dès les premiers vols, espace aérien complexe, et les Alpes en toile de fond les jours de bonne visibilité.
+        </p>
+      </div>
+      <aside class="lg:w-80 xl:w-96">
+        {/* TODO: replace with <img src="/images/club/photo.jpg" alt="..." /> */}
+        <div class="flex min-h-64 items-center justify-center rounded-2xl border-2 border-dashed border-line bg-light-frost/50 lg:h-full">
+          <div class="flex flex-col items-center gap-2 p-8 text-center">
+            <Icon name="runway" size="size-10" class="text-brand/30" />
+            <p class="text-sm font-medium text-ink">Photo à venir</p>
+            <p class="text-xs text-muted">Vue de l'aéroport de Lyon Bron (LFLY)</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </Section>
+
+  {(executive.length > 0 || council.length > 0) && (
+    <Section id="governance" labelledby="governance-heading" bg="page">
+      <h2 id="governance-heading" class="mb-3">L'équipe dirigeante</h2>
+      <p class="mb-10 text-muted">
+        En tant qu'association loi 1901, l'ACGL est administrée par des membres bénévoles élus chaque année en assemblée générale.
+      </p>
+
+      {executive.length > 0 && (
+        <div class="mb-10">
+          <h3 class="mb-4">Bureau élu</h3>
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {executive.map((member) => (
+              <Card size="sm" class="flex items-center gap-4">
+                <div
+                  class="flex size-9 shrink-0 items-center justify-center rounded-full bg-light-frost font-display text-sm font-bold text-brand"
+                  aria-hidden="true"
+                >
+                  {member.data.key.charAt(0)}
+                </div>
+                <div class="min-w-0">
+                  <p class="truncate text-sm font-semibold text-ink">{member.data.key}</p>
+                  <p class="truncate text-sm text-brand">{member.data.role}</p>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {council.length > 0 && (
+        <div>
+          <h3 class="mb-4">Conseil d'administration</h3>
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {council.map((member) => (
+              <Card size="sm" class="flex items-center gap-4">
+                <div
+                  class="flex size-9 shrink-0 items-center justify-center rounded-full bg-light-frost font-display text-sm font-bold text-brand"
+                  aria-hidden="true"
+                >
+                  {member.data.key.charAt(0)}
+                </div>
+                <div class="min-w-0">
+                  <p class="truncate text-sm font-semibold text-ink">{member.data.key}</p>
+                  <p class="truncate text-sm text-muted">{member.data.role}</p>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+    </Section>
+  )}
+
+  {instructors.length > 0 && (
+    <Section id="instructors" labelledby="instructors-heading" bg="surface">
+      <div class="mb-8">
+        <h2 id="instructors-heading" class="mb-4">Instructeurs</h2>
+        <p class="text-muted">
+          Bénévoles ou professionnels, nos {instructors.length} instructeurs FI(A) se rendent disponibles en semaine comme le week-end, que vous soyez en formation initiale, en maintien de compétences ou en préparation d'une qualification.
+        </p>
+      </div>
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" role="list">
+        {instructors.map((instructor) => {
+          const { examiner, nightRating, ifrRating, mountainRating, status } = instructor.data;
+          const badges = [
+            { label: "FE(A)", always: false, show: examiner, highlight: true },
+            { label: "FI(A)", always: true, highlight: false },
+            { label: "Nuit", always: false, show: nightRating, highlight: false },
+            { label: "Montagne", always: false, show: mountainRating, highlight: false },
+            { label: "IFR", always: false, show: ifrRating, highlight: false }
+          ].filter((b) => b.always || b.show);
+          return (
+            <Card size="sm" class="bg-page">
+              <div class="flex items-start gap-3">
+                <div
+                  class="flex size-9 shrink-0 items-center justify-center rounded-full bg-light-frost font-display text-sm font-bold text-brand"
+                  aria-hidden="true"
+                >
+                  {instructor.data.key.charAt(0)}
+                </div>
+                <div class="min-w-0 pt-0.5">
+                  <p class="truncate text-sm font-semibold text-ink">{instructor.data.key}</p>
+                  {status && (
+                    <p class="truncate text-xs text-muted">{status}</p>
+                  )}
+                </div>
+              </div>
+              <div class="mt-5 flex flex-wrap gap-1.5">
+                {badges.map((b) => (
+                  <Badge variant={b.highlight ? "muted" : "default"}>
+                    {b.label}
+                  </Badge>
+                ))}
+              </div>
+            </Card>
+          );
+        })}
+      </div>
+    </Section>
+  )}
+
+  <Section id="club-life" labelledby="club-life-heading" bg="page">
+    <h2 id="club-life-heading" class="mb-4">La vie du club</h2>
+    <p class="mb-10 text-muted">
+      Voler ensemble, c'est bien. Se retrouver à terre, c'est aussi ça le club. Tout au long de l'année, l'ACGL organise des moments de convivialité et des aventures partagées.
+    </p>
+    <div class="grid gap-6 sm:grid-cols-2">
+      {clubEvents.map((event) => (
+        <Card size="lg">
+          <div class="mb-4 flex items-center gap-3">
+            <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
+              <Icon name={event.icon} size="size-5" />
+            </div>
+            <h3>{event.title}</h3>
+          </div>
+          
+          <p class="text-sm leading-relaxed text-muted">{event.description}</p>
+        </Card>
+      ))}
+    </div>
+  </Section>
+
+  {commitments.length > 0 && (
+    <Section id="commitments" labelledby="commitments-heading" bg="surface">
+      <h2 id="commitments-heading" class="mb-4">Nos engagements</h2>
+      <p class="mb-10 text-muted">
+        L'ACGL s'implique au-delà de l'aviation. Deux actions associatives nous tiennent particulièrement à cœur.
+      </p>
+      <div class="grid gap-6 md:grid-cols-2">
+        {commitments.map((item) => (
+          <Card size="lg">
+            <div class="mb-4 flex items-center gap-3">
+            <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
+              <Icon name="heart" size="size-5" />
+            </div>
+            <h3>{item.title}</h3>
+          </div>
+            <p class="text-sm leading-relaxed text-muted">{item.description}</p>
+          </Card>
+        ))}
+      </div>
+    </Section>
+  )}
+
+  <CtaBanner
+    title="Rejoignez l'aventure"
+    description="Passionné d'aviation ou simplement curieux ? Venez nous rencontrer sans aucun engagement, juste une conversation entre pilotes."
+    primaryHref={url("/contact")}
+    primaryLabel="Nous contacter"
+    bg="page"
+  />
+</MainLayout>

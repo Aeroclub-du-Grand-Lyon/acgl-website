@@ -1,0 +1,16 @@
+key: Robin DR400 120
+registration: F-GGQD
+engine: 120 ch
+seats: 4
+speed: 200 km/h
+autonomy: 4 h
+usage: >-
+  Avion quadriplace utilisé pour la formation et le vol local. Il est équipé
+  pour le vol de nuit.
+equipment:
+  - Instruments analogiques
+photo: /images/fleet/robin-dr400-qd/photo.jpg
+normal: 169 €/h
+reduced: 139 €/h
+schoolAircraft: true
+order: 4

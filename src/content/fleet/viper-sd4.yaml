@@ -1,0 +1,18 @@
+key: Viper SD-4
+registration: F-HHVP
+engine: 100 ch
+seats: 2
+speed: 105 kt
+autonomy: 5 h
+usage: >-
+  Avion biplace à l’équipement ultra moderne, parfaitement adapté à la formation
+  et au vol local.
+equipment:
+  - Glass cockpit
+  - GPS
+  - Parachute de cellule
+photo: /images/fleet/viper-sd4/photo.jpg
+normal: 159 €/h
+reduced: 129 €/h
+schoolAircraft: true
+order: 2

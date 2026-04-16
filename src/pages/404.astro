@@ -1,0 +1,55 @@
+---
+import ButtonLink from "../components/ButtonLink.astro";
+import Icon from "../components/Icon.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import { url } from "../lib/url";
+import { Image } from "astro:assets";
+import heroImageSrc from "../assets/hero-bg.jpg";
+---
+
+<MainLayout
+  title="Page introuvable - Aéroclub du Grand Lyon"
+  description="La page que vous recherchez n'existe pas ou a été déplacée."
+>
+  <section class="relative isolate flex min-h-[clamp(26rem,70vh,52rem)] flex-col items-center justify-center overflow-hidden px-4 pt-[calc(var(--spacing-header-h)+2.5rem)] pb-20 text-center sm:px-6">
+
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <Image
+        src={heroImageSrc}
+        alt=""
+        class="h-full w-full object-cover object-center"
+        width={1920}
+        height={1080}
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+        quality={80}
+      />
+    </div>
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/80 to-navy/50" aria-hidden="true" />
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-navy/40 via-navy/20 to-navy/70" aria-hidden="true" />
+
+    <div class="relative z-[1] flex flex-col items-center">
+      <div
+        class="mb-6 inline-flex size-20 items-center justify-center rounded-full bg-white/10 text-white"
+        aria-hidden="true"
+      >
+        <Icon name="plane" size="size-10" />
+      </div>
+
+      <p class="mb-2 font-display text-sm font-semibold uppercase tracking-label text-sky">
+        Erreur 404
+      </p>
+      <h1 class="mb-4 text-[clamp(1.75rem,4vw,2.5rem)] text-white">Page introuvable</h1>
+      <p class="mb-10 max-w-md text-white/75">
+        La page que vous cherchez n'existe pas ou a été déplacée. Revenez à l'accueil pour continuer votre navigation.
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-3">
+        <ButtonLink href={url("/")} variant="primary">Retour à l'accueil</ButtonLink>
+        <ButtonLink href={url("/contact")} variant="outline">Nous contacter</ButtonLink>
+      </div>
+    </div>
+
+  </section>
+</MainLayout>

@@ -1,0 +1,165 @@
+---
+import { getCollection } from "astro:content";
+import ButtonLink from "../components/ButtonLink.astro";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import Card from "../components/Card.astro";
+import Icon from "../components/Icon.astro";
+import FaqAccordion from "../components/FaqAccordion.astro";
+import CtaBanner from "../components/CtaBanner.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import { toTelHref } from "../lib/phone";
+import { url } from "../lib/url";
+
+const contactEntries = await getCollection("contactSettings");
+const contact = contactEntries[0]?.data;
+
+const offers = (await getCollection("offers")).sort((a, b) => a.data.order - b.data.order);
+
+function getAnchor(id: string) {
+  return id.split("/")[0];
+}
+
+const faqItems = (await getCollection("faq"))
+  .filter((f) => f.data.page === "discovery-flights")
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((f) => ({ q: f.data.question, a: f.data.answer }));
+
+const pageJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Vol découverte en avion léger à Lyon Bron",
+    description:
+      "Vol d'initiation au pilotage depuis l'aéroport de Lyon Bron avec un instructeur qualifié. Dès 170 €, aucune expérience requise.",
+    provider: {
+      "@type": "SportsClub",
+      name: "Aéroclub du Grand Lyon",
+      url: "https://acgl.fr",
+    },
+    areaServed: "Lyon, Auvergne-Rhône-Alpes",
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "EUR",
+      price: "170",
+      eligibleRegion: "FR",
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map(({ q, a }) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  },
+];
+---
+
+<MainLayout
+  title="Vol découverte, initiation et baptême de l'air à Lyon Bron | ACGL"
+  description="Vol découverte en avion léger à Lyon - à partir de 170 €. Prenez les commandes avec un instructeur au-dessus de Lyon. Vol d'initiation, forfait 3 vols et coavionnage Wingly disponibles."
+>
+  {pageJsonLd.map((ld) => (
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} slot="head" />
+  ))}
+
+  <PageHero
+    title="Vols découverte & initiation au pilotage"
+    description="Votre première fois dans un cockpit, ou un cadeau inoubliable au départ de l'aéroport de Bron."
+  >
+  </PageHero>
+
+  {offers.map((offer, idx) => {
+    const anchor = getAnchor(offer.id);
+    const isEven = idx % 2 === 0;
+    const iconName = offer.data.icon;
+    return (
+      <Section
+        id={anchor}
+        labelledby={`offer-${anchor}`}
+        bg={isEven ? "surface" : "page"}
+      >
+        <div class="flex flex-col gap-10 lg:flex-row lg:gap-16">
+          <div class="flex-1">
+            <h2 id={`offer-${anchor}`} class="mb-4">
+              {offer.data.title}
+            </h2>
+            {offer.data.tagline && (
+              <p class="mb-3 text-xs font-semibold uppercase tracking-label text-brand">
+                {offer.data.tagline}
+              </p>
+            )}
+            <p class="text-base leading-relaxed text-muted">{offer.data.description}</p>
+
+            <div class="mt-8 flex flex-wrap gap-3">
+              <ButtonLink href={`${url("/contact")}?subject=${encodeURIComponent("Réservation " + offer.data.title)}#formulaire`} variant="blue">Réserver</ButtonLink>
+              {contact?.phone && (
+                <ButtonLink href={`tel:${toTelHref(contact.phone)}`} variant="outline-dark" class="md:hidden">
+                  <Icon name="phone" size="size-4" />
+                  Appeler le club
+                </ButtonLink>
+              )}
+            </div>
+          </div>
+
+          <aside class="lg:w-72 xl:w-80">
+            <Card class="bg-page">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="flex size-12 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
+                  <Icon name={iconName} size="size-6" />
+                </div>
+                <h3 class="text-base">En pratique</h3>
+              </div>
+              <dl class="flex flex-col gap-3">
+                {offer.data.duration && (
+                  <div class="flex items-start gap-3">
+                    <dt class="min-w-[5.5rem] text-sm font-semibold text-ink">Durée</dt>
+                    <dd class="text-sm text-muted">{offer.data.duration}</dd>
+                  </div>
+                )}
+                {offer.data.price && (
+                  <div class="flex items-start gap-3">
+                    <dt class="min-w-[5.5rem] text-sm font-semibold text-ink">Tarif</dt>
+                    <dd class="text-sm font-semibold text-brand">{offer.data.price}</dd>
+                  </div>
+                )}
+                {offer.data.capacity && (
+                  <div class="flex items-start gap-3">
+                    <dt class="min-w-[5.5rem] text-sm font-semibold text-ink">Places</dt>
+                    <dd class="text-sm text-muted">{offer.data.capacity}</dd>
+                  </div>
+                )}
+                <div class="flex items-start gap-3">
+                  <dt class="min-w-[5.5rem] text-sm font-semibold text-ink">Départ</dt>
+                  <dd class="text-sm text-muted">Aéroport de Lyon Bron (LFLY)</dd>
+                </div>
+              </dl>
+              {offer.data.notes && (
+                <p class="mt-4 border-t border-line pt-4 text-sm leading-relaxed text-muted">
+                  {offer.data.notes}
+                </p>
+              )}
+            </Card>
+          </aside>
+        </div>
+      </Section>
+    );
+  })}
+
+  <Section labelledby="faq-discovery-heading" bg="page">
+    <h2 id="faq-discovery-heading" class="mb-8">Questions fréquentes</h2>
+    <FaqAccordion items={faqItems} />
+  </Section>
+
+  <CtaBanner
+    title="Prêt à décoller ?"
+    description="Contactez-nous par email ou venez nous rencontrer lors de notre permanence pour réserver votre vol."
+    primaryHref={url("/contact")}
+    primaryLabel="Réserver maintenant"
+    secondaryHref={url("/tarifs")}
+    secondaryLabel="Voir les tarifs"
+  >
+  </CtaBanner>
+</MainLayout>

@@ -1,0 +1,19 @@
+key: Piper PA28 Archer II
+registration: N56EK
+engine: 180 ch
+seats: 4
+speed: 230 km/h
+autonomy: 5 h
+usage: >-
+  Quadriplace destiné à la balade ou au voyage avec son pilote automatique.
+  Agréé pour le vol aux instruments (IFR).
+equipment:
+  - Glass cockpit
+  - GPS
+  - Pilote automatique
+normal: 227 €/h
+reduced: 197 €/h
+ifrNormal: 252 €/h
+ifrReduced: 222 €/h
+schoolAircraft: false
+order: 7

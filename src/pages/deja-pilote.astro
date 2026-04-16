@@ -1,0 +1,116 @@
+---
+import { getCollection } from "astro:content";
+import ButtonLink from "../components/ButtonLink.astro";
+import CtaBanner from "../components/CtaBanner.astro";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import Card from "../components/Card.astro";
+import Icon from "../components/Icon.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import { url } from "../lib/url";
+
+const fleet = (await getCollection("fleet")).sort((a, b) => a.data.order - b.data.order);
+const fleetCount = fleet.length;
+
+const instructors = await getCollection("instructors");
+const instructorCount = instructors.length;
+
+const allPricing = (await getCollection("pricing")).sort((a, b) => a.data.order - b.data.order);
+const clubMembership = allPricing.find((p) => p.id.includes("cotisation-plus-25"));
+const fixedFees = allPricing.find((p) => p.id.includes("cotisation-frais-fixes"));
+
+
+const benefits = [
+  { icon: "plane" as const, title: `Flotte de ${fleetCount} avions`, desc: "Du Velis Electro au PA28R Arrow III, pour tous les types de vols : local, voyage, IFR." },
+  { icon: "clock" as const, title: "Tarifs à la minute", desc: "Facturation moteur tournant, au plus juste. Réduction de 30 €/h avec la participation aux frais fixes." },
+  { icon: "graduation" as const, title: `${instructorCount} instructeurs disponibles`, desc: "Remise à niveau, vol de nuit, IFR, montagne - nos instructeurs qualifiés vous accompagnent." },
+  { icon: "users" as const, title: "Vraie ambiance club", desc: "Une association loi 1901 à taille humaine, avec des événements, des sorties et des pilotes passionnés." },
+  { icon: "shield" as const, title: "Agréé DGAC", desc: "École et club homologués. Tous nos avions sont entretenus selon les normes européennes EASA." },
+];
+---
+
+<MainLayout
+  title="Déjà pilote à Lyon ? Rejoignez l'Aéroclub du Grand Lyon - Location avion Lyon Bron"
+  description={`Pilote breveté à Lyon ou en Auvergne-Rhône-Alpes ? L'ACGL vous accueille à Lyon Bron avec ${fleetCount} avions disponibles à la location, de l'avion école au voyage IFR. Rejoignez un club convivial.`}
+>
+  <PageHero
+    title="Piloter au départ de Lyon"
+    description="L'Aéroclub du Grand Lyon accueille les pilotes PPL et LAPL qui cherchent à voler ou à se perfectionner."
+  />
+
+  <Section id="join" labelledby="join-heading" bg="surface">
+    <h2 id="join-heading" class="mb-10">Pourquoi rejoindre l'ACGL ?</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {benefits.map(({ icon, title, desc }) => (
+        <Card class="bg-page">
+          <div
+            class="mb-4 flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand"
+            aria-hidden="true"
+          >
+            <Icon name={icon} />
+          </div>
+          <h3 class="mb-2 text-base">{title}</h3>
+          <p class="m-0 text-sm leading-relaxed text-muted">{desc}</p>
+        </Card>
+      ))}
+    </div>
+  </Section>
+
+  <Section id="fleet" labelledby="fleet-heading" bg="page">
+    <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <h2 id="fleet-heading" class="mb-4">Une flotte pour tous les projets</h2>
+        <p class="m-0 text-muted">
+          {fleetCount} avions disponibles à la réservation - VFR, IFR, voyages en Europe.
+        </p>
+      </div>
+      <ButtonLink href={url("/flotte")} variant="outline-dark">Voir toute la flotte</ButtonLink>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {fleet.slice(0, 6).map((aircraft) => (
+        <Card size="sm" class="flex items-center gap-4">
+          <div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
+            <Icon name="plane" />
+          </div>
+          <div class="min-w-0">
+            <div class="truncate text-sm font-semibold text-ink">{aircraft.data.key}</div>
+            <div class="font-mono text-xs text-muted">{aircraft.data.registration}</div>
+          </div>
+        </Card>
+      ))}
+    </div>
+  </Section>
+
+  {clubMembership?.data.normal && fixedFees?.data.normal && (
+    <Section id="pricing-licensed" labelledby="pricing-licensed-heading" bg="surface">
+      <h2 id="pricing-licensed-heading" class="mb-4">Ce que ça coûte, concrètement</h2>
+      <p class="mb-8 text-muted">
+        L'ACGL est une association à but non lucratif. Voici ce que vous payez en tant que pilote breveté.
+      </p>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <Card class="bg-page">
+          <p class="mb-1 text-xs font-semibold uppercase tracking-label text-muted">Cotisation annuelle</p>
+          <p class="font-display text-2xl font-bold text-navy">{clubMembership.data.normal}</p>
+          <p class="mt-1 text-sm text-muted">Club + licence FFA obligatoire</p>
+        </Card>
+        <Card variant="highlight" class="bg-light-frost">
+          <p class="mb-1 text-xs font-semibold uppercase tracking-label text-brand">Option frais fixes</p>
+          <p class="font-display text-2xl font-bold text-navy">{fixedFees.data.normal}</p>
+          <p class="mt-1 text-sm text-muted">Réduction de 30 €/h sur l'heure de vol + taxes de jour Bron incluses</p>
+        </Card>
+      </div>
+      <div class="mt-5 flex flex-wrap gap-3">
+        <ButtonLink href={url("/tarifs")} variant="blue">Voir tous les tarifs</ButtonLink>
+        <ButtonLink href={url("/contact")} variant="outline-dark">Demander à rejoindre le club</ButtonLink>
+      </div>
+    </Section>
+  )}
+
+  <CtaBanner
+    variant="dark"
+    title="Une surprise vous attend à l'inscription"
+    description="Pour vous accueillir comme il se doit, l'ACGL réserve une surprise à chaque nouveau pilote breveté qui rejoint le club. Venez nous rencontrer lors de notre permanence pour en savoir plus."
+    primaryHref={url("/contact")}
+    primaryLabel="Venir au club"
+  />
+</MainLayout>

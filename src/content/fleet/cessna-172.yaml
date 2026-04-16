@@ -1,0 +1,20 @@
+key: Cessna 172 SP
+registration: F-HCFX
+engine: 180 ch injection
+seats: 4
+speed: 220 km/h
+autonomy: 5 h
+usage: >-
+  Quadriplace destiné à la balade ou au voyage avec son pilote automatique.
+  Agréé pour le vol aux instruments (IFR).
+equipment:
+  - Glass cockpit
+  - GPS
+  - Pilote automatique
+photo: /images/fleet/cessna-172/photo.jpg
+normal: 227 €/h
+reduced: 197 €/h
+ifrNormal: 252  €/h
+ifrReduced: 222  €/h
+schoolAircraft: false
+order: 6

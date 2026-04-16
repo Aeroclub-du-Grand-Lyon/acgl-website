@@ -1,0 +1,25 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Variant = "default" | "brand" | "outline" | "muted" | "hero";
+
+interface Props extends HTMLAttributes<"span"> {
+  variant?: Variant;
+}
+
+const { variant = "default", class: className, ...rest } = Astro.props;
+
+const base =
+  "inline-block rounded-xl text-xs px-3 py-1 uppercase tracking-wide";
+
+const variants: Record<Variant, string> = {
+  default: "border border-line bg-surface text-muted",
+  brand: "bg-brand text-white",
+  outline: "border border-line bg-page text-muted",
+  muted: "bg-light-frost text-brand",
+};
+---
+
+<span class:list={[base, variants[variant], className]} {...rest}>
+  <slot />
+</span>

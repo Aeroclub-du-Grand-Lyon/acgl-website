@@ -1,0 +1,101 @@
+---
+import { getCollection } from "astro:content";
+import ButtonLink from "../components/ButtonLink.astro";
+import CtaBanner from "../components/CtaBanner.astro";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import Card from "../components/Card.astro";
+import Icon from "../components/Icon.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import {
+  surfaceLinkCardCta,
+  surfaceLinkCardCtaArrow,
+  surfaceLinkCardLeadIconSm,
+  surfaceLinkCardTitle,
+} from "../lib/ui";
+import { url } from "../lib/url";
+
+const allLinks = await getCollection("links");
+const sorted = allLinks.sort((a, b) => a.data.order - b.data.order);
+
+const partners = sorted.filter((l) => l.data.category === "partner");
+const resources = sorted.filter((l) => l.data.category === "resource");
+---
+
+<MainLayout
+  title="Partenaires - Aéroclub du Grand Lyon | Nos liens aéronautiques"
+  description="Découvrez les partenaires de l'Aéroclub du Grand Lyon : FFA, Aerospeed, MecaSky et les ressources utiles pour les pilotes à Lyon Bron."
+>
+  <PageHero
+    title="Nos partenaires"
+    description="L'ACGL s'inscrit dans un réseau de partenaires aéronautiques et associatifs qui partagent notre passion pour l'aviation."
+  />
+
+  {partners.length > 0 && (
+    <Section id="partners" labelledby="partners-heading" bg="surface">
+      <h2 id="partners-heading" class="mb-8">Partenaires</h2>
+      <div class="grid gap-6 md:grid-cols-3">
+        {partners.map((link) => (
+          <a
+            href={link.data.href}
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            class="group block h-full no-underline"
+          >
+            <Card variant="surfaceLink" class="flex h-full flex-col bg-page">
+              <div class={surfaceLinkCardLeadIconSm} aria-hidden="true">
+                <Icon name="external-link" />
+              </div>
+              <h3 class:list={[surfaceLinkCardTitle, "text-base"]}>{link.data.key}</h3>
+              <p class="mb-4 flex-1 text-sm leading-relaxed text-muted">
+                {link.data.description}
+              </p>
+              <span class={surfaceLinkCardCta}>
+                Visiter le site
+                <Icon name="arrow-right" size="size-3.5" class={surfaceLinkCardCtaArrow} />
+              </span>
+            </Card>
+          </a>
+        ))}
+      </div>
+    </Section>
+  )}
+
+  {resources.length > 0 && (
+    <Section id="useful-links" labelledby="useful-links-heading" bg="page">
+      <h2 id="useful-links-heading" class="mb-8">Liens utiles</h2>
+      <div class="grid gap-6 md:grid-cols-3">
+        {resources.map((link) => (
+          <a
+            href={link.data.href}
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            class="group block h-full no-underline"
+          >
+            <Card variant="surfaceLink" class="flex h-full flex-col bg-surface">
+              <div class={surfaceLinkCardLeadIconSm} aria-hidden="true">
+                <Icon name="external-link" />
+              </div>
+              <h3 class:list={[surfaceLinkCardTitle, "text-base"]}>{link.data.key}</h3>
+              <p class="mb-4 flex-1 text-sm leading-relaxed text-muted">
+                {link.data.description}
+              </p>
+              <span class={surfaceLinkCardCta}>
+                Visiter le site
+                <Icon name="arrow-right" size="size-3.5" class={surfaceLinkCardCtaArrow} />
+              </span>
+            </Card>
+          </a>
+        ))}
+      </div>
+    </Section>
+  )}
+
+  <CtaBanner
+    bg="page"
+    title="Devenir partenaire"
+    description="Vous êtes un acteur de l'aéronautique, une entreprise locale ou une association et souhaitez collaborer avec l'ACGL ? Contactez-nous."
+    primaryHref={url("/contact")}
+    primaryLabel="Nous contacter"
+  />
+</MainLayout>

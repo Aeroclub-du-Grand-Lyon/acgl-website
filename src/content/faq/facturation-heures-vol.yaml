@@ -1,0 +1,7 @@
+question: Comment les heures de vol sont-elles facturées ?
+answer: >-
+  Les vols sont facturés à la minute, moteur tournant. Le décompte commence au
+  démarrage du moteur et s'arrête à l'extinction. Il n'y a pas de minimum de
+  facturation au-delà du temps réellement moteur en marche.
+page: pricing
+order: 1

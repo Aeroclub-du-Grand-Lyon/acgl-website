@@ -1,0 +1,39 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Background = "surface" | "page";
+
+interface Props extends HTMLAttributes<"section"> {
+  id?: string;
+  labelledby?: string;
+  bg?: Background;
+  border?: boolean;
+}
+
+const {
+  id,
+  labelledby,
+  bg = "surface",
+  border = true,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const bgClass = bg === "surface" ? "bg-surface" : "bg-page";
+---
+
+<section
+  id={id}
+  aria-labelledby={labelledby}
+  class:list={[
+    "py-section-y max-md:py-section-y-mobile scroll-mt-header-h",
+    bgClass,
+    border && "border-b border-line",
+    className,
+  ]}
+  {...rest}
+>
+  <div class="container">
+    <slot />
+  </div>
+</section>

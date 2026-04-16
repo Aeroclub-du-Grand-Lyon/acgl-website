@@ -1,0 +1,228 @@
+---
+import { getCollection } from "astro:content";
+import ButtonLink from "../components/ButtonLink.astro";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import Card from "../components/Card.astro";
+import Badge from "../components/Badge.astro";
+import Icon from "../components/Icon.astro";
+import FaqAccordion from "../components/FaqAccordion.astro";
+import CtaBanner from "../components/CtaBanner.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import { url } from "../lib/url";
+
+const instructors = await getCollection("instructors");
+const instructorCount = instructors.length;
+
+const faqItems = (await getCollection("faq"))
+  .filter((f) => f.data.page === "flight-school")
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((f) => ({ q: f.data.question, a: f.data.answer }));
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  name: "Aéroclub du Grand Lyon - École de pilotage",
+  url: "https://acgl.fr/ecole-de-pilotage",
+  description:
+    `École de pilotage agréée DGAC basé à Lyon Bron. Formation BIA, LAPL(A) et PPL(A) dispensée par ${instructorCount} instructeurs qualifiés.`,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Avenue Louis Mouillard",
+    addressLocality: "Bron",
+    postalCode: "69500",
+    addressCountry: "FR",
+  },
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Formations au pilotage",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Course",
+          name: "Brevet d'Initiation Aéronautique (BIA)",
+          description: "Examen théorique national de l'éducation nationale, ouvert dès la classe de troisième (14-15 ans).",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Course",
+          name: "Licence LAPL(A)",
+          description: "Licence de pilote d'avion léger - vols VFR de jour, passagers, Europe.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Course",
+          name: "Licence PPL(A)",
+          description: "Licence de pilote privé - vols VFR et IFR, passagers, Europe et au-delà.",
+        },
+      },
+    ],
+  },
+};
+
+const biaChecks = [
+  "Accessible dès la classe de troisième (14-15 ans)",
+  "Passeport vers les licences LAPL et PPL",
+  "Reconnu par l'Éducation nationale",
+];
+
+const laplPoints = [
+  "Minimum 30 heures de vol (dont 15 h en double commande, 6 h en solo)",
+  "Vols VFR de jour, passagers, en Europe",
+  "Certificat médical LAPL (réalisable chez un médecin généraliste agréé)",
+];
+
+const pplPoints = [
+  "Minimum 45 heures de vol (dont 25 h en double commande, 10 h en solo)",
+  "Vols VFR et IFR, passagers, sans limite de masse avion",
+  "Porte d'entrée vers les qualifications vol de nuit, IFR et montagne",
+];
+
+const trainingSteps = [
+  { n: "1", title: "Vol de découverte", desc: "Premier contact avec le pilotage : sensations, manche en main, vue sur Lyon." },
+  { n: "2", title: "Théorie & cours sol", desc: "Préparation à l'examen DGAC : météo, navigation, réglementation, aérodynamique." },
+  { n: "3", title: "Double commande & solo", desc: "Vols école progressifs jusqu'au premier vol solo, puis navigations autonomes." },
+  { n: "4", title: "Licence PPL ou LAPL", desc: "Contrôle pratique avec un examinateur : votre licence ouvre l'Europe entière." },
+];
+---
+
+<MainLayout
+  title="École de pilotage à Lyon - Formation PPL(A), LAPL(A) et BIA | ACGL Bron"
+  description={`Apprenez à piloter à Lyon Bron avec l'Aéroclub du Grand Lyon. Formation BIA, LAPL(A) et PPL(A) encadrée par ${instructorCount} instructeurs agréés DGAC.`}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+
+  <PageHero
+    title="École de pilotage à Lyon"
+    description={`Formation PPL(A), LAPL(A) et BIA encadrée par nos ${instructorCount} instructeurs qualifiés.`}
+  />
+
+  <Section id="bia" labelledby="bia-heading" bg="surface">
+    <div class="mb-2 flex items-center gap-2">
+      <Badge variant="muted">Formation théorique</Badge>
+    </div>
+    <h2 id="bia-heading" class="mb-4">Le Brevet d'Initiation Aéronautique (BIA)</h2>
+    <p class="text-base leading-relaxed text-muted">
+        Le BIA est un examen national de l'Éducation nationale, ouvert à tous dès la classe de troisième (14-15 ans). Il atteste de connaissances en aérodynamique, météorologie, navigation et réglementation aérienne. C'est la première étape idéale pour ceux qui se destinent à la licence pilote, ou simplement pour enrichir leur culture aéronautique.
+      </p>
+      <ul class="mt-5 flex flex-col gap-2" role="list">
+        {biaChecks.map((text) => (
+          <li class="flex items-center gap-2 text-sm text-muted">
+            <Icon name="check-circle" size="size-4" class="shrink-0 text-brand" />
+            {text}
+          </li>
+        ))}
+      </ul>
+  </Section>
+
+  <Section id="licenses" labelledby="licenses-heading" bg="page">
+    <header class="mb-10">
+      <h2 id="licenses-heading">LAPL(A) ou PPL(A) : quelle licence choisir ?</h2>
+      <p class="mt-3 text-muted">
+        Les deux licences permettent de piloter un avion monomoteur et d'emmener des passagers. Elles diffèrent par le périmètre autorisé et les exigences réglementaires.
+      </p>
+    </header>
+
+    <div class="grid gap-6 md:grid-cols-2">
+      <Card>
+        <div class="mb-5 flex items-center justify-between">
+          <h3 class="m-0 font-display text-lg font-semibold text-navy">LAPL(A)</h3>
+          <Badge variant="muted">Licence Européenne</Badge>
+        </div>
+        <p class="mb-5 text-sm leading-relaxed text-muted">
+          La <strong class="font-semibold text-ink">Licence de Pilote d'Avion Léger</strong> (light aircraft pilot licence) est une licence européenne permettant de voler uniquement sur le territoire européen, avec maximum 3 passagers, sur des avions dont la masse maximale est de 2 000 kg.
+        </p>
+        <ul class="m-0 flex list-none flex-col gap-3 p-0 text-sm" role="list">
+          {laplPoints.map((text) => (
+            <li class="flex items-start gap-2 text-muted">
+              <Icon name="check-circle" size="size-4" class="mt-0.5 shrink-0 text-brand" />
+              {text}
+            </li>
+          ))}
+        </ul>
+      </Card>
+
+      <Card variant="highlight">
+        <div class="mb-5 flex items-center justify-between">
+          <h3 class="m-0 font-display text-lg font-semibold text-navy">PPL(A)</h3>
+          <Badge variant="brand">Licence international</Badge>
+        </div>
+        <p class="mb-5 text-sm leading-relaxed text-muted">
+          Le <strong class="font-semibold text-ink">Brevet de Pilote Privé</strong> (private pilot licencse) est une licence international qui permet notamment l'obtention de qualifications avancées comme le vol aux intruments ou le vol multi-moteur. C'est également la porte d'entrée vers une carrière professionnelles.
+        </p>
+        <ul class="m-0 flex list-none flex-col gap-3 p-0 text-sm" role="list">
+          {pplPoints.map((text) => (
+            <li class="flex items-start gap-2 text-muted">
+              <Icon name="check-circle" size="size-4" class="mt-0.5 shrink-0 text-brand" />
+              {text}
+            </li>
+          ))}
+        </ul>
+      </Card>
+    </div>
+
+    <p class="mt-6 text-sm text-muted">
+      <strong class="font-medium text-ink">Combien ça coûte ?</strong>{" "}
+      Comptez entre 8 000 et 12 000 € pour un PPL(A) selon votre rythme. Nos instructeurs vous orientent gratuitement. Venez en discuter lors de notre {" "}
+      <a href={url("/contact")} class="font-medium text-brand hover:text-navy">permanence</a>.
+    </p>
+  </Section>
+
+  <Section id="training" labelledby="training-heading" bg="surface">
+    <header class="mb-10">
+      <h2 id="training-heading">La formation au pilotage pas à pas</h2>
+      <p class="mt-3 text-muted">
+        Votre instructeur vous accompagne de bout en bout, des premiers vrombissements jusqu'au contrôle pratique DGAC.
+      </p>
+    </header>
+
+    <ol class="m-0 grid list-none gap-5 p-0 md:grid-cols-2 lg:grid-cols-4">
+      {trainingSteps.map(({ n, title, desc }) => (
+        <Card as="li" class="bg-page">
+          <span
+            class="mb-3 inline-flex size-9 items-center justify-center rounded-full bg-brand font-display text-sm font-bold text-white"
+            aria-hidden="true"
+          >
+            {n}
+          </span>
+          <h3 class="mb-2 text-base">{title}</h3>
+          <p class="m-0 text-sm leading-relaxed text-muted">{desc}</p>
+        </Card>
+      ))}
+    </ol>
+  </Section>
+
+  <Section bg="page">
+    <header class="mb-10">
+      <h2>Déjà breveté ? Allez plus loin.</h2>
+      <p class="mt-3 text-muted">
+        Vol de nuit, IFR, montagne : nos instructeurs qualifiés vous accompagnent pour enrichir votre licence avec des qualifications avancées.
+      </p>
+    </header>
+    <div class="flex flex-wrap gap-3">
+      <ButtonLink href={url("/progresser")} variant="blue">Voir les qualifications</ButtonLink>
+      <ButtonLink href={url("/deja-pilote")} variant="outline-dark">Déjà pilote</ButtonLink>
+    </div>
+  </Section>
+
+  <Section labelledby="faq-school-heading" bg="surface">
+    <h2 id="faq-school-heading" class="mb-8">Questions fréquentes sur la formation</h2>
+    <FaqAccordion items={faqItems} />
+  </Section>
+
+  <CtaBanner
+    title="Prêt à commencer votre formation ?"
+    description="Venez rencontrer nos instructeurs lors de notre permanence ou contactez-nous pour démarrer votre projet."
+    primaryHref={url("/contact")}
+    primaryLabel="Nous contacter"
+    secondaryHref={url("/vol-decouverte")}
+    secondaryLabel="Commencer par un vol découverte"
+    bg="page"
+  >
+  </CtaBanner>
+</MainLayout>

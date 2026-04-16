@@ -1,0 +1,53 @@
+---
+import ButtonLink from "./ButtonLink.astro";
+
+type Variant = "light" | "dark";
+type Background = "surface" | "page";
+
+interface Props {
+  title: string;
+  description: string;
+  primaryHref: string;
+  primaryLabel: string;
+  secondaryHref?: string;
+  secondaryLabel?: string;
+  variant?: Variant;
+  bg?: Background;
+}
+
+const {
+  title,
+  description,
+  primaryHref,
+  primaryLabel,
+  secondaryHref,
+  secondaryLabel,
+  variant = "light",
+  bg = "surface",
+} = Astro.props;
+
+const isDark = variant === "dark";
+const bgClass = isDark
+  ? "bg-gradient-to-br from-navy to-brand text-white"
+  : bg === "page"
+    ? "bg-page"
+    : "bg-surface";
+const titleClass = isDark ? "text-white" : "";
+const descClass = isDark ? "text-white/80" : "text-muted";
+const primaryVariant = isDark ? "primary" : "blue";
+const secondaryVariant = isDark ? "outline" : "outline-dark";
+---
+
+<section class:list={[bgClass, "py-section-y max-md:py-section-y-mobile"]}>
+  <div class="container text-center">
+    <h2 class:list={["mb-4", titleClass]}>{title}</h2>
+    <p class:list={["mb-8", descClass]}>{description}</p>
+    <div class="flex flex-wrap justify-center gap-3">
+      <ButtonLink href={primaryHref} variant={primaryVariant}>{primaryLabel}</ButtonLink>
+      {secondaryHref && secondaryLabel && (
+        <ButtonLink href={secondaryHref} variant={secondaryVariant}>{secondaryLabel}</ButtonLink>
+      )}
+    </div>
+    <slot />
+  </div>
+</section>

@@ -1,0 +1,16 @@
+updatedOn: 4 avril 2026
+membershipNote:
+  enabled: false
+fleetNote:
+  enabled: true
+  title: Tarif réduit
+  description: >-
+    Le tarif réduit n'est disponible que pour les membres ayant cotisé à la
+    participation aux frais fixes. Les tarifs réduits ne sont disponible que
+    pour les avions qui sont la propriété de l'aéroclub.
+trainingNote:
+  enabled: true
+  title: Formation théorique
+  description: >-
+    Le temps de briefing, de débriefing et de formation au sol avec un
+    instructeur n'est pas facturé.

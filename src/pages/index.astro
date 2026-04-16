@@ -1,0 +1,207 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import Card from "../components/Card.astro";
+import CtaBanner from "../components/CtaBanner.astro";
+import Icon from "../components/Icon.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import Section from "../components/Section.astro";
+import {
+  surfaceLinkCard,
+  surfaceLinkCardCta,
+  surfaceLinkCardCtaArrow,
+  surfaceLinkCardLeadIcon,
+  surfaceLinkCardTitle,
+} from "../lib/ui";
+import { url } from "../lib/url";
+import heroImageSrc from "../assets/hero-bg.jpg";
+
+const homeNumbersEntries = await getCollection("homeClubNumbers");
+const heroStats = homeNumbersEntries[0]?.data.stats ?? [];
+
+const contactEntries = await getCollection("contactSettings");
+const contact = contactEntries[0]?.data;
+
+const fleet = await getCollection("fleet");
+const fleetCount = fleet.length;
+
+const instructors = await getCollection("instructors");
+const instructorCount = instructors.length;
+
+const pathCards: { href: string; icon: string; label: string; title: string; desc: string; cta: string }[] = [
+  {
+    href: url("/vol-decouverte"),
+    icon: "compass",
+    label: "Découvrir",
+    title: "Vols découverte",
+    desc: "S'initier au plaisir de voler accompagné d'un de nos instructeurs.",
+    cta: "Offrir ou s'offrir un vol",
+  },
+  {
+    href: url("/ecole-de-pilotage"),
+    icon: "book-open",
+    label: "Apprendre",
+    title: "École de pilotage",
+    desc: `Formation PPL(A) ou LAPL(A) avec nos instructeurs qualifiés, du premier vol à la licence.`,
+    cta: "Devenir pilote",
+  },
+  {
+    href: url("/deja-pilote"),
+    icon: "plane",
+    label: "Voler",
+    title: "Déjà pilote",
+    desc: "Rejoignez notre communauté de pilotes et volez sur notre flotte diversifiée au départ de Lyon Bron.",
+    cta: "Rejoindre le club",
+  },
+  {
+    href: url("/progresser"),
+    icon: "trending-up",
+    label: "Progresser",
+    title: "Perfectionnements",
+    desc: "Vol de nuit, train rentrant, IFR : enrichissez votre licence avec des qualifications avancées.",
+    cta: "Se perfectionner",
+  },
+];
+---
+
+<MainLayout
+  title="Aéroclub du Grand Lyon | Apprendre à piloter et voler à Lyon Bron"
+  description="Apprenez à piloter ou volez avec votre licence depuis l'aéroport de Lyon Bron. Des instructeurs passionnés, une flotte de 8 avions et une vraie ambiance club - ACGL, agréé DGAC."
+>
+  <section
+    class="relative isolate overflow-hidden pb-14 pt-[calc(var(--spacing-header-h)+2.5rem)] md:pb-20 md:pt-[calc(var(--spacing-header-h)+3.5rem)]"
+    aria-labelledby="hero-heading"
+  >
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <Image
+        src={heroImageSrc}
+        alt=""
+        class="h-full w-full object-cover object-center"
+        width={1920}
+        height={1080}
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+        quality={80}
+      />
+    </div>
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy/30 via-navy/80 to-navy/50" aria-hidden="true" />
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-navy/40 via-navy/20 to-navy/50" aria-hidden="true" />
+
+    <div class="container relative z-[1] flex flex-col">
+      <div class="order-1 mx-auto pb-8 text-center md:pb-14">
+        <h1
+          id="hero-heading"
+          class="mb-4 font-display text-[clamp(1.75rem,4.5vw,2.75rem)] font-semibold tracking-tight text-white md:mb-5"
+        >
+          Voler, <span class="text-sky">c'est ici</span> que ça commence.
+        </h1>
+        <p class="mx-auto text-sm leading-relaxed text-white/80 md:text-base">
+          Apprenez à piloter ou volez avec votre licence depuis Lyon Bron. Trouvez votre parcours.
+        </p>
+      </div>
+
+      {heroStats.length > 0 && (
+        <div class="order-2 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 pb-8 md:order-3 md:mt-12 md:border-t md:border-white/10 md:pb-0 md:pt-7" role="group" aria-label="Chiffres clés du club">
+          {heroStats.map((item) => (
+            <span class="flex flex-col items-center gap-0.5">
+              <span class="font-display text-xl font-semibold tabular-nums leading-none text-white">{item.value}</span>
+              <span class="text-xs font-medium uppercase tracking-label text-white/70">{item.label}</span>
+            </span>
+          ))}
+          <span class="hidden h-5 w-px bg-white/15 sm:block" aria-hidden="true"></span>
+          <span class="flex items-center gap-1.5 text-sm text-white/70">
+            <Icon name="users" size="size-3.5" class="shrink-0 text-sky" />
+            Affilié à la Fédération Française Aéronautique
+          </span>
+        </div>
+      )}
+
+      <div class="order-3 md:order-2">
+        <h2 id="path-cards-heading" class="sr-only">Votre projet à l'ACGL</h2>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 md:gap-5">
+          {pathCards.map(({ href, icon, label, title, desc, cta }) => (
+            <a href={href} class={surfaceLinkCard}>
+              <div class="flex items-center gap-3 mb-4">
+                <div class={surfaceLinkCardLeadIcon} aria-hidden="true">
+                  <Icon name={icon} size="size-5" />
+                </div>
+                <p class="text-xs font-bold uppercase tracking-label text-brand">{label}</p>
+              </div>
+              <h3 class:list={[surfaceLinkCardTitle]}>{title}</h3>
+              <p class="mb-4 flex-1 text-sm leading-relaxed text-muted">{desc}</p>
+              <span class={surfaceLinkCardCta}>
+                {cta}
+                <Icon name="arrow-right" size="size-4" class={surfaceLinkCardCtaArrow} />
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Section bg="surface" class="py-section-y md:py-section-y-lg">
+    <header class="mx-auto mb-10 text-center md:mb-12">
+      <h2>Pourquoi choisir l'ACGL ?</h2>
+      <p class="mt-3 text-muted">Un club ouvert à tous, que vous soyez novice ou un pilote confirmé.</p>
+    </header>
+    <div class="grid gap-6 sm:grid-cols-2">
+      <Card size="lg" class="bg-page">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
+            <Icon name="plane" size="size-6" />
+          </div>
+          <h3>Flotte diversifiée</h3>
+        </div>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          Une flotte de {fleetCount} avions permettant de répondre à toutes vos envies. Formation, balade, voyage ou encore vol aux instruments.
+        </p>
+      </Card>
+      <Card size="lg" class="bg-page">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
+            <Icon name="graduation" size="size-6" />
+          </div>
+          <h3>Instructeurs qualifiés</h3>
+        </div>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          {instructorCount} instructeurs disponibles en semaine ou le week-end pour vous accompagner que vous soyez élèves ou déjà pilote.
+        </p>
+      </Card>
+      <Card size="lg" class="bg-page">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
+            <Icon name="euro" size="size-6" />
+          </div>
+          <h3>Tarifs associatifs</h3>
+        </div>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          Association loi 1901 à but non lucratif : coûts calculés au plus juste. Facturation carburant inclus, à la minute, moteur tournant.
+        </p>
+      </Card>
+      <Card size="lg" class="bg-page">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
+            <Icon name="shield" size="size-6" />
+          </div>
+          <h3>Sécurité & culture juste</h3>
+        </div>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          Signalement libre, retours d'expérience et accompagnement bienveillant : la sécurité est un état d'esprit partagé par tous.
+        </p>
+      </Card>
+    </div>
+  </Section>
+
+  <CtaBanner
+    bg="page"
+    title="Nous rencontrer"
+    description={contact?.permanence
+      ? `Une permanence club à lieu ${contact.permanence}`
+      : "Contactez nous pour organiser une rencontre dans nos locaux."}
+    primaryHref={url("/contact")}
+    primaryLabel="Voir les infos pratiques"
+  >
+  </CtaBanner>
+</MainLayout>

@@ -1,0 +1,153 @@
+---
+import { getCollection } from "astro:content";
+import CtaBanner from "../components/CtaBanner.astro";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import Card from "../components/Card.astro";
+import Badge from "../components/Badge.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import { url } from "../lib/url";
+
+const fleet = (await getCollection("fleet")).sort((a, b) => a.data.order - b.data.order);
+const fleetCount = fleet.length;
+
+const fleetPhotoFallback = url("/images/fleet/placeholder.svg");
+
+function equipmentPills(text: string) {
+  return text
+    .replace(/\r?\n/g, ",")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+---
+
+<MainLayout
+  title={`Flotte - ${fleetCount} avions à Lyon Bron | VFR, IFR, formation | ACGL`}
+  description={`Découvrez les ${fleetCount} avions de l'Aéroclub du Grand Lyon disponibles à Lyon Bron : formation, voyage et vol aux instruments (IFR). Du Velis Electro au PA28R Arrow III.`}
+>
+  <PageHero
+    title="Notre flotte"
+    description={`${fleetCount} appareils pour toutes les pratiques : formation, voyage, perfectionnement, VFR et IFR.`}
+  />
+
+  <Section bg="surface" border={false}>
+      <div class="mx-auto grid w-full max-w-3xl grid-cols-1 gap-6 sm:gap-8 lg:max-w-none lg:grid-cols-2 lg:gap-8">
+        {fleet.map((aircraft, index) => (
+          <Card
+            id={aircraft.id}
+            variant="interactive"
+            size="flush"
+            as="article"
+            class="scroll-mt-header-h mx-auto flex h-full w-full flex-col overflow-hidden"
+          >
+            <div class="shrink-0 aspect-[3/1.5] overflow-hidden rounded-t-2xl bg-line">
+              <img
+                class="h-full w-full object-cover"
+                src={aircraft.data.photo ? url(aircraft.data.photo) : fleetPhotoFallback}
+                alt={`${aircraft.data.key}, immatriculation ${aircraft.data.registration}`}
+                width="480"
+                height="320"
+                loading={index === 0 ? "eager" : "lazy"}
+                fetchpriority={index === 0 ? "high" : undefined}
+                decoding="async"
+              />
+            </div>
+            <div class="flex flex-1 flex-col p-3 sm:p-6 gap-5">
+              <div class="flex flex-wrap items-center gap-2">
+                <h2 class="text-pretty leading-snug">{aircraft.data.key}</h2>
+                <Badge
+                  variant="muted"
+                  class="border border-brand/20 bg-light-frost px-3 py-1 font-mono text-xs normal-case tracking-wide text-navy"
+                >
+                  {aircraft.data.registration}
+                </Badge>
+              </div>
+              <p class="lg:line-clamp-3 text-sm leading-relaxed sm:text-base">{aircraft.data.usage}</p>
+              {equipmentPills(aircraft.data.equipment).length > 0 && (
+                <div class="my-2 flex flex-grow items-end gap-2">
+                  <ul class="flex list-none flex-wrap gap-2 p-0" role="list" aria-label="Équipement de bord">
+                    {equipmentPills(aircraft.data.equipment).map((label) => (
+                      <li>
+                        <Badge
+                          variant="default"
+                          class="rounded border-ink/15 bg-surface p-1.5 text-xs leading-snug tracking-normal"
+                        >
+                          {label}
+                        </Badge>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <div
+                class="grid grid-cols-2 gap-x-4 gap-y-5 sm:ps-10"
+                role="list"
+                aria-label="Caractéristiques techniques"
+              >
+                <div class="min-w-0">
+                  <div class="text-xs font-semibold uppercase leading-snug tracking-label text-ink/65">
+                    Moteur
+                  </div>
+                  <div class="text-sm font-medium leading-snug text-ink sm:text-base">
+                    {aircraft.data.engine}
+                  </div>
+                </div>
+                <div class="min-w-0">
+                  <div class="text-xs font-semibold uppercase leading-snug tracking-label text-ink/65">
+                    Places
+                  </div>
+                  <div class="text-sm font-medium leading-snug text-ink sm:text-base">
+                    {aircraft.data.seats}
+                  </div>
+                </div>
+                <div class="min-w-0">
+                  <div class="text-xs font-semibold uppercase leading-snug tracking-label text-ink/65">
+                    Vitesse
+                  </div>
+                  <div class="text-sm font-medium leading-snug text-ink sm:text-base">
+                    {aircraft.data.speed}
+                  </div>
+                </div>
+                <div class="min-w-0">
+                  <div class="text-xs font-semibold uppercase leading-snug tracking-label text-ink/65">
+                    Autonomie
+                  </div>
+                  <div class="text-sm font-medium leading-snug text-ink sm:text-base">
+                    {aircraft.data.autonomy}
+                  </div>
+                </div>
+              </div>
+              {aircraft.data.normal && (
+                <div class="flex flex-col gap-3 mt-3 rounded-2xl border border-line bg-light-frost p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4 md:p-5">
+                  <div class="min-w-0">
+                    <span class="font-display text-base sm:text-lg">
+                      À partir de 
+                    </span>
+                    <span class="font-display text-base font-bold tabular-nums text-navy sm:text-lg">
+                     {aircraft.data.reduced ? aircraft.data.reduced : aircraft.data.normal}
+                    </span>
+                  </div>
+                  <a
+                    href={url("/tarifs")}
+                    class="inline-flex min-h-11 w-full shrink-0 items-center justify-center rounded-lg border-2 border-brand bg-surface px-4 py-2.5 text-center text-sm font-semibold text-brand transition-[background-color,color,box-shadow] duration-[250ms] ease-in-out hover:bg-brand hover:text-white hover:shadow-[0_6px_22px_rgb(4_32_90/0.12)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:w-auto sm:min-w-44"
+                  >
+                    En savoir plus →
+                  </a>
+                </div>
+              )}
+            </div>
+          </Card>
+        ))}
+      </div>
+  </Section>
+
+  <CtaBanner
+    title="Une question sur notre flotte ?"
+    description="Contactez-nous ou venez à la permanence du samedi pour en savoir plus sur nos avions et les réservations."
+    primaryHref={url("/contact")}
+    primaryLabel="Nous contacter"
+    secondaryHref={url("/tarifs")}
+    secondaryLabel="Voir les tarifs"
+  />
+</MainLayout>

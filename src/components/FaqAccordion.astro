@@ -1,0 +1,41 @@
+---
+interface FaqItem {
+  q: string;
+  a: string;
+}
+
+interface Props {
+  items: FaqItem[];
+  bg?: "surface" | "page";
+}
+
+const { items, bg = "surface" } = Astro.props;
+
+const bgClass = bg === "surface" ? "bg-surface" : "bg-page";
+---
+
+<div class="space-y-2">
+  {items.map(({ q, a }) => (
+    <details class:list={["group rounded-2xl border border-line shadow-acgl", bgClass]}>
+      <summary class="flex cursor-pointer select-none items-center justify-between gap-4 px-5 py-4 font-medium text-ink [&::-webkit-details-marker]:hidden">
+        <span>{q}</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="size-4 shrink-0 text-muted transition-transform duration-200 group-open:rotate-180"
+          aria-hidden="true"
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </summary>
+      <p class="border-t border-line px-5 pb-4 pt-3 text-sm leading-relaxed text-muted">
+        {a}
+      </p>
+    </details>
+  ))}
+</div>

@@ -1,0 +1,155 @@
+---
+import { getCollection } from "astro:content";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import Card from "../components/Card.astro";
+import Icon from "../components/Icon.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import { ContactForm } from "../components/ContactForm";
+import { surfaceLinkRow } from "../lib/ui";
+import { toTelHref } from "../lib/phone";
+
+const contactEntries = await getCollection("contactSettings");
+const contact = contactEntries[0]?.data;
+const socialEntries = await getCollection("socialLinksSettings");
+const social = socialEntries[0]?.data;
+---
+
+<MainLayout
+  title="Contact - Aéroclub du Grand Lyon basé à Lyon Bron"
+  description="Contactez l'Aéroclub du Grand Lyon : permanence chaque samedi 9h30–12h à l'aéroport de Lyon Bron. Téléphone et formulaire de contact."
+>
+  <PageHero
+    title="Contactez-nous"
+    description="Venez nous rencontrer ou prenez contact par email"
+  />
+
+  <Section bg="surface" border={false}>
+    <div class="flex flex-col gap-6">
+
+      <div class="grid gap-6 lg:grid-cols-[1fr_1.15fr]">
+
+        <!-- Left column: practical info -->
+        <div class="flex flex-col gap-4">
+
+          {contact?.address && (
+            <Card>
+              <div class="flex gap-4">
+                <div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
+                  <Icon name="map-pin" />
+                </div>
+                <div>
+                  <h3 class="m-0 text-lg">Adresse</h3>
+                  <p class="mt-2 text-sm leading-relaxed text-muted">
+                    Aéroport de Lyon Bron<br />
+                    {contact.address?.street}<br />
+                    {contact.address?.postalCode} {contact.address?.city}
+                  </p>
+                  {contact.mapsDirectionsUrl && (
+                    <a
+                      href={contact.mapsDirectionsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                      class="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:text-navy"
+                    >
+                      <Icon name="external-link" size="size-3.5" />
+                      Voir sur Google Maps
+                    </a>
+                  )}
+                </div>
+              </div>
+            </Card>
+          )}
+
+          {contact?.phone && (
+            <Card>
+              <div class="flex gap-4">
+                <div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
+                  <Icon name="phone" />
+                </div>
+                <div>
+                  <h3 class="m-0 text-lg">Téléphone</h3>
+                  <p class="mt-2 text-sm leading-relaxed text-muted">
+                    <a href={`tel:${toTelHref(contact.phone)}`} class="font-medium text-ink hover:text-brand">
+                      {contact.phone}
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </Card>
+          )}
+
+          {contact?.permanence && (
+            <Card>
+              <div class="flex gap-4">
+                <div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
+                  <Icon name="clock" />
+                </div>
+                <div>
+                  <h3 class="m-0 text-lg">Permanence</h3>
+                  <p class="mt-2 text-sm leading-relaxed text-muted">
+                    <strong class="font-semibold text-ink">{contact.permanence}</strong>
+                    <br />au local du club, aéroport de Lyon Bron.
+                  </p>
+                </div>
+              </div>
+            </Card>
+          )}
+
+          {(social?.facebookUrl || social?.instagramUrl) && (
+            <Card>
+              <h3 class="m-0 mb-4 text-lg">Suivez-nous</h3>
+              <div class="flex flex-wrap gap-3">
+                {social.facebookUrl && (
+                  <a
+                    href={social.facebookUrl}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    class={`${surfaceLinkRow} flex-1`}
+                  >
+                    <Icon name="facebook" size="size-5" class="text-[#1877f2]" />
+                    <span class="text-sm font-medium text-ink">Facebook</span>
+                  </a>
+                )}
+                {social.instagramUrl && (
+                  <a
+                    href={social.instagramUrl}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    class={`${surfaceLinkRow} flex-1`}
+                  >
+                    <Icon name="instagram" size="size-5" stroke-width="2" class="text-[#e1306c]" />
+                    <span class="text-sm font-medium text-ink">Instagram</span>
+                  </a>
+                )}
+              </div>
+            </Card>
+          )}
+
+        </div>
+
+        <!-- Right column: contact form -->
+        <Card>
+          <h2 id="formulaire" class="mt-0 mb-6 scroll-mt-30">Envoyez-nous un message</h2>
+          <ContactForm client:load />
+        </Card>
+
+      </div>
+
+      {contact?.mapsEmbedUrl && (
+        <div class="overflow-hidden rounded-2xl border border-line shadow-acgl">
+          <iframe
+            title="Localisation de l'Aéroclub du Grand Lyon à l'aéroport de Bron"
+            src={contact.mapsEmbedUrl}
+            width="100%"
+            height="380"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            style="border:0;display:block;"
+          ></iframe>
+        </div>
+      )}
+
+    </div>
+  </Section>
+</MainLayout>

@@ -1,0 +1,21 @@
+items:
+  - title: Galette des rois
+    icon: gift
+    description: >-
+      Tradition incontournable pour bien démarrer la saison : le club se réunit
+      en début d'année autour de la galette des rois.
+  - title: Sortie Corse
+    icon: compass
+    description: >-
+      Trois jours en Corse en avion : décollage de Bron, escale selon la météo,
+      atterrissage sur l'île de Beauté. Un voyage qui reste dans les mémoires.
+  - title: Vol de nuit
+    icon: plane
+    description: >-
+      Une sortie nocturne en groupe pour découvrir Lyon depuis les airs à la
+      tombée de la nuit — en sécurité, en compagnie.
+  - title: Barbecue de rentrée
+    icon: users
+    description: >-
+      Le club rouvre ses ailes après l'été autour d'un barbecue convivial — le
+      moment idéal pour accueillir les nouveaux membres de la saison.
