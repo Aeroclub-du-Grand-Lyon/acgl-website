@@ -5,9 +5,9 @@ fleetNote:
   enabled: true
   title: Tarif réduit
   description: >-
-    Le tarif réduit n'est disponible que pour les membres ayant cotisé à la
-    participation aux frais fixes. Les tarifs réduits ne sont disponible que
-    pour les avions qui sont la propriété de l'aéroclub.
+    Les tarifs réduits sont réservés aux membres ayant cotisé à la participation
+    aux frais fixes. Les tarifs réduits ne s'appliquent que sur les avions dont
+    l'aéroclub est le propriétaire.
 trainingNote:
   enabled: true
   title: Formation théorique
