@@ -9,7 +9,7 @@ import Icon from "../components/Icon.astro";
 import FaqAccordion from "../components/FaqAccordion.astro";
 import CtaBanner from "../components/CtaBanner.astro";
 import MainLayout from "../layouts/MainLayout.astro";
-import { url } from "../lib/url";
+
 
 const instructors = await getCollection("instructors");
 const instructorCount = instructors.length;
@@ -169,7 +169,7 @@ const trainingSteps = [
     <p class="mt-6 text-sm text-muted">
       <strong class="font-medium text-ink">Combien ça coûte ?</strong>{" "}
       Comptez entre 8 000 et 12 000 € pour un PPL(A) selon votre rythme. Nos instructeurs vous orientent gratuitement. Venez en discuter lors de notre {" "}
-      <a href={url("/contact")} class="font-medium text-brand hover:text-navy">permanence</a>.
+      <a href="/contact" class="font-medium text-brand hover:text-navy">permanence</a>.
     </p>
   </Section>
 
@@ -205,8 +205,8 @@ const trainingSteps = [
       </p>
     </header>
     <div class="flex flex-wrap gap-3">
-      <ButtonLink href={url("/progresser")} variant="blue">Voir les qualifications</ButtonLink>
-      <ButtonLink href={url("/deja-pilote")} variant="outline-dark">Déjà pilote</ButtonLink>
+      <ButtonLink href="/progresser" variant="blue">Voir les qualifications</ButtonLink>
+      <ButtonLink href="/deja-pilote" variant="outline-dark">Déjà pilote</ButtonLink>
     </div>
   </Section>
 
@@ -218,9 +218,9 @@ const trainingSteps = [
   <CtaBanner
     title="Prêt à commencer votre formation ?"
     description="Venez rencontrer nos instructeurs lors de notre permanence ou contactez-nous pour démarrer votre projet."
-    primaryHref={url("/contact")}
+    primaryHref="/contact"
     primaryLabel="Nous contacter"
-    secondaryHref={url("/vol-decouverte")}
+    secondaryHref="/vol-decouverte"
     secondaryLabel="Commencer par un vol découverte"
     bg="page"
   >

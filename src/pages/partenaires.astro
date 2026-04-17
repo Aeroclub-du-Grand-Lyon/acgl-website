@@ -7,13 +7,17 @@ import Section from "../components/Section.astro";
 import Card from "../components/Card.astro";
 import Icon from "../components/Icon.astro";
 import MainLayout from "../layouts/MainLayout.astro";
-import {
-  surfaceLinkCardCta,
-  surfaceLinkCardCtaArrow,
-  surfaceLinkCardLeadIconSm,
-  surfaceLinkCardTitle,
-} from "../lib/ui";
-import { url } from "../lib/url";
+const surfaceLinkCardLeadIconSm =
+  "mb-4 flex size-10 items-center justify-center rounded-lg bg-brand/10 text-brand transition-[transform,background-color,color] duration-[250ms] group-hover:scale-110 group-hover:bg-brand group-hover:text-white";
+
+const surfaceLinkCardTitle =
+  "mb-2 text-lg transition-colors duration-[250ms] group-hover:text-brand";
+
+const surfaceLinkCardCta =
+  "mt-auto flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors duration-[250ms] group-hover:text-navy";
+
+const surfaceLinkCardCtaArrow =
+  "transition-transform duration-[250ms] group-hover:translate-x-1";
 
 const allLinks = await getCollection("links");
 const sorted = allLinks.sort((a, b) => a.data.order - b.data.order);
@@ -36,26 +40,26 @@ const resources = sorted.filter((l) => l.data.category === "resource");
       <h2 id="partners-heading" class="mb-8">Partenaires</h2>
       <div class="grid gap-6 md:grid-cols-3">
         {partners.map((link) => (
-          <a
+          <Card
+            as="a"
             href={link.data.href}
             target="_blank"
             rel="noopener noreferrer nofollow"
-            class="group block h-full no-underline"
+            variant="surfaceLink"
+            class="h-full bg-page"
           >
-            <Card variant="surfaceLink" class="flex h-full flex-col bg-page">
-              <div class={surfaceLinkCardLeadIconSm} aria-hidden="true">
-                <Icon name="external-link" />
-              </div>
-              <h3 class:list={[surfaceLinkCardTitle, "text-base"]}>{link.data.key}</h3>
-              <p class="mb-4 flex-1 text-sm leading-relaxed text-muted">
-                {link.data.description}
-              </p>
-              <span class={surfaceLinkCardCta}>
-                Visiter le site
-                <Icon name="arrow-right" size="size-3.5" class={surfaceLinkCardCtaArrow} />
-              </span>
-            </Card>
-          </a>
+            <div class={surfaceLinkCardLeadIconSm} aria-hidden="true">
+              <Icon name="external-link" />
+            </div>
+            <h3 class:list={[surfaceLinkCardTitle, "text-base"]}>{link.data.key}</h3>
+            <p class="mb-4 flex-1 text-sm leading-relaxed text-muted">
+              {link.data.description}
+            </p>
+            <span class={surfaceLinkCardCta}>
+              Visiter le site
+              <Icon name="arrow-right" size="size-3.5" class={surfaceLinkCardCtaArrow} />
+            </span>
+          </Card>
         ))}
       </div>
     </Section>
@@ -66,26 +70,26 @@ const resources = sorted.filter((l) => l.data.category === "resource");
       <h2 id="useful-links-heading" class="mb-8">Liens utiles</h2>
       <div class="grid gap-6 md:grid-cols-3">
         {resources.map((link) => (
-          <a
+          <Card
+            as="a"
             href={link.data.href}
             target="_blank"
             rel="noopener noreferrer nofollow"
-            class="group block h-full no-underline"
+            variant="surfaceLink"
+            class="h-full bg-surface"
           >
-            <Card variant="surfaceLink" class="flex h-full flex-col bg-surface">
-              <div class={surfaceLinkCardLeadIconSm} aria-hidden="true">
-                <Icon name="external-link" />
-              </div>
-              <h3 class:list={[surfaceLinkCardTitle, "text-base"]}>{link.data.key}</h3>
-              <p class="mb-4 flex-1 text-sm leading-relaxed text-muted">
-                {link.data.description}
-              </p>
-              <span class={surfaceLinkCardCta}>
-                Visiter le site
-                <Icon name="arrow-right" size="size-3.5" class={surfaceLinkCardCtaArrow} />
-              </span>
-            </Card>
-          </a>
+            <div class={surfaceLinkCardLeadIconSm} aria-hidden="true">
+              <Icon name="external-link" />
+            </div>
+            <h3 class:list={[surfaceLinkCardTitle, "text-base"]}>{link.data.key}</h3>
+            <p class="mb-4 flex-1 text-sm leading-relaxed text-muted">
+              {link.data.description}
+            </p>
+            <span class={surfaceLinkCardCta}>
+              Visiter le site
+              <Icon name="arrow-right" size="size-3.5" class={surfaceLinkCardCtaArrow} />
+            </span>
+          </Card>
         ))}
       </div>
     </Section>
@@ -95,7 +99,7 @@ const resources = sorted.filter((l) => l.data.category === "resource");
     bg="page"
     title="Devenir partenaire"
     description="Vous êtes un acteur de l'aéronautique, une entreprise locale ou une association et souhaitez collaborer avec l'ACGL ? Contactez-nous."
-    primaryHref={url("/contact")}
+    primaryHref="/contact"
     primaryLabel="Nous contacter"
   />
 </MainLayout>

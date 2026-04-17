@@ -2,9 +2,7 @@
 import ButtonLink from "../components/ButtonLink.astro";
 import Icon from "../components/Icon.astro";
 import MainLayout from "../layouts/MainLayout.astro";
-import { url } from "../lib/url";
 import { Image } from "astro:assets";
-import heroImageSrc from "../assets/hero-bg.jpg";
 ---
 
 <MainLayout
@@ -15,7 +13,7 @@ import heroImageSrc from "../assets/hero-bg.jpg";
 
     <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       <Image
-        src={heroImageSrc}
+        src="/images/hero.jpg"
         alt=""
         class="h-full w-full object-cover object-center"
         width={1920}
@@ -46,8 +44,8 @@ import heroImageSrc from "../assets/hero-bg.jpg";
       </p>
 
       <div class="flex flex-wrap justify-center gap-3">
-        <ButtonLink href={url("/")} variant="primary">Retour à l'accueil</ButtonLink>
-        <ButtonLink href={url("/contact")} variant="outline">Nous contacter</ButtonLink>
+        <ButtonLink href="/" variant="primary">Retour à l'accueil</ButtonLink>
+        <ButtonLink href="/contact" variant="outline">Nous contacter</ButtonLink>
       </div>
     </div>
 

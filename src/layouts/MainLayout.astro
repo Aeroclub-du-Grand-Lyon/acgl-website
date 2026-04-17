@@ -1,8 +1,8 @@
 ---
 import { getCollection } from "astro:content";
+import { Image } from 'astro:assets';
 import Icon from "../components/Icon.astro";
 import { toTelHref } from "../lib/phone";
-import { url } from "../lib/url";
 import "../styles/global.css";
 
 interface Props {
@@ -14,14 +14,13 @@ interface Props {
 const {
   title,
   description = "Aéroclub du Grand Lyon - Formation au pilotage et vols découverte à Lyon Bron",
-  ogImage = "/images/hero-bg.jpg",
+  ogImage = "/images/hero.jpg",
 } = Astro.props;
 
-const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
-const currentPath = Astro.url.pathname.slice(basePath.length) || "/";
-const siteOrigin = Astro.site?.origin ?? "https://www.acgl.fr";
+const currentPath = Astro.url.pathname || "/";
+const siteOrigin = Astro.url.origin ?? "https://www.acgl.fr";
 const canonicalUrl = Astro.url.href;
-const ogImageUrl = `${siteOrigin}${url(ogImage)}`;
+const ogImageUrl = `${siteOrigin}${ogImage}`;
 const currentYear = new Date().getFullYear();
 
 const contactEntries = await getCollection("contactSettings");
@@ -111,7 +110,7 @@ const jsonLd = {
     <meta name="twitter:image" content={ogImageUrl} />
 
     <link rel="canonical" href={canonicalUrl} />
-    <link rel="icon" type="image/svg+xml" href={url("/logo-acgl.svg")} />
+    <link rel="icon" type="image/svg+xml" href={siteOrigin+"/logo.svg"} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -139,8 +138,8 @@ const jsonLd = {
     <header class="site-header">
       <div class="container">
         <div class="flex items-center justify-between py-[0.65rem]">
-          <a href={url("/")} class="brand flex shrink-0 items-center gap-3 no-underline">
-            <img src={url("/logo-acgl.svg")} alt="Logo ACGL" class="size-12" width="48" height="48" />
+          <a href="/" class="brand flex shrink-0 items-center gap-3 no-underline">
+            <Image src="/logo.svg" alt="Logo ACGL" class="size-12" width="48" height="48" />
             <div class="leading-snug">
               <div class="font-display text-lg uppercase font-bold tracking-tight">Aéroclub du Grand Lyon</div>
               <div class="brand-sub text-xs tracking-label">
@@ -169,7 +168,7 @@ const jsonLd = {
                     <div class="nav-dropdown absolute top-full left-0 z-50 mt-1 min-w-[14rem] rounded-lg border border-line bg-surface p-1.5 shadow-acgl-lg">
                       {item.children.map((child) => (
                         <a
-                          href={url(child.href)}
+                          href={child.href}
                           class="nav-dropdown-link block rounded-md px-3 py-2 text-sm font-medium text-ink no-underline transition-[background-color,color] duration-150 ease-in-out hover:bg-light-frost hover:text-brand aria-[current=page]:bg-light-frost aria-[current=page]:text-brand aria-[current=page]:font-semibold"
                           aria-current={isLinkActive(child.href) ? "page" : undefined}
                         >
@@ -181,7 +180,7 @@ const jsonLd = {
                 ) : (
                   <li>
                     <a
-                      href={url(item.href!)}
+                      href={item.href!}
                       class="block rounded-lg px-2.5 py-[0.45rem] text-sm font-medium"
                       aria-current={isLinkActive(item.href!) ? "page" : undefined}
                     >
@@ -228,7 +227,7 @@ const jsonLd = {
                 {item.children.map((child) => (
                   <li>
                     <a
-                      href={url(child.href)}
+                      href={child.href}
                       class="block rounded-lg px-3 py-[0.55rem] pl-7 text-xs font-medium text-ink no-underline transition-[background-color,color] duration-150 ease-in-out hover:bg-light-frost hover:text-brand aria-[current=page]:bg-light-frost aria-[current=page]:text-brand aria-[current=page]:font-semibold"
                       aria-current={isLinkActive(child.href) ? "page" : undefined}
                     >
@@ -241,7 +240,7 @@ const jsonLd = {
           ) : (
             <li>
               <a
-                href={url(item.href!)}
+                href={item.href!}
                 class="block rounded-lg px-3 py-[0.7rem] text-sm font-medium text-ink no-underline transition-[background-color,color] duration-150 ease-in-out hover:bg-light-frost hover:text-brand aria-[current=page]:bg-light-frost aria-[current=page]:text-brand aria-[current=page]:font-semibold"
                 aria-current={isLinkActive(item.href!) ? "page" : undefined}
               >
@@ -263,7 +262,7 @@ const jsonLd = {
           <div class="grid gap-12 py-14 md:grid-cols-[1fr_auto_auto] md:gap-16 md:py-16 lg:gap-20">
             <div class="flex flex-col items-center gap-5 md:flex-row md:items-start md:gap-6">
               <div class="shrink-0">
-                <img src={url("/logo-acgl.svg")} class="size-40 rounded-full bg-white p-2 md:size-28" alt="ACGL" />
+                <Image src="/logo.svg" class="size-40 rounded-full bg-white p-2 md:size-28" alt="ACGL" width="144" height="144" />
               </div>
               <div class="flex flex-col items-center gap-4 md:items-start">
                 <div class="flex flex-col gap-1">
@@ -284,14 +283,6 @@ const jsonLd = {
                       class="text-sm text-white/65 no-underline hover:text-white"
                     >
                       {contact.phone}
-                    </a>
-                  )}
-                  {contact?.email && (
-                    <a
-                      href={`mailto:${contact.email}`}
-                      class="text-sm text-white/65 no-underline hover:text-white"
-                    >
-                      {contact.email}
                     </a>
                   )}
                 </div>
@@ -327,7 +318,7 @@ const jsonLd = {
               <ul class="m-0 grid list-none grid-cols-2 gap-x-10 gap-y-3 p-0">
                 {footerLinks.map(({ href, label }) => (
                   <li>
-                    <a href={url(href)} class="text-sm text-white/75 no-underline hover:text-white">
+                    <a href={href} class="text-sm text-white/75 no-underline hover:text-white">
                       {label}
                     </a>
                   </li>

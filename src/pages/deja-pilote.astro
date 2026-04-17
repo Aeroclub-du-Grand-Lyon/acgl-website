@@ -7,7 +7,7 @@ import Section from "../components/Section.astro";
 import Card from "../components/Card.astro";
 import Icon from "../components/Icon.astro";
 import MainLayout from "../layouts/MainLayout.astro";
-import { url } from "../lib/url";
+
 
 const fleet = (await getCollection("fleet")).sort((a, b) => a.data.order - b.data.order);
 const fleetCount = fleet.length;
@@ -64,7 +64,7 @@ const benefits = [
           {fleetCount} avions disponibles à la réservation - VFR, IFR, voyages en Europe.
         </p>
       </div>
-      <ButtonLink href={url("/flotte")} variant="outline-dark">Voir toute la flotte</ButtonLink>
+      <ButtonLink href="/flotte" variant="outline-dark">Voir toute la flotte</ButtonLink>
     </div>
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {fleet.slice(0, 6).map((aircraft) => (
@@ -100,8 +100,8 @@ const benefits = [
         </Card>
       </div>
       <div class="mt-5 flex flex-wrap gap-3">
-        <ButtonLink href={url("/tarifs")} variant="blue">Voir tous les tarifs</ButtonLink>
-        <ButtonLink href={url("/contact")} variant="outline-dark">Demander à rejoindre le club</ButtonLink>
+        <ButtonLink href="/tarifs" variant="blue">Voir tous les tarifs</ButtonLink>
+        <ButtonLink href="/contact" variant="outline-dark">Demander à rejoindre le club</ButtonLink>
       </div>
     </Section>
   )}
@@ -110,7 +110,7 @@ const benefits = [
     variant="dark"
     title="Une surprise vous attend à l'inscription"
     description="Pour vous accueillir comme il se doit, l'ACGL réserve une surprise à chaque nouveau pilote breveté qui rejoint le club. Venez nous rencontrer lors de notre permanence pour en savoir plus."
-    primaryHref={url("/contact")}
+    primaryHref="/contact"
     primaryLabel="Venir au club"
   />
 </MainLayout>

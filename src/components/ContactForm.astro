@@ -1,0 +1,175 @@
+---
+const defaultSubject = Astro.url.searchParams.get("subject") ?? "";
+const loadedAt = Date.now();
+
+const inputBase =
+  "w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-sm text-ink placeholder:text-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30 focus-visible:border-brand transition-[border-color,box-shadow] duration-200";
+---
+
+<!-- Success — fills remaining card space and centers vertically -->
+<div id="contact-success" hidden class="flex-1 flex flex-col">
+  <h2 id="formulaire" class="mt-0 mb-6 scroll-mt-30">Email</h2>
+  <div class="flex-1 flex flex-col items-center justify-center gap-4">
+    <div class="inline-flex size-14 items-center justify-center rounded-full bg-light-frost text-brand  text-center">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-7" aria-hidden="true">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+        <polyline points="22 4 12 14.01 9 11.01" />
+      </svg>
+    </div>
+    <div class="text-center">
+      <p class="text-base font-semibold text-ink">Message envoyé !</p>
+      <p class="mt-1 text-sm text-muted">Nous avons bien reçu votre message et vous répondrons dans les meilleurs délais.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Form section -->
+<div id="contact-form-section">
+  <h2 id="formulaire" class="mt-0 mb-6 scroll-mt-30">Email</h2>
+
+  <form id="contact-form" class="flex flex-col gap-4" novalidate>
+    <!-- Honeypot — off-screen, real users never fill it -->
+    <div aria-hidden="true" style="position:absolute;left:-9999px;height:0;overflow:hidden;">
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+    </div>
+    <input type="hidden" name="_loadedAt" value={loadedAt} />
+
+    <div>
+      <label for="name" class="mb-1.5 block text-sm font-medium text-ink">
+        Nom <span class="ml-0.5 text-signal" aria-hidden="true">*</span>
+      </label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        autocomplete="name"
+        placeholder="Jean Dupont"
+        class={inputBase}
+      />
+      <p id="error-name" role="alert" class="mt-1 text-xs text-signal" hidden></p>
+    </div>
+
+    <div>
+      <label for="email" class="mb-1.5 block text-sm font-medium text-ink">
+        Email <span class="ml-0.5 text-signal" aria-hidden="true">*</span>
+      </label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        autocomplete="email"
+        placeholder="jean@exemple.fr"
+        class={inputBase}
+      />
+      <p id="error-email" role="alert" class="mt-1 text-xs text-signal" hidden></p>
+    </div>
+
+    <div>
+      <label for="subject" class="mb-1.5 block text-sm font-medium text-ink">Objet</label>
+      <input
+        type="text"
+        id="subject"
+        name="subject"
+        value={defaultSubject}
+        placeholder="Vol découverte, formation, adhésion…"
+        class={inputBase}
+      />
+      <p id="error-subject" role="alert" class="mt-1 text-xs text-signal" hidden></p>
+    </div>
+
+    <div>
+      <label for="message" class="mb-1.5 block text-sm font-medium text-ink">
+        Message <span class="ml-0.5 text-signal" aria-hidden="true">*</span>
+      </label>
+      <textarea
+        id="message"
+        name="message"
+        required
+        rows={5}
+        placeholder="Votre message…"
+        class={`${inputBase} resize-y`}
+      ></textarea>
+      <p id="error-message" role="alert" class="mt-1 text-xs text-signal" hidden></p>
+    </div>
+
+    <p id="error-general" role="alert" class="text-sm text-signal" hidden>
+      Une erreur est survenue. Veuillez réessayer ou nous contacter par téléphone.
+    </p>
+
+    <button
+      id="contact-submit"
+      type="submit"
+      class="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-brand px-6 py-3 font-display text-sm font-semibold text-white shadow-[0_2px_12px_rgb(4_103_179/0.3)] transition-[box-shadow,background] duration-200 hover:bg-navy hover:shadow-[0_8px_28px_rgb(4_32_90/0.22)] disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      Envoyer le message
+    </button>
+
+    <p class="text-xs text-muted">
+      Les champs marqués d'un <span class="text-signal" aria-hidden="true">*</span> sont obligatoires.
+    </p>
+  </form>
+</div>
+
+<script>
+  import { actions, isInputError } from "astro:actions";
+
+  const formSection = document.getElementById("contact-form-section") as HTMLElement;
+  const successEl = document.getElementById("contact-success") as HTMLElement;
+  const form = document.getElementById("contact-form") as HTMLFormElement;
+  const submitBtn = document.getElementById("contact-submit") as HTMLButtonElement;
+
+  // Tailwind classes for the error state on inputs
+  const INPUT_ERR = ["border-signal", "focus-visible:ring-signal/20", "focus-visible:border-signal"];
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Reset previous errors
+    form.querySelectorAll("[id^='error-']").forEach((el) => {
+      (el as HTMLElement).hidden = true;
+      (el as HTMLElement).textContent = "";
+    });
+    form.querySelectorAll("input, textarea").forEach((el) => {
+      el.classList.remove(...INPUT_ERR);
+    });
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Envoi en cours…";
+
+    const fd = new FormData(form);
+
+    const { data, error } = await actions.contact({
+      name: String(fd.get("name") ?? ""),
+      email: String(fd.get("email") ?? ""),
+      subject: String(fd.get("subject") ?? "") || undefined,
+      message: String(fd.get("message") ?? ""),
+      _gotcha: String(fd.get("_gotcha") ?? ""),
+      _loadedAt: Number(fd.get("_loadedAt")),
+    });
+
+    if (data?.success) {
+      formSection.hidden = true;
+      successEl.hidden = false;
+      return;
+    }
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Envoyer le message";
+
+    if (isInputError(error)) {
+      for (const [field, messages] of Object.entries(error.fields)) {
+        const errEl = document.getElementById(`error-${field}`);
+        const inputEl = form.querySelector<Element>(`[name="${field}"]`);
+        if (errEl && messages?.[0]) {
+          errEl.textContent = messages[0] as string;
+          errEl.hidden = false;
+        }
+        inputEl?.classList.add(...INPUT_ERR);
+      }
+    } else {
+      (document.getElementById("error-general") as HTMLElement).hidden = false;
+    }
+  });
+</script>

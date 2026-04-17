@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { getCollection } from "astro:content";
 import CtaBanner from "../components/CtaBanner.astro";
 import PageHero from "../components/PageHero.astro";
@@ -6,12 +7,12 @@ import Section from "../components/Section.astro";
 import Card from "../components/Card.astro";
 import Badge from "../components/Badge.astro";
 import MainLayout from "../layouts/MainLayout.astro";
-import { url } from "../lib/url";
+
 
 const fleet = (await getCollection("fleet")).sort((a, b) => a.data.order - b.data.order);
 const fleetCount = fleet.length;
 
-const fleetPhotoFallback = url("/images/fleet/placeholder.svg");
+const fleetPhotoFallback = "/images/fleet/placeholder.svg";
 
 function equipmentPills(text: string) {
   return text
@@ -42,9 +43,9 @@ function equipmentPills(text: string) {
             class="scroll-mt-header-h mx-auto flex h-full w-full flex-col overflow-hidden"
           >
             <div class="shrink-0 aspect-[3/1.5] overflow-hidden rounded-t-2xl bg-line">
-              <img
+              <Image
                 class="h-full w-full object-cover"
-                src={aircraft.data.photo ? url(aircraft.data.photo) : fleetPhotoFallback}
+                src={aircraft.data.photo ? aircraft.data.photo : fleetPhotoFallback}
                 alt={`${aircraft.data.key}, immatriculation ${aircraft.data.registration}`}
                 width="480"
                 height="320"
@@ -129,7 +130,7 @@ function equipmentPills(text: string) {
                     </span>
                   </div>
                   <a
-                    href={url("/tarifs")}
+                    href="/tarifs"
                     class="inline-flex min-h-11 w-full shrink-0 items-center justify-center rounded-lg border-2 border-brand bg-surface px-4 py-2.5 text-center text-sm font-semibold text-brand transition-[background-color,color,box-shadow] duration-[250ms] ease-in-out hover:bg-brand hover:text-white hover:shadow-[0_6px_22px_rgb(4_32_90/0.12)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:w-auto sm:min-w-44"
                   >
                     En savoir plus →
@@ -145,9 +146,9 @@ function equipmentPills(text: string) {
   <CtaBanner
     title="Une question sur notre flotte ?"
     description="Contactez-nous ou venez à la permanence du samedi pour en savoir plus sur nos avions et les réservations."
-    primaryHref={url("/contact")}
+    primaryHref="/contact"
     primaryLabel="Nous contacter"
-    secondaryHref={url("/tarifs")}
+    secondaryHref="/tarifs"
     secondaryLabel="Voir les tarifs"
   />
 </MainLayout>

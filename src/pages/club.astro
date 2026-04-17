@@ -8,7 +8,7 @@ import Badge from "../components/Badge.astro";
 import Icon from "../components/Icon.astro";
 import CtaBanner from "../components/CtaBanner.astro";
 import MainLayout from "../layouts/MainLayout.astro";
-import { url } from "../lib/url";
+
 
 const allBoard = (await getCollection("board")).sort((a, b) => a.data.order - b.data.order);
 const executive = allBoard.filter((m) => m.data.group === "executive");
@@ -203,7 +203,7 @@ const clubEvents = clubEventsEntries[0]?.data.items ?? [];
   <CtaBanner
     title="Rejoignez l'aventure"
     description="Passionné d'aviation ou simplement curieux ? Venez nous rencontrer sans aucun engagement, juste une conversation entre pilotes."
-    primaryHref={url("/contact")}
+    primaryHref="/contact"
     primaryLabel="Nous contacter"
     bg="page"
   />

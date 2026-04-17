@@ -1,5 +1,5 @@
 import { ActionError, defineAction } from "astro:actions";
-import { z } from "astro:schema";
+import { z } from "astro/zod";
 import { getCollection } from "astro:content";
 
 function escapeHtml(str: string): string {
@@ -13,7 +13,6 @@ function escapeHtml(str: string): string {
 
 export const server = {
   contact: defineAction({
-    accept: "form",
     input: z.object({
       name: z
         .string()
@@ -26,7 +25,7 @@ export const server = {
         .min(10, "Le message doit faire au moins 10 caractères.")
         .max(4000),
       _gotcha: z.string().max(0),
-      _loadedAt: z.coerce.number(),
+      _loadedAt: z.number(),
     }),
     handler: async (input) => {
       // 1. Honeypot — bots fill this, humans don't
@@ -34,15 +33,15 @@ export const server = {
         throw new ActionError({ code: "FORBIDDEN" });
       }
 
-      // 2. Time gate — reject submissions faster than 3 seconds
-      if (Date.now() - input._loadedAt < 3000) {
+      // 2. Time gate — reject submissions faster than 10 seconds
+      if (Date.now() - input._loadedAt < 10000) {
         throw new ActionError({ code: "FORBIDDEN" });
       }
 
       // 3. Fetch recipient address from CMS settings
       const [contactEntry] = await getCollection("contactSettings");
-      const recipientEmail = contactEntry?.data.email;
-      if (!recipientEmail) {
+      const acglEmail = contactEntry?.data.email;
+      if (!acglEmail) {
         throw new ActionError({ code: "INTERNAL_SERVER_ERROR" });
       }
 
@@ -51,11 +50,11 @@ export const server = {
         method: "POST",
         headers: {
           "api-key": import.meta.env.BREVO_API_KEY,
-          "content-type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          sender: { name: "Formulaire ACGL", email: "contact@acgl.fr" },
-          to: [{ email: recipientEmail }],
+          sender: { name: "Formulaire ACGL", email: acglEmail },
+          to: [{ email: acglEmail }],
           replyTo: { email: input.email, name: input.name },
           subject: `[ACGL] ${input.subject ?? "Message depuis le site"}`,
           htmlContent: `

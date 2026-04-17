@@ -9,7 +9,7 @@ import FaqAccordion from "../components/FaqAccordion.astro";
 import CtaBanner from "../components/CtaBanner.astro";
 import MainLayout from "../layouts/MainLayout.astro";
 import { toTelHref } from "../lib/phone";
-import { url } from "../lib/url";
+
 
 const contactEntries = await getCollection("contactSettings");
 const contact = contactEntries[0]?.data;
@@ -94,7 +94,7 @@ const pageJsonLd = [
             <p class="text-base leading-relaxed text-muted">{offer.data.description}</p>
 
             <div class="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href={`${url("/contact")}?subject=${encodeURIComponent("Réservation " + offer.data.title)}#formulaire`} variant="blue">Réserver</ButtonLink>
+              <ButtonLink href={`$"/contact"?subject=${encodeURIComponent("Réservation " + offer.data.title)}#formulaire`} variant="blue">Réserver</ButtonLink>
               {contact?.phone && (
                 <ButtonLink href={`tel:${toTelHref(contact.phone)}`} variant="outline-dark" class="md:hidden">
                   <Icon name="phone" size="size-4" />
@@ -156,9 +156,9 @@ const pageJsonLd = [
   <CtaBanner
     title="Prêt à décoller ?"
     description="Contactez-nous par email ou venez nous rencontrer lors de notre permanence pour réserver votre vol."
-    primaryHref={url("/contact")}
+    primaryHref="/contact"
     primaryLabel="Réserver maintenant"
-    secondaryHref={url("/tarifs")}
+    secondaryHref="/tarifs"
     secondaryLabel="Voir les tarifs"
   >
   </CtaBanner>

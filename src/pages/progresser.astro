@@ -7,7 +7,7 @@ import Section from "../components/Section.astro";
 import Badge from "../components/Badge.astro";
 import CtaBanner from "../components/CtaBanner.astro";
 import MainLayout from "../layouts/MainLayout.astro";
-import { url } from "../lib/url";
+
 
 const allRatings = (await getCollection("ratings")).sort(
   (a, b) => a.data.order - b.data.order,
@@ -68,17 +68,17 @@ const allRatings = (await getCollection("ratings")).sort(
       </p>
     </header>
     <div class="flex flex-wrap gap-3">
-      <ButtonLink href={url("/ecole-de-pilotage")} variant="blue">Découvrir la formation</ButtonLink>
-      <ButtonLink href={url("/vol-decouverte")} variant="outline-dark">Commencer par un vol découverte</ButtonLink>
+      <ButtonLink href="/ecole-de-pilotage" variant="blue">Découvrir la formation</ButtonLink>
+      <ButtonLink href="/vol-decouverte" variant="outline-dark">Commencer par un vol découverte</ButtonLink>
     </div>
   </Section>
 
   <CtaBanner
     title="Prêt à aller plus loin ?"
     description="Contactez-nous pour discuter de votre projet de qualification ou venez rencontrer nos instructeurs."
-    primaryHref={url("/contact")}
+    primaryHref="/contact"
     primaryLabel="Nous contacter"
-    secondaryHref={url("/tarifs")}
+    secondaryHref="/tarifs"
     secondaryLabel="Voir les tarifs"
   >
   </CtaBanner>

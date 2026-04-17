@@ -5,8 +5,7 @@ import Section from "../components/Section.astro";
 import Card from "../components/Card.astro";
 import Icon from "../components/Icon.astro";
 import MainLayout from "../layouts/MainLayout.astro";
-import { ContactForm } from "../components/ContactForm";
-import { surfaceLinkRow } from "../lib/ui";
+import ContactForm from "../components/ContactForm.astro";
 import { toTelHref } from "../lib/phone";
 
 const contactEntries = await getCollection("contactSettings");
@@ -27,9 +26,12 @@ const social = socialEntries[0]?.data;
   <Section bg="surface" border={false}>
     <div class="flex flex-col gap-6">
 
-      <div class="grid gap-6 lg:grid-cols-[1fr_1.15fr]">
+      <div class="grid gap-6 lg:grid-cols-[1.25fr_1fr]">
 
-        <!-- Left column: practical info -->
+        <Card class="flex flex-col">
+          <ContactForm />
+        </Card>
+
         <div class="flex flex-col gap-4">
 
           {contact?.address && (
@@ -88,8 +90,7 @@ const social = socialEntries[0]?.data;
                 <div>
                   <h3 class="m-0 text-lg">Permanence</h3>
                   <p class="mt-2 text-sm leading-relaxed text-muted">
-                    <strong class="font-semibold text-ink">{contact.permanence}</strong>
-                    <br />au local du club, aéroport de Lyon Bron.
+                    <strong class="font-semibold text-ink">{contact.permanence}</strong> au local du club, aéroport de Lyon Bron.
                   </p>
                 </div>
               </div>
@@ -105,7 +106,7 @@ const social = socialEntries[0]?.data;
                     href={social.facebookUrl}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
-                    class={`${surfaceLinkRow} flex-1`}
+                    class="flex-1 rounded-lg border-2 border-line bg-page px-4 py-3 text-sm font-medium text-ink no-underline transition-[border-color,box-shadow,background-color] duration-[250ms] ease-in-out hover:border-brand hover:bg-white hover:shadow-[0_0_20px_rgb(4_103_179/0.25)] focus-visible:outline-2 focus-visible:outline-brand"
                   >
                     <Icon name="facebook" size="size-5" class="text-[#1877f2]" />
                     <span class="text-sm font-medium text-ink">Facebook</span>
@@ -116,7 +117,7 @@ const social = socialEntries[0]?.data;
                     href={social.instagramUrl}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
-                    class={`${surfaceLinkRow} flex-1`}
+                    class="flex-1 rounded-lg border-2 border-line bg-page px-4 py-3 text-sm font-medium text-ink no-underline transition-[border-color,box-shadow,background-color] duration-[250ms] ease-in-out hover:border-brand hover:bg-white hover:shadow-[0_0_20px_rgb(4_103_179/0.25)] focus-visible:outline-2 focus-visible:outline-brand"
                   >
                     <Icon name="instagram" size="size-5" stroke-width="2" class="text-[#e1306c]" />
                     <span class="text-sm font-medium text-ink">Instagram</span>
@@ -127,12 +128,6 @@ const social = socialEntries[0]?.data;
           )}
 
         </div>
-
-        <!-- Right column: contact form -->
-        <Card>
-          <h2 id="formulaire" class="mt-0 mb-6 scroll-mt-30">Envoyez-nous un message</h2>
-          <ContactForm client:load />
-        </Card>
 
       </div>
 

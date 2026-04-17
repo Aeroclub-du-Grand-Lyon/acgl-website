@@ -1,27 +1,33 @@
 ---
 import type { HTMLAttributes } from "astro/types";
-import { surfaceLinkCardInner, surfaceLinkCardInnerHighlight } from "../lib/ui";
 
 type Variant = "default" | "interactive" | "highlight" | "surfaceLink" | "surfaceLinkHighlight";
 type Size = "flush" | "sm" | "md" | "lg";
 
-interface Props extends HTMLAttributes<"div"> {
+type Props = HTMLAttributes<"div"> & HTMLAttributes<"a"> & {
   variant?: Variant;
   size?: Size;
-  as?: "div" | "article" | "li";
-}
+  as?: "div" | "article" | "li" | "a";
+};
 
-const { variant = "default", size = "md", as: Tag = "div", class: className, ...rest } = Astro.props;
+const { variant = "default", size = "md", as: Tag = "div", class: className, ...rest } = Astro.props as Props;
 
 const base = "rounded-2xl border bg-surface shadow-acgl";
+const surfaceLinkClasses = "group flex flex-col no-underline";
+
+const surfaceLinkCardInner =
+  "h-full rounded-2xl border-2 border-transparent bg-white/[0.97] shadow-acgl-lg backdrop-blur-sm transition-[border-color,box-shadow,background-color] duration-[250ms] ease-in-out hover:border-brand hover:bg-white hover:shadow-[0_0_20px_rgb(4_103_179/0.25)] focus-visible:outline-2 focus-visible:outline-brand";
+
+const surfaceLinkCardInnerHighlight =
+  "h-full rounded-2xl border-2 border-brand bg-white/[0.97] shadow-acgl-lg backdrop-blur-sm transition-[border-color,box-shadow,background-color] duration-[250ms] ease-in-out hover:shadow-[0_0_20px_rgb(4_103_179/0.25)] hover:bg-white focus-visible:outline-2 focus-visible:outline-brand";
 
 const variants: Record<Variant, string> = {
   default: "border-line",
   interactive:
     "border-line transition-[border-color,box-shadow,background-color] duration-[250ms] ease-in-out hover:border-brand hover:bg-white hover:shadow-[0_0_18px_rgb(4_103_179/0.18)] focus-visible:outline-2 focus-visible:outline-brand",
   highlight: "border-2 border-brand",
-  surfaceLink: surfaceLinkCardInner,
-  surfaceLinkHighlight: surfaceLinkCardInnerHighlight,
+  surfaceLink: `${surfaceLinkClasses} ${surfaceLinkCardInner}`,
+  surfaceLinkHighlight: `${surfaceLinkClasses} ${surfaceLinkCardInnerHighlight}`,
 };
 
 const sizes: Record<Size, string> = {

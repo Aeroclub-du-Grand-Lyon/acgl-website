@@ -6,15 +6,17 @@ import CtaBanner from "../components/CtaBanner.astro";
 import Icon from "../components/Icon.astro";
 import MainLayout from "../layouts/MainLayout.astro";
 import Section from "../components/Section.astro";
-import {
-  surfaceLinkCard,
-  surfaceLinkCardCta,
-  surfaceLinkCardCtaArrow,
-  surfaceLinkCardLeadIcon,
-  surfaceLinkCardTitle,
-} from "../lib/ui";
-import { url } from "../lib/url";
-import heroImageSrc from "../assets/hero-bg.jpg";
+const surfaceLinkCardLeadIcon =
+  "flex size-10 items-center justify-center rounded-full bg-brand/10 text-brand transition-[transform,background-color,color] duration-[250ms] group-hover:scale-110 group-hover:bg-brand group-hover:text-white";
+
+const surfaceLinkCardTitle =
+  "mb-2 text-lg transition-colors duration-[250ms] group-hover:text-brand";
+
+const surfaceLinkCardCta =
+  "mt-auto flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors duration-[250ms] group-hover:text-navy";
+
+const surfaceLinkCardCtaArrow =
+  "transition-transform duration-[250ms] group-hover:translate-x-1";
 
 const homeNumbersEntries = await getCollection("homeClubNumbers");
 const heroStats = homeNumbersEntries[0]?.data.stats ?? [];
@@ -30,7 +32,7 @@ const instructorCount = instructors.length;
 
 const pathCards: { href: string; icon: string; label: string; title: string; desc: string; cta: string }[] = [
   {
-    href: url("/vol-decouverte"),
+    href: "/vol-decouverte",
     icon: "compass",
     label: "Découvrir",
     title: "Vols découverte",
@@ -38,7 +40,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
     cta: "Offrir ou s'offrir un vol",
   },
   {
-    href: url("/ecole-de-pilotage"),
+    href: "/ecole-de-pilotage",
     icon: "book-open",
     label: "Apprendre",
     title: "École de pilotage",
@@ -46,7 +48,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
     cta: "Devenir pilote",
   },
   {
-    href: url("/deja-pilote"),
+    href: "/deja-pilote",
     icon: "plane",
     label: "Voler",
     title: "Déjà pilote",
@@ -54,7 +56,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
     cta: "Rejoindre le club",
   },
   {
-    href: url("/progresser"),
+    href: "/progresser",
     icon: "trending-up",
     label: "Progresser",
     title: "Perfectionnements",
@@ -74,11 +76,11 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
   >
     <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       <Image
-        src={heroImageSrc}
+        src="/images/hero.jpg"
         alt=""
         class="h-full w-full object-cover object-center"
-        width={1920}
-        height={1080}
+        width=1920
+        height=1080
         loading="eager"
         fetchpriority="high"
         decoding="async"
@@ -121,7 +123,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
         <h2 id="path-cards-heading" class="sr-only">Votre projet à l'ACGL</h2>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 md:gap-5">
           {pathCards.map(({ href, icon, label, title, desc, cta }) => (
-            <a href={href} class={surfaceLinkCard}>
+            <Card as="a" href={href} variant="surfaceLink" class="h-full bg-page">
               <div class="flex items-center gap-3 mb-4">
                 <div class={surfaceLinkCardLeadIcon} aria-hidden="true">
                   <Icon name={icon} size="size-5" />
@@ -134,7 +136,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
                 {cta}
                 <Icon name="arrow-right" size="size-4" class={surfaceLinkCardCtaArrow} />
               </span>
-            </a>
+            </Card>
           ))}
         </div>
       </div>
@@ -200,7 +202,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
     description={contact?.permanence
       ? `Une permanence club à lieu ${contact.permanence}`
       : "Contactez nous pour organiser une rencontre dans nos locaux."}
-    primaryHref={url("/contact")}
+    primaryHref="/contact"
     primaryLabel="Voir les infos pratiques"
   >
   </CtaBanner>

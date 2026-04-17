@@ -1,15 +1,12 @@
 import { collection, config, fields, singleton } from "@keystatic/core";
 
-const isProd = import.meta.env.PROD;
-
 export default config({
-  storage: isProd
-    ? {
-        kind: "github",
-        repo: "aeroclub-du-grand-lyon/acgl-website",
-        branchPrefix: "keystatic/",
-      }
-    : { kind: "local" },
+  storage:
+  {
+    kind: "github",
+    repo: "aeroclub-du-grand-lyon/acgl-website",
+    branchPrefix: "keystatic/",
+  },
   ui: {
     navigation: {
       "Page d'accueil": ["homeClubNumbers"],
@@ -139,8 +136,8 @@ export default config({
             }),
             title: fields.text({ label: 'Titre' }),
             description: fields.text({
-                  label: 'Texte',
-                  multiline: true,
+              label: 'Texte',
+              multiline: true,
             }),
           },
           {
@@ -148,7 +145,7 @@ export default config({
             description:
               "Infobulle affichée sous la section Cotisations.",
           }
-        ),             
+        ),
         fleetNote: fields.object(
           {
             enabled: fields.checkbox({
@@ -159,8 +156,8 @@ export default config({
             }),
             title: fields.text({ label: 'Titre' }),
             description: fields.text({
-                  label: 'Texte',
-                  multiline: true,
+              label: 'Texte',
+              multiline: true,
             }),
           },
           {
@@ -168,7 +165,7 @@ export default config({
             description:
               "Infobulle affichée sous la section Avions.",
           }
-        ),  
+        ),
         trainingNote: fields.object(
           {
             enabled: fields.checkbox({
@@ -277,7 +274,7 @@ export default config({
         seats: fields.number({
           label: "Places",
           step: 1,
-          validation: { min: 1, max: 6, validateStep: true},
+          validation: { min: 1, max: 6, validateStep: true },
         }),
         speed: fields.text({ label: "Vitesse" }),
         autonomy: fields.text({ label: "Autonomie" }),
