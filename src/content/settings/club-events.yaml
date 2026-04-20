@@ -4,16 +4,13 @@ items:
     description: >-
       Tradition incontournable pour bien démarrer la saison : le club se réunit
       en début d'année autour de la galette des rois.
-  - title: Sortie Corse
+  - title: Sorties club
     icon: compass
     description: >-
-      Trois jours en Corse en avion : décollage de Bron, escale selon la météo,
-      atterrissage sur l'île de Beauté. Un voyage qui reste dans les mémoires.
-  - title: Vol de nuit
-    icon: plane
-    description: >-
-      Une sortie nocturne en groupe pour découvrir Lyon depuis les airs à la
-      tombée de la nuit — en sécurité, en compagnie.
+      Nous organisons tout au long de l’année des sorties pour tous, allant d’un
+      voyage de trois jours en Corse à un voyage de nuit en France, en passant
+      par une balade en Suisse ou en Italie, ou encore un déjeuner à Aubenas,
+      Aurillac ou Arcachon.
   - title: Barbecue de rentrée
     icon: users
     description: >-
