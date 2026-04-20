@@ -117,12 +117,12 @@
   @apply transition-colors duration-200 ease-linear;
 }
 
-.site-header .brand img {
+.site-header .brand img:not(.brand-logo) {
   @apply transition-[filter] duration-[450ms] ease-[cubic-bezier(0.33,1,0.68,1)];
   filter: brightness(0) invert(1);
 }
 
-.site-header.is-scrolled .brand img {
+.site-header.is-scrolled .brand img:not(.brand-logo) {
   filter: none;
 }
 
