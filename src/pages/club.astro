@@ -12,7 +12,6 @@ import MainLayout from "../layouts/MainLayout.astro";
 
 const allBoard = (await getCollection("board")).sort((a, b) => a.data.order - b.data.order);
 const executive = allBoard.filter((m) => m.data.group === "executive");
-const council = allBoard.filter((m) => m.data.group === "council");
 
 const instructors = (await getCollection("instructors")).sort((a, b) => a.data.order - b.data.order);
 
@@ -56,56 +55,30 @@ const clubEvents = clubEventsEntries[0]?.data.items ?? [];
     </div>
   </Section>
 
-  {(executive.length > 0 || council.length > 0) && (
+  {executive.length > 0 && (
     <Section id="governance" labelledby="governance-heading" bg="page">
-      <h2 id="governance-heading" class="mb-3">L'équipe dirigeante</h2>
-      <p class="mb-10 text-muted">
+    <div class="mb-8">
+      <h2 id="governance-heading" class="mb-4">Bureau</h2>
+      <p class="text-muted">
         En tant qu'association loi 1901, l'ACGL est administrée par des membres bénévoles élus chaque année en assemblée générale.
       </p>
-
-      {executive.length > 0 && (
-        <div class="mb-10">
-          <h3 class="mb-4">Bureau</h3>
-          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {executive.map((member) => (
-              <Card size="sm" class="flex items-center gap-4">
-                <div
-                  class="flex size-9 shrink-0 items-center justify-center rounded-full bg-light-frost font-display text-sm font-bold text-brand"
-                  aria-hidden="true"
-                >
-                  {member.data.key.charAt(0)}
-                </div>
-                <div class="min-w-0">
-                  <p class="truncate text-sm font-semibold text-ink">{member.data.key}</p>
-                  <p class="truncate text-sm text-brand">{member.data.role}</p>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {council.length > 0 && (
-        <div>
-          <h3 class="mb-4">Conseil d'administration</h3>
-          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {council.map((member) => (
-              <Card size="sm" class="flex items-center gap-4">
-                <div
-                  class="flex size-9 shrink-0 items-center justify-center rounded-full bg-light-frost font-display text-sm font-bold text-brand"
-                  aria-hidden="true"
-                >
-                  {member.data.key.charAt(0)}
-                </div>
-                <div class="min-w-0">
-                  <p class="truncate text-sm font-semibold text-ink">{member.data.key}</p>
-                  <p class="truncate text-sm text-muted">{member.data.role}</p>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      )}
+    </div>
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" role="list">
+        {executive.map((member) => (
+          <Card size="sm" class="flex items-center gap-4">
+            <div
+              class="flex size-9 shrink-0 items-center justify-center rounded-full bg-light-frost font-display text-sm font-bold text-brand"
+              aria-hidden="true"
+            >
+              {member.data.key.charAt(0)}
+            </div>
+            <div class="min-w-0">
+              <p class="truncate text-sm font-semibold text-ink">{member.data.key}</p>
+              <p class="truncate text-sm text-brand">{member.data.role}</p>
+            </div>
+          </Card>
+        ))}
+      </div>
     </Section>
   )}
 

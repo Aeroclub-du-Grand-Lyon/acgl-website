@@ -62,7 +62,7 @@ const board = defineCollection({
   schema: z.object({
     key: z.string(),
     role: z.string(),
-    group: z.enum(["executive", "council"]).default("executive"),
+    group: z.enum(["executive"]).default("executive"),
     order: z.coerce.number().int(),
   }),
 });
