@@ -25,7 +25,7 @@ const clubEvents = clubEventsEntries[0]?.data.items ?? [];
 
 <MainLayout
   title="Le Club - Aéroclub du Grand Lyon | Bureau, instructeurs et engagements"
-  description="Découvrez l'équipe de l'Aéroclub du Grand Lyon : bureau élu, conseil d'administration, 15 instructeurs qualifiés et nos engagements associatifs (HandiBron, Ailes du Petit Prince)."
+  description="Découvrez l'équipe de l'Aéroclub du Grand Lyon : bureau, conseil d'administration, 15 instructeurs qualifiés et nos engagements associatifs (HandiBron, Ailes du Petit Prince)."
 >
   <PageHero
     title="Le Club"
@@ -65,7 +65,7 @@ const clubEvents = clubEventsEntries[0]?.data.items ?? [];
 
       {executive.length > 0 && (
         <div class="mb-10">
-          <h3 class="mb-4">Bureau élu</h3>
+          <h3 class="mb-4">Bureau</h3>
           <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {executive.map((member) => (
               <Card size="sm" class="flex items-center gap-4">
@@ -162,7 +162,7 @@ const clubEvents = clubEventsEntries[0]?.data.items ?? [];
     <p class="mb-10 text-muted">
       Voler ensemble, c'est bien. Se retrouver à terre, c'est aussi ça le club. Tout au long de l'année, l'ACGL organise des moments de convivialité et des aventures partagées.
     </p>
-    <div class="grid gap-6 sm:grid-cols-2">
+    <div class="grid gap-6 sm:grid-cols-3">
       {clubEvents.map((event) => (
         <Card size="lg">
           <div class="mb-4 flex items-center gap-3">

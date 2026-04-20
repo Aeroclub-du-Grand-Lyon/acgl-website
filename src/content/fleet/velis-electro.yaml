@@ -1,15 +1,15 @@
 key: Pipistrel Velis Electro
+photo: /images/fleet/velis-electro/photo.jpg
 registration: F-HGBN
-engine: Électrique 57,6 kW
-seats: 2
-speed: 180 km/h
-autonomy: 1h20
 usage: >-
   Avion biplace électrique, mis à disposition des aéroclubs de la plateforme,
   dédié à la formation et au vol local.
 equipment:
   - Glass cockpit
-photo: /images/fleet/velis-electro/photo.jpg
+engine: Électrique 57,6 kW
+seats: 2
+speed: 180 km/h
+autonomy: 1h20
 normal: 90 €/h
-schoolAircraft: false
+schoolAircraft: true
 order: 1

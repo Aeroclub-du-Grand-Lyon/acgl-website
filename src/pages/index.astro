@@ -87,39 +87,23 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
         quality={80}
       />
     </div>
-    <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy/30 via-navy/80 to-navy/50" aria-hidden="true" />
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy/30 via-navy/80 to-navy/30" aria-hidden="true" />
     <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-navy/40 via-navy/20 to-navy/50" aria-hidden="true" />
 
     <div class="container relative z-[1] flex flex-col">
-      <div class="order-1 mx-auto pb-8 text-center md:pb-14">
+      <div class="mx-auto pb-8 sm:text-center md:pb-14">
         <h1
           id="hero-heading"
           class="mb-4 font-display text-[clamp(1.75rem,4.5vw,2.75rem)] font-semibold tracking-tight text-white md:mb-5"
         >
-          Voler, <span class="text-sky">c'est ici</span> que ça commence.
+          Voler, <span class="text-sky">c'est ici</span> que ça commence !
         </h1>
         <p class="mx-auto text-sm leading-relaxed text-white/80 md:text-base">
           Apprenez à piloter ou volez avec votre licence depuis Lyon Bron. Trouvez votre parcours.
         </p>
       </div>
 
-      {heroStats.length > 0 && (
-        <div class="order-2 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 pb-8 md:order-3 md:mt-12 md:border-t md:border-white/10 md:pb-0 md:pt-7" role="group" aria-label="Chiffres clés du club">
-          {heroStats.map((item) => (
-            <span class="flex flex-col items-center gap-0.5">
-              <span class="font-display text-xl font-semibold tabular-nums leading-none text-white">{item.value}</span>
-              <span class="text-xs font-medium uppercase tracking-label text-white/70">{item.label}</span>
-            </span>
-          ))}
-          <span class="hidden h-5 w-px bg-white/15 sm:block" aria-hidden="true"></span>
-          <span class="flex items-center gap-1.5 text-sm text-white/70">
-            <Icon name="users" size="size-3.5" class="shrink-0 text-sky" />
-            Affilié à la Fédération Française Aéronautique
-          </span>
-        </div>
-      )}
-
-      <div class="order-3 md:order-2">
+      <div>
         <h2 id="path-cards-heading" class="sr-only">Votre projet à l'ACGL</h2>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 md:gap-5">
           {pathCards.map(({ href, icon, label, title, desc, cta }) => (
@@ -140,6 +124,24 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
           ))}
         </div>
       </div>
+
+      {heroStats.length > 0 && (
+        <div class="flex flex-wrap items-center justify-center gap-x-7 gap-y-3 mt-12 md:border-t md:border-white/10 md:pb-0 md:pt-7" role="group" aria-label="Chiffres clés du club">
+          <div class="flex flex-col gap-5 sm:flex-row">
+          {heroStats.map((item) => (
+            <span class="flex flex-col items-center gap-0.5">
+              <span class="font-display text-xl font-semibold tabular-nums leading-none text-white">{item.value}</span>
+              <span class="text-xs font-medium uppercase tracking-label text-white/70">{item.label}</span>
+            </span>
+          ))}
+          </div>
+          <span class="hidden h-5 w-px bg-white/15 sm:block" aria-hidden="true"></span>
+          <span class="hidden items-center gap-1.5 text-sm text-white/70 sm:flex">
+            <Icon name="users" size="size-3.5" class="shrink-0 text-sky" />
+            Affilié à la Fédération Française Aéronautique
+          </span>
+        </div>
+      )}
     </div>
   </section>
 

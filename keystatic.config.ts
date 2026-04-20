@@ -1,12 +1,19 @@
-import { collection, config, fields, singleton } from "@keystatic/core";
+import { collection, config, fields, singleton, type GitHubConfig, type LocalConfig } from "@keystatic/core";
+
+const prod = process.env.NODE_ENV === "production"; 
+
+const localMode: LocalConfig["storage"] = {
+  kind: "local",
+}
+
+const prodMode: GitHubConfig["storage"] = {
+  kind: "github",
+  repo: "aeroclub-du-grand-lyon/acgl-website",
+  branchPrefix: "keystatic/",
+}
 
 export default config({
-  storage:
-  {
-    kind: "github",
-    repo: "aeroclub-du-grand-lyon/acgl-website",
-    branchPrefix: "keystatic/",
-  },
+  storage: prod ? prodMode : localMode, 
   ui: {
     navigation: {
       "Page d'accueil": ["homeClubNumbers"],

@@ -1,17 +1,17 @@
 key: Piper PA28R Arrow III
+photo: /images/fleet/piper-pa28r/photo.jpeg
 registration: F-HITC
-engine: 200 ch
-seats: 4
-speed: 240 km/h
-autonomy: 5 h
 usage: >-
-  Quadriplace à train rentrant et hélice à pas variable, dédié au voyage et au
-  perfectionnement. Agréé pour le vol aux instruments (IFR).
+  Avion quadriplace à train rentrant et hélice à pas variable, il est dédié au
+  voyage et au perfectionnement. Il est agréé pour le vol aux instruments (IFR).
 equipment:
   - Train rentrant
   - Hélice pas variable
   - Pilote automatique
-photo: /images/fleet/piper-pa28r/photo.jpeg
+engine: 200 ch
+seats: 4
+speed: 240 km/h
+autonomy: 5 h
 normal: 235 €/h
 schoolAircraft: false
 order: 8

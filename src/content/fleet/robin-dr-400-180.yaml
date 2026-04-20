@@ -1,15 +1,15 @@
 key: Robin DR400 180
+photo: /images/fleet/robin-dr-400-180/photo.jpg
 registration: F-HIYE
+usage: >-
+  Avion quadriplace capable d'embarquer quatre adultes, il est destiné à la
+  balade ou au voyage. Il est agréé pour le vol montagne sur pistes revêtues.
+equipment:
+  - Instruments analogiques
 engine: 180 ch
 seats: 4
 speed: 230 km/h
 autonomy: 5 h
-usage: >-
-  Quadriplace destiné à la balade ou au voyage. Agréé pour le vol montagne sur
-  pistes revêtues.
-equipment:
-  - Instruments analogiques
-photo: /images/fleet/robin-dr-400-180/photo.jpg
 normal: 210 €/h
 reduced: 180 €/h
 schoolAircraft: false

@@ -2,15 +2,13 @@ items:
   - title: Galette des rois
     icon: gift
     description: >-
-      Tradition incontournable pour bien démarrer la saison : le club se réunit
-      en début d'année autour de la galette des rois.
+      Tradition incontournable pour bien démarrer la saison, le club se réunit
+      pour un moment convivial autour d'une galette des rois.
   - title: Sorties club
     icon: compass
     description: >-
-      Tout au long de l’année des sorties en groupe et ouvert à tous, allant
-      d’un voyage de trois jours en Corse à un voyage de nuit en France, en
-      passant par une balade en Suisse ou en Italie, ou encore un déjeuner à
-      Aubenas, Aurillac ou Arcachon.
+      Voyage en Corse ou en Europe, une balade de nuit ou déjeuner, le club
+      organise des vols en groupe, ouvertes à tous et toutes.
   - title: Barbecue de rentrée
     icon: users
     description: >-

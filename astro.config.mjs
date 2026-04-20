@@ -7,7 +7,7 @@ import tailwindcss from "@tailwindcss/vite";
 import vercel from "@astrojs/vercel";
 
 export default defineConfig({
-  site: import.meta.env.DEV ? "http://localhost:4321" : "https://acgl.fr",
+  site: "https://www.acgl.fr",
   adapter: vercel(),
   integrations: [
     react(),
