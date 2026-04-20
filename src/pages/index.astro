@@ -65,7 +65,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
   description="Apprenez à piloter ou volez avec votre licence depuis l'aéroport de Lyon Bron. Des instructeurs passionnés, une flotte de 8 avions et une vraie ambiance club - ACGL, agréé DGAC."
 >
   <section
-    class="relative isolate overflow-hidden pb-14 pt-[calc(var(--spacing-header-h)+2.5rem)] md:pb-20 md:pt-[calc(var(--spacing-header-h)+3.5rem)]"
+    class="relative isolate overflow-hidden min-h-dvh flex flex-col pt-[var(--spacing-header-h)] pb-10"
     aria-labelledby="hero-heading"
   >
     <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
@@ -81,53 +81,40 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
         quality={80}
       />
     </div>
-    <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy/30 via-navy/80 to-navy/30" aria-hidden="true" />
-    <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-navy/40 via-navy/20 to-navy/50" aria-hidden="true" />
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy/50 via-navy/10 to-navy/50" aria-hidden="true" />
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-navy/50 via-navy/25 to-navy/65" aria-hidden="true" />
 
-    <div class="container relative z-[1] flex flex-col">
-      <div class="mx-auto pb-8 sm:text-center md:pb-14">
+    <div class="container relative z-[1] flex flex-1 flex-col items-center justify-center gap-8 py-10 text-center md:gap-10">
+
+      <div>
         <h1
           id="hero-heading"
-          class="mb-4 font-display text-[clamp(1.75rem,4.5vw,2.75rem)] font-semibold tracking-tight text-white md:mb-5"
+          class="mb-3 font-display text-[clamp(1.75rem,4.5vw,2.75rem)] font-semibold tracking-tight text-white md:mb-4"
         >
           Voler, <span class="text-sky">c'est ici</span> que ça commence !
         </h1>
-        <p class="mx-auto text-sm leading-relaxed text-white/80 md:text-base">
-          Apprenez à piloter ou volez avec votre licence depuis Lyon Bron. Trouvez votre parcours.
+        <p class="text-sm leading-relaxed text-white/80 md:text-base">
+          Apprenez à piloter ou volez avec votre licence depuis Lyon Bron.
         </p>
       </div>
 
-      <div>
-        <h2 id="path-cards-heading" class="sr-only">Votre projet à l'ACGL</h2>
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 md:gap-5">
-          {pathCards.map(({ href, icon, label, title, desc, cta }) => (
-            <Card as="a" href={href} variant="surfaceLink" class="h-full bg-page">
-              <div class="flex items-center gap-3 mb-4">
-                <div class={surfaceLinkCardLeadIcon} aria-hidden="true">
-                  <Icon name={icon} size="size-5" />
-                </div>
-                <h3 class="text-base font-bold uppercase tracking-label text-brand">{label}</h3>
-              </div>
-              <p class="hidden mb-2 text-sm text-navy font-semibold transition-colors duration-[250ms] group-hover:text-brand">{title}</p>
-              <p class="mb-4 flex-1 text-sm leading-relaxed text-muted">{desc}</p>
-              <span class={surfaceLinkCardCta}>
-                {cta}
-                <Icon name="arrow-right" size="size-4" class="transition-transform duration-[250ms] group-hover:translate-x-1" />
-              </span>
-            </Card>
-          ))}
-        </div>
+      <div class="rounded-full bg-white/88 p-2 shadow-[0_8px_64px_rgba(0,0,0,0.45)] backdrop-blur-sm ring-1 ring-white/40">
+        <img
+          src="/logo.svg"
+          alt="Logo Aéroclub du Grand Lyon"
+          class="w-28 sm:w-36 md:w-48 lg:w-60 xl:w-72"
+        />
       </div>
 
       {heroStats.length > 0 && (
-        <div class="flex flex-wrap items-center justify-center gap-x-7 gap-y-3 mt-12 md:border-t md:border-white/10 md:pb-0 md:pt-7" role="group" aria-label="Chiffres clés du club">
+        <div class="flex flex-wrap items-center justify-center gap-x-7 gap-y-3 border-t border-white/15 pt-6" role="group" aria-label="Chiffres clés du club">
           <div class="flex flex-col gap-5 sm:flex-row">
-          {heroStats.map((item) => (
-            <span class="flex flex-col items-center gap-0.5">
-              <span class="font-display text-xl font-semibold tabular-nums leading-none text-white">{item.value}</span>
-              <span class="text-xs font-medium uppercase tracking-label text-white/70">{item.label}</span>
-            </span>
-          ))}
+            {heroStats.map((item) => (
+              <span class="flex flex-col items-center gap-0.5">
+                <span class="font-display text-xl font-semibold tabular-nums leading-none text-white">{item.value}</span>
+                <span class="text-xs font-medium uppercase tracking-label text-white/70">{item.label}</span>
+              </span>
+            ))}
           </div>
           <span class="hidden h-5 w-px bg-white/15 sm:block" aria-hidden="true"></span>
           <span class="hidden items-center gap-1.5 text-sm text-white/70 sm:flex">
@@ -136,6 +123,46 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
           </span>
         </div>
       )}
+    </div>
+
+    <a
+      href="#paths"
+      class="relative z-[1] mx-auto flex flex-col items-center gap-2 text-white/50 transition-colors duration-[250ms] hover:text-white/80"
+      aria-label="Découvrir les parcours"
+    >
+      <span class="text-xs font-medium uppercase tracking-label">Découvrez votre parcours</span>
+      <Icon name="chevron-down" size="size-5" class="animate-bounce" />
+    </a>
+  </section>
+
+  <section
+    id="paths"
+    aria-labelledby="paths-heading"
+    class="relative z-10 -mt-10 rounded-t-3xl bg-page py-section-y max-md:py-section-y-mobile scroll-mt-header-h border-b border-line"
+  >
+    <div class="container">
+      <header class="mx-auto mb-10 text-center md:mb-12">
+        <h2 id="paths-heading">Quel est votre projet ?</h2>
+        <p class="mt-3 text-muted">Que vous rêviez de voler ou que vous ayez déjà votre licence.</p>
+      </header>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 md:gap-5">
+        {pathCards.map(({ href, icon, label, title, desc, cta }) => (
+          <Card as="a" href={href} variant="surfaceLink" class="h-full bg-page">
+            <div class="flex items-center gap-3 mb-4">
+              <div class={surfaceLinkCardLeadIcon} aria-hidden="true">
+                <Icon name={icon} size="size-5" />
+              </div>
+              <h3 class="text-base font-bold uppercase tracking-label text-brand">{label}</h3>
+            </div>
+            <p class="hidden mb-2 text-sm text-navy font-semibold transition-colors duration-[250ms] group-hover:text-brand">{title}</p>
+            <p class="mb-4 flex-1 text-sm leading-relaxed text-muted">{desc}</p>
+            <span class={surfaceLinkCardCta}>
+              {cta}
+              <Icon name="arrow-right" size="size-4" class="transition-transform duration-[250ms] group-hover:translate-x-1" />
+            </span>
+          </Card>
+        ))}
+      </div>
     </div>
   </section>
 
