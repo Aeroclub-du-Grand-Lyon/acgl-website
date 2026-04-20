@@ -9,14 +9,8 @@ import Section from "../components/Section.astro";
 const surfaceLinkCardLeadIcon =
   "flex size-10 items-center justify-center rounded-full bg-brand/10 text-brand transition-[transform,background-color,color] duration-[250ms] group-hover:scale-110 group-hover:bg-brand group-hover:text-white";
 
-const surfaceLinkCardTitle =
-  "mb-2 text-lg transition-colors duration-[250ms] group-hover:text-brand";
-
 const surfaceLinkCardCta =
   "mt-auto flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors duration-[250ms] group-hover:text-navy";
-
-const surfaceLinkCardCtaArrow =
-  "transition-transform duration-[250ms] group-hover:translate-x-1";
 
 const homeNumbersEntries = await getCollection("homeClubNumbers");
 const heroStats = homeNumbersEntries[0]?.data.stats ?? [];
@@ -44,7 +38,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
     icon: "book-open",
     label: "Apprendre",
     title: "École de pilotage",
-    desc: `Formation PPL(A) ou LAPL(A) avec nos instructeurs qualifiés, du premier vol à la licence.`,
+    desc: `Formation PPL(A) ou LAPL(A) avec nos instructeurs, du premier vol à la licence.`,
     cta: "Devenir pilote",
   },
   {
@@ -52,7 +46,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
     icon: "plane",
     label: "Voler",
     title: "Déjà pilote",
-    desc: "Rejoignez notre communauté de pilotes et volez sur notre flotte diversifiée au départ de Lyon Bron.",
+    desc: "Rejoignez notre communauté de pilotes et volez sur notre flotte diversifiée.",
     cta: "Rejoindre le club",
   },
   {
@@ -112,13 +106,13 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
                 <div class={surfaceLinkCardLeadIcon} aria-hidden="true">
                   <Icon name={icon} size="size-5" />
                 </div>
-                <p class="text-xs font-bold uppercase tracking-label text-brand">{label}</p>
+                <h3 class="text-base font-bold uppercase tracking-label text-brand">{label}</h3>
               </div>
-              <h3 class:list={[surfaceLinkCardTitle]}>{title}</h3>
+              <p class="hidden mb-2 text-sm text-navy font-semibold transition-colors duration-[250ms] group-hover:text-brand">{title}</p>
               <p class="mb-4 flex-1 text-sm leading-relaxed text-muted">{desc}</p>
               <span class={surfaceLinkCardCta}>
                 {cta}
-                <Icon name="arrow-right" size="size-4" class={surfaceLinkCardCtaArrow} />
+                <Icon name="arrow-right" size="size-4" class="transition-transform duration-[250ms] group-hover:translate-x-1" />
               </span>
             </Card>
           ))}
