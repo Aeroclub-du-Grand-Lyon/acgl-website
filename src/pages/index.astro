@@ -65,7 +65,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
   description="Apprenez à piloter ou volez avec votre licence depuis l'aéroport de Lyon Bron. Des instructeurs passionnés, une flotte de 8 avions et une vraie ambiance club - ACGL, agréé DGAC."
 >
   <section
-    class="relative isolate overflow-hidden pb-14 pt-[calc(var(--spacing-header-h)+2.5rem)] md:pb-20 md:pt-[calc(var(--spacing-header-h)+3.5rem)]"
+    class="relative isolate flex flex-col lg:overflow-hidden min-h-[80svh] pb-6 pt-[calc(var(--spacing-header-h)+2.5rem)] md:pb-8 md:pt-[calc(var(--spacing-header-h)+3.5rem)] lg:min-h-[80vh] lg:pb-20"
     aria-labelledby="hero-heading"
   >
     <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
@@ -81,25 +81,68 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
         quality={80}
       />
     </div>
-    <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy/30 via-navy/80 to-navy/30" aria-hidden="true" />
-    <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-navy/40 via-navy/20 to-navy/50" aria-hidden="true" />
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/40 to-navy/25" aria-hidden="true" />
 
-    <div class="container relative z-[1] flex flex-col">
-      <div class="mx-auto pb-8 sm:text-center md:pb-14">
-        <h1
-          id="hero-heading"
-          class="mb-4 font-display text-[clamp(1.75rem,4.5vw,2.75rem)] font-semibold tracking-tight text-white md:mb-5"
-        >
-          Voler, <span class="text-sky">c'est ici</span> que ça commence !
-        </h1>
-        <p class="mx-auto text-sm leading-relaxed text-white/80 md:text-base">
-          Apprenez à piloter ou volez avec votre licence depuis Lyon Bron. Trouvez votre parcours.
-        </p>
+    <div class="container relative z-[1] flex flex-col flex-1 lg:justify-center lg:gap-15">
+
+      <!-- Text block + mobile card strip — centered as a group on mobile, transparent on desktop -->
+      <div class="flex-1 flex flex-col justify-center gap-8 lg:contents">
+
+        <div class="flex flex-col items-center justify-center text-center lg:flex-row lg:items-center lg:text-left lg:gap-10">
+          <Image
+            src="/logo-mini.svg"
+            alt=""
+            width="96"
+            height="96"
+            class="mb-6 size-32 drop-shadow-md lg:mb-0 lg:size-28 lg:shrink-0"
+            loading="eager"
+          />
+          <div>
+            <h1
+              id="hero-heading"
+              class="mb-4 font-display text-[clamp(1.75rem,4.5vw,2.75rem)] font-semibold tracking-tight text-white md:mb-5"
+            >
+              Voler, c'est ici que ça commence !
+            <h1/>
+            <p class="mx-auto text-sm leading-relaxed text-white/80 md:text-base lg:mx-0">
+              Apprenez à piloter ou volez avec votre licence depuis Lyon Bron. Trouvez votre parcours.
+            </p>
+          </div>
+        </div>
+
+        <div class="lg:hidden">
+          <div
+            class="overflow-x-auto snap-x snap-mandatory scrollbar-none [scroll-padding-inline:10vw] sm:[scroll-padding-inline:2rem] [mask-image:linear-gradient(to_right,transparent,black_2rem,black_calc(100%-2rem),transparent)]"
+          >
+            <div class="flex gap-3 px-6 pr-10 pb-1">
+              {pathCards.map(({ href, icon, label, desc, cta }) => (
+                <a
+                  href={href}
+                  class="group snap-center shrink-0 w-[65vw] sm:w-[40vw] flex flex-col no-underline rounded-2xl p-6 border bg-slate-700/90 transition-colors duration-[250ms] hover:bg-white/20 [box-shadow:inset_0_1px_0_rgba(255,255,255,0.35),0_8px_32px_rgba(0,0,0,0.25)]"
+                >
+                  <div class="flex items-center gap-3 mb-4">
+                    <div class="flex size-10 items-center justify-center rounded-full bg-white/10 text-white transition-[transform,background-color,color] duration-[250ms] group-hover:scale-110 group-hover:bg-brand group-hover:text-white" aria-hidden="true">
+                      <Icon name={icon} size="size-5" />
+                    </div>
+                    <h3 class="text-base font-bold uppercase tracking-label text-white/90">{label}</h3>
+                  </div>
+                  <p class="mb-4 flex-1 text-sm leading-relaxed text-white/80">{desc}</p>
+                  <span class="mt-auto flex items-center gap-1.5 text-sm font-semibold text-white/80 transition-colors duration-[250ms] group-hover:text-white">
+                    {cta}
+                    <Icon name="arrow-right" size="size-4" class="transition-transform duration-[250ms] group-hover:translate-x-1" />
+                  </span>
+                </a>
+              ))}
+              <div class="flex pr-3">.</div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <div>
+      <div class="hidden lg:block">
         <h2 id="path-cards-heading" class="sr-only">Votre projet à l'ACGL</h2>
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 md:gap-5">
+        <div class="grid gap-4 lg:grid-cols-4">
           {pathCards.map(({ href, icon, label, title, desc, cta }) => (
             <Card as="a" href={href} variant="surfaceLink" class="h-full bg-page">
               <div class="flex items-center gap-3 mb-4">
@@ -120,8 +163,8 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
       </div>
 
       {heroStats.length > 0 && (
-        <div class="flex flex-wrap items-center justify-center gap-x-7 gap-y-3 mt-12 md:border-t md:border-white/10 md:pb-0 md:pt-7" role="group" aria-label="Chiffres clés du club">
-          <div class="flex flex-col gap-5 sm:flex-row">
+        <div class="flex flex-wrap items-center justify-center gap-x-7 gap-y-3 w-fit mx-auto mt-8 pb-2 lg:border-t lg:border-white/20 lg:pt-7 lg:pb-0" role="group" aria-label="Chiffres clés du club">
+          <div class="flex flex-wrap justify-center gap-8">
           {heroStats.map((item) => (
             <span class="flex flex-col items-center gap-0.5">
               <span class="font-display text-xl font-semibold tabular-nums leading-none text-white">{item.value}</span>
@@ -129,13 +172,14 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
             </span>
           ))}
           </div>
-          <span class="hidden h-5 w-px bg-white/15 sm:block" aria-hidden="true"></span>
+          <span class="hidden h-5 w-px bg-white/20 sm:block" aria-hidden="true"></span>
           <span class="hidden items-center gap-1.5 text-sm text-white/70 sm:flex">
             <Icon name="users" size="size-3.5" class="shrink-0 text-sky" />
             Affilié à la Fédération Française Aéronautique
           </span>
         </div>
       )}
+
     </div>
   </section>
 
@@ -203,3 +247,23 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
   >
   </CtaBanner>
 </MainLayout>
+
+<style is:global>
+  .site-header .brand {
+    gap: 0;
+    transition: gap 300ms ease;
+  }
+  .site-header.is-scrolled .brand {
+    gap: 0.75rem; /* gap-3 */
+  }
+  .brand-logo {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    transition: opacity 300ms ease, width 300ms ease;
+  }
+  .site-header.is-scrolled .brand-logo {
+    opacity: 1;
+    width: 3rem; /* size-12 */
+  }
+</style>
