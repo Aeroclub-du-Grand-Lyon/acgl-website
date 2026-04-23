@@ -8,7 +8,7 @@ const inputBase =
 
 <!-- Success — fills remaining card space and centers vertically -->
 <div id="contact-success" hidden class="flex-1 flex flex-col">
-  <h2 id="formulaire" class="mt-0 mb-6 scroll-mt-30">Email</h2>
+  <h2 class="mt-0 mb-6">Email</h2>
   <div class="flex-1 flex flex-col items-center justify-center gap-4">
     <div class="inline-flex size-14 items-center justify-center rounded-full bg-light-frost text-brand  text-center">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="size-7" aria-hidden="true">
@@ -122,6 +122,11 @@ const inputBase =
 
   // Tailwind classes for the error state on inputs
   const INPUT_ERR = ["border-signal", "focus-visible:ring-signal/20", "focus-visible:border-signal"];
+
+  const urlSubject = new URLSearchParams(location.search).get("subject");
+  if (urlSubject) {
+    (document.getElementById("subject") as HTMLInputElement).value = urlSubject;
+  }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();

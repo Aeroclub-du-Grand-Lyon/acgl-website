@@ -9,7 +9,7 @@ fleetNote:
     aux frais fixes. Les tarifs réduits ne s'appliquent que sur les avions dont
     l'aéroclub est le propriétaire.
 trainingNote:
-  enabled: true
+  enabled: false
   title: Formation théorique
   description: >-
     Le temps de briefing, de débriefing et de formation au sol avec un
