@@ -156,7 +156,7 @@ export default config({
         fleetNote: fields.object(
           {
             enabled: fields.checkbox({
-              label: 'Afficher l’infobulle cotisations',
+              label: 'Afficher l’infobulle avions',
               defaultValue: false,
               description:
                 "Décochez pour masquer l’infobulle, sans perdre le contenu saisi ci-dessous.",

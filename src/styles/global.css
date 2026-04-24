@@ -293,3 +293,44 @@
     opacity 0.2s ease,
     visibility 0s linear 0s;
 }
+
+@utility card-surface-icon {
+  @apply flex size-10 items-center justify-center rounded-full bg-brand/10 text-brand transition-[transform,background-color,color] duration-[250ms] group-hover:scale-110 group-hover:bg-brand group-hover:text-white;
+}
+
+@utility card-surface-icon-sq {
+  @apply flex size-10 items-center justify-center rounded-lg bg-brand/10 text-brand transition-[transform,background-color,color] duration-[250ms] group-hover:scale-110 group-hover:bg-brand group-hover:text-white;
+}
+
+@utility card-surface-title {
+  @apply transition-colors duration-[250ms] group-hover:text-brand;
+}
+
+@utility card-surface-cta {
+  @apply mt-auto flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors duration-[250ms] group-hover:text-navy;
+}
+
+@utility card-surface-cta-arrow {
+  @apply transition-transform duration-[250ms] group-hover:translate-x-1;
+}
+
+.site-header .brand {
+  gap: 0;
+  transition: gap 300ms ease;
+}
+
+.site-header.is-scrolled .brand {
+  gap: 0.75rem;
+}
+
+.brand-logo {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  transition: opacity 300ms ease, width 300ms ease;
+}
+
+.site-header.is-scrolled .brand-logo {
+  opacity: 1;
+  width: 3rem;
+}

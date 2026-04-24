@@ -33,13 +33,13 @@ function equipmentPills(text: string) {
   />
 
   <Section bg="surface" border={false}>
-      <div class="mx-auto grid w-full max-w-3xl grid-cols-1 gap-6 sm:gap-8 lg:max-w-none lg:grid-cols-2 lg:gap-8">
+      <ul class="mx-auto grid w-full max-w-3xl grid-cols-1 gap-6 sm:gap-8 lg:max-w-none lg:grid-cols-2 lg:gap-8">
         {fleet.map((aircraft, index) => (
           <Card
+            as="li"
             id={aircraft.id}
             variant="interactive"
             size="flush"
-            as="article"
             class="scroll-mt-header-h mx-auto flex h-full w-full flex-col overflow-hidden"
           >
             <div class="shrink-0 aspect-[3/1.5] overflow-hidden rounded-t-2xl bg-line">
@@ -140,7 +140,7 @@ function equipmentPills(text: string) {
             </div>
           </Card>
         ))}
-      </div>
+      </ul>
   </Section>
 
   <CtaBanner
