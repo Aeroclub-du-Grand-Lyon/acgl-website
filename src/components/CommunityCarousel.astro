@@ -1,0 +1,68 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+  images: {
+    src: string;
+    alt: string;
+  }[];
+}
+
+const { images } = Astro.props;
+const totalImages = images.length;
+// We append the first image to the end for a seamless loop
+const displayImages = [...images, images[0]];
+const totalSlides = displayImages.length;
+---
+
+<div class="community-carousel relative overflow-hidden rounded-3xl shadow-acgl-lg">
+  <div
+    class="flex animate-carousel"
+    style={`--total-images: ${totalImages};`}
+  >
+    {
+      displayImages.map((img) => (
+        <div class="min-w-full shrink-0">
+          <Image
+            src={img.src}
+            alt={img.alt}
+            width={1200}
+            height={800}
+            class="aspect-[4/3] w-full object-cover sm:aspect-[16/9]"
+          />
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+  <div class="absolute bottom-6 left-6 right-6 text-white">
+     <p class="text-sm font-medium uppercase tracking-widest opacity-80">Vie du club</p>
+     <p class="text-xl font-bold font-display">Une communauté de passionnés</p>
+  </div>
+</div>
+
+<style>
+  .animate-carousel {
+    display: flex;
+    /* Duration proportional to image count for consistent speed */
+    animation: scroll calc(var(--total-images) * 5s) cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes scroll {
+    0%, 15% { transform: translateX(0); }
+    20%, 35% { transform: translateX(-100%); }
+    40%, 55% { transform: translateX(-200%); }
+    60%, 75% { transform: translateX(-300%); }
+    80%, 95% { transform: translateX(-400%); }
+    100% { transform: translateX(calc(var(--total-images) * -100%)); }
+  }
+
+  /* Fallback for when we don't have exactly 3-4 images, or to make it more generic:
+     For a truly generic pure CSS carousel, we'd need more complex generated keyframes.
+     The current approach supports up to 5 images reasonably. */
+
+  .community-carousel:hover .animate-carousel {
+    animation-play-state: paused;
+  }
+</style>

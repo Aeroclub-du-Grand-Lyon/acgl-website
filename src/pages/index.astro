@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import Card from "../components/Card.astro";
+import CommunityCarousel from "../components/CommunityCarousel.astro";
 import CtaBanner from "../components/CtaBanner.astro";
 import Icon from "../components/Icon.astro";
 import MainLayout from "../layouts/MainLayout.astro";
@@ -65,7 +66,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
     <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       <Image
         src="/images/hero.jpg"
-        alt=""
+        alt="Avion de l'Aéroclub du Grand Lyon prêt au décollage sur l'aéroport de Lyon Bron"
         class="h-full w-full object-cover object-center"
         width=1920
         height=1080
@@ -85,7 +86,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
         <div class="flex flex-col items-center justify-center text-center lg:flex-row lg:items-center lg:text-left lg:gap-10">
           <Image
             src="/logo-mini.svg"
-            alt=""
+            alt="Logo de l'Aéroclub du Grand Lyon"
             width="96"
             height="96"
             class="mb-6 size-32 drop-shadow-md lg:mb-0 lg:size-28 lg:shrink-0"
@@ -96,41 +97,71 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
               id="hero-heading"
               class="mb-4 font-display text-[clamp(1.75rem,4.5vw,2.75rem)] font-semibold tracking-tight text-white md:mb-5"
             >
-              Voler, c'est ici que ça commence !
+              Voler à Lyon Bron, <br class="hidden sm:block" /> c'est ici que ça commence !
             </h1>
             <p class="mx-auto text-sm leading-relaxed text-white/80 md:text-base lg:mx-0">
-              Apprenez à piloter ou volez avec votre licence depuis Lyon Bron. Trouvez votre parcours.
+              Apprenez à piloter ou volez avec votre licence à l'Aéroclub du Grand Lyon. Découvrez nos parcours adaptés à vos envies.
             </p>
           </div>
         </div>
 
         <div class="lg:hidden">
           <div
-            class="overflow-x-auto snap-x snap-mandatory scrollbar-none [scroll-padding-inline:10vw] sm:[scroll-padding-inline:2rem] [mask-image:linear-gradient(to_right,transparent,black_2rem,black_calc(100%-2rem),transparent)]"
+            id="hero-cards-scroll"
+            class="overflow-x-auto snap-x snap-mandatory scrollbar-none [scroll-padding-inline:1.5rem]"
           >
-            <div class="flex gap-3 px-6 pr-10 pb-1">
-              {pathCards.map(({ href, icon, label, desc, cta }) => (
+            <div class="flex gap-4 px-6 pr-12 pb-4">
+              {pathCards.map(({ href, icon, label, title, desc, cta }) => (
                 <a
                   href={href}
-                  class="group snap-center shrink-0 w-[65vw] sm:w-[40vw] flex flex-col no-underline rounded-2xl p-6 border bg-slate-700/90 transition-colors duration-[250ms] hover:bg-white/20 [box-shadow:inset_0_1px_0_rgba(255,255,255,0.35),0_8px_32px_rgba(0,0,0,0.25)]"
+                  class="group snap-center shrink-0 w-[82vw] sm:w-[50vw] flex flex-col no-underline rounded-2xl p-6 border-2 border-transparent bg-white shadow-acgl-lg transition-all duration-[250ms] active:scale-[0.98]"
                 >
-                  <div class="flex items-center gap-3 mb-4">
-                    <div class="flex size-10 items-center justify-center rounded-full bg-white/10 text-white transition-[transform,background-color,color] duration-[250ms] group-hover:scale-110 group-hover:bg-brand group-hover:text-white" aria-hidden="true">
+                  <div class="flex items-center gap-3 mb-3">
+                    <div class="flex size-10 items-center justify-center rounded-full bg-brand/10 text-brand" aria-hidden="true">
                       <Icon name={icon} size="size-5" />
                     </div>
-                    <h3 class="text-base font-bold uppercase tracking-label text-white/90">{label}</h3>
+                    <h3 class="text-xs font-bold uppercase tracking-label text-brand">{label}</h3>
                   </div>
-                  <p class="mb-4 flex-1 text-sm leading-relaxed text-white/80">{desc}</p>
-                  <span class="mt-auto flex items-center gap-1.5 text-sm font-semibold text-white/80 transition-colors duration-[250ms] group-hover:text-white">
+                  <h4 class="mb-2 text-lg font-bold text-navy">{title}</h4>
+                  <p class="mb-6 flex-1 text-sm leading-relaxed text-muted">{desc}</p>
+                  <div class="mt-auto flex items-center justify-center gap-2 rounded-lg bg-brand px-4 py-3 text-sm font-bold text-white shadow-md transition-colors group-hover:bg-navy">
                     {cta}
-                    <Icon name="arrow-right" size="size-4" class="transition-transform duration-[250ms] group-hover:translate-x-1" />
-                  </span>
+                    <Icon name="arrow-right" size="size-4" class="transition-transform group-hover:translate-x-1" />
+                  </div>
                 </a>
               ))}
-              <div class="flex pr-3">.</div>
             </div>
           </div>
+          <div class="mt-2 flex justify-center gap-1.5" aria-hidden="true">
+            {pathCards.map((_, i) => (
+              <div class:list={["hero-dot size-1.5 rounded-full transition-colors duration-300", i === 0 ? "bg-white" : "bg-white/30"]} data-index={i} />
+            ))}
+          </div>
         </div>
+
+        <script is:inline>
+          (function() {
+            const scrollContainer = document.getElementById('hero-cards-scroll');
+            const dots = document.querySelectorAll('.hero-dot');
+            if (!scrollContainer || !dots.length) return;
+
+            scrollContainer.addEventListener('scroll', () => {
+              const scrollLeft = scrollContainer.scrollLeft;
+              const width = scrollContainer.offsetWidth;
+              const index = Math.round(scrollLeft / (width * 0.8)); // 0.8 matches the 82vw approx
+
+              dots.forEach((dot, i) => {
+                if (i === index) {
+                  dot.classList.add('bg-white');
+                  dot.classList.remove('bg-white/30');
+                } else {
+                  dot.classList.remove('bg-white');
+                  dot.classList.add('bg-white/30');
+                }
+              });
+            }, { passive: true });
+          })();
+        </script>
 
       </div>
 
@@ -143,7 +174,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
                 <div class="card-surface-icon" aria-hidden="true">
                   <Icon name={icon} size="size-5" />
                 </div>
-                <h3 class="text-base font-bold uppercase tracking-label text-brand">{label}</h3>
+                <h3 class="text-base font-bold uppercase tracking-label text-brand">{title}</h3>
               </div>
               <p class="mb-4 flex-1 text-sm leading-relaxed text-muted">{desc}</p>
               <span class="card-surface-cta">
@@ -176,61 +207,80 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
     </div>
   </section>
 
-  <Section bg="surface" class="py-section-y md:py-section-y-lg">
-    <header class="mx-auto mb-10 text-center md:mb-12">
-      <h2>Pourquoi choisir l'ACGL ?</h2>
-      <p class="mt-3 text-muted">Un club ouvert à tous, que vous soyez novice ou un pilote confirmé.</p>
-    </header>
-    <ul class="grid gap-6 sm:grid-cols-2">
-      <Card as="li" size="lg" class="bg-page">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
-            <Icon name="plane" size="size-6" />
-          </div>
-          <h3>Flotte diversifiée</h3>
-        </div>
-        <p class="mt-2 text-sm leading-relaxed text-muted">
-          Une flotte de {fleetCount} avions permettant de répondre à toutes vos envies. Formation, balade, voyage ou encore vol aux instruments.
-        </p>
-      </Card>
-      <Card as="li" size="lg" class="bg-page">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
-            <Icon name="graduation" size="size-6" />
-          </div>
-          <h3>Instructeurs qualifiés</h3>
-        </div>
-        <p class="mt-2 text-sm leading-relaxed text-muted">
-          {instructorCount} instructeurs disponibles en semaine ou le week-end pour vous accompagner que vous soyez élèves ou déjà pilote.
-        </p>
-      </Card>
-      <Card as="li" size="lg" class="bg-page">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
-            <Icon name="euro" size="size-6" />
-          </div>
-          <h3>Tarifs associatifs</h3>
-        </div>
-        <p class="mt-2 text-sm leading-relaxed text-muted">
-          Association loi 1901 à but non lucratif : coûts calculés au plus juste. Facturation carburant inclus, à la minute, moteur tournant.
-        </p>
-      </Card>
-      <Card as="li" size="lg" class="bg-page">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
-            <Icon name="shield" size="size-6" />
-          </div>
-          <h3>Sécurité & culture juste</h3>
-        </div>
-        <p class="mt-2 text-sm leading-relaxed text-muted">
-          Signalement libre, retours d'expérience et accompagnement bienveillant : la sécurité est un état d'esprit partagé par tous.
-        </p>
-      </Card>
-    </ul>
+  <Section bg="surface" class="py-section-y md:py-section-y-lg border-none!">
+    <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
+      <div>
+        <header class="mb-10 text-left md:mb-12">
+          <h2 class="text-3xl md:text-4xl">Pourquoi choisir l'ACGL ?</h2>
+          <p class="mt-4 text-lg text-muted">
+            Un club ouvert à tous, où la passion de l'aviation se transmet dans une ambiance conviviale et sécurisée.
+          </p>
+        </header>
+        <ul class="grid gap-6 sm:grid-cols-2">
+          <Card as="li" size="md" class="bg-page">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
+                <Icon name="plane" size="size-6" />
+              </div>
+              <h3 class="text-base font-bold">Flotte diversifiée</h3>
+            </div>
+            <p class="text-sm leading-relaxed text-muted">
+              {fleetCount} avions pour toutes vos envies : formation, voyage ou vol aux instruments.
+            </p>
+          </Card>
+          <Card as="li" size="md" class="bg-page">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
+                <Icon name="graduation" size="size-6" />
+              </div>
+              <h3 class="text-base font-bold">Instructeurs</h3>
+            </div>
+            <p class="text-sm leading-relaxed text-muted">
+              {instructorCount} instructeurs passionnés à votre écoute en semaine et le week-end.
+            </p>
+          </Card>
+          <Card as="li" size="md" class="bg-page">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
+                <Icon name="euro" size="size-6" />
+              </div>
+              <h3 class="text-base font-bold">Tarifs associatifs</h3>
+            </div>
+            <p class="text-sm leading-relaxed text-muted">
+              Structure 1901 à but non lucratif : le vol au prix le plus juste, carburant inclus.
+            </p>
+          </Card>
+          <Card as="li" size="md" class="bg-page">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
+                <Icon name="shield" size="size-6" />
+              </div>
+              <h3 class="text-base font-bold">Culture sécurité</h3>
+            </div>
+            <p class="text-sm leading-relaxed text-muted">
+              La sécurité est notre priorité absolue, cultivée par le partage d'expérience.
+            </p>
+          </Card>
+        </ul>
+      </div>
+
+      <div class="relative lg:pl-10">
+        <CommunityCarousel
+          images={[
+            { src: "/images/hero.jpg", alt: "Ambiance conviviale à l'aéroclub" },
+            { src: "/images/fleet/cessna-172/photo.jpg", alt: "Un avion de la flotte prêt pour le départ" },
+            { src: "/images/fleet/piper-pa28-archer/photo.jpg", alt: "Piper Archer sur le parking de Bron" },
+          ]}
+        />
+        <div class="absolute -bottom-6 -right-6 -z-10 hidden size-64 rounded-full bg-brand/5 lg:block"></div>
+        <div class="absolute -left-6 -top-6 -z-10 hidden size-32 rounded-full bg-sky/10 lg:block"></div>
+      </div>
+    </div>
   </Section>
 
+
   <CtaBanner
-    bg="page"
+    bg="surface"
     title="Nous rencontrer"
     description={contact?.permanence
       ? `Une permanence club a lieu ${contact.permanence}`
