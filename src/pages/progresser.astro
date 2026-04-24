@@ -31,9 +31,10 @@ const allRatings = (await getCollection("ratings")).sort(
           Chaque qualification ouvre de nouvelles possibilités de vol. Nos instructeurs vous accompagnent tout au long de la formation.
         </p>
       </header>
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {allRatings.map((item) => (
           <Card
+            as="li"
             class:list={[
               "bg-page",
               !item.data.available && "border-dashed opacity-60",
@@ -56,7 +57,7 @@ const allRatings = (await getCollection("ratings")).sort(
             )}
           </Card>
         ))}
-      </div>
+      </ul>
     </Section>
   )}
 

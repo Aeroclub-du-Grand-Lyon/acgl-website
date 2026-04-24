@@ -6,12 +6,6 @@ import CtaBanner from "../components/CtaBanner.astro";
 import Icon from "../components/Icon.astro";
 import MainLayout from "../layouts/MainLayout.astro";
 import Section from "../components/Section.astro";
-const surfaceLinkCardLeadIcon =
-  "flex size-10 items-center justify-center rounded-full bg-brand/10 text-brand transition-[transform,background-color,color] duration-[250ms] group-hover:scale-110 group-hover:bg-brand group-hover:text-white";
-
-const surfaceLinkCardCta =
-  "mt-auto flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors duration-[250ms] group-hover:text-navy";
-
 const homeNumbersEntries = await getCollection("homeClubNumbers");
 const heroStats = homeNumbersEntries[0]?.data.stats ?? [];
 
@@ -103,7 +97,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
               class="mb-4 font-display text-[clamp(1.75rem,4.5vw,2.75rem)] font-semibold tracking-tight text-white md:mb-5"
             >
               Voler, c'est ici que ça commence !
-            <h1/>
+            </h1>
             <p class="mx-auto text-sm leading-relaxed text-white/80 md:text-base lg:mx-0">
               Apprenez à piloter ou volez avec votre licence depuis Lyon Bron. Trouvez votre parcours.
             </p>
@@ -146,16 +140,15 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
           {pathCards.map(({ href, icon, label, title, desc, cta }) => (
             <Card as="a" href={href} variant="surfaceLink" class="h-full bg-page">
               <div class="flex items-center gap-3 mb-4">
-                <div class={surfaceLinkCardLeadIcon} aria-hidden="true">
+                <div class="card-surface-icon" aria-hidden="true">
                   <Icon name={icon} size="size-5" />
                 </div>
                 <h3 class="text-base font-bold uppercase tracking-label text-brand">{label}</h3>
               </div>
-              <p class="hidden mb-2 text-sm text-navy font-semibold transition-colors duration-[250ms] group-hover:text-brand">{title}</p>
               <p class="mb-4 flex-1 text-sm leading-relaxed text-muted">{desc}</p>
-              <span class={surfaceLinkCardCta}>
+              <span class="card-surface-cta">
                 {cta}
-                <Icon name="arrow-right" size="size-4" class="transition-transform duration-[250ms] group-hover:translate-x-1" />
+                <Icon name="arrow-right" size="size-4" class="card-surface-cta-arrow" />
               </span>
             </Card>
           ))}
@@ -164,14 +157,14 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
 
       {heroStats.length > 0 && (
         <div class="flex flex-wrap items-center justify-center gap-x-7 gap-y-3 w-fit mx-auto mt-8 pb-2 lg:border-t lg:border-white/20 lg:pt-7 lg:pb-0" role="group" aria-label="Chiffres clés du club">
-          <div class="flex flex-wrap justify-center gap-8">
+      <ul class="flex flex-wrap justify-center gap-8 p-0 list-none">
           {heroStats.map((item) => (
-            <span class="flex flex-col items-center gap-0.5">
+        <li class="flex flex-col items-center gap-0.5">
               <span class="font-display text-xl font-semibold tabular-nums leading-none text-white">{item.value}</span>
               <span class="text-xs font-medium uppercase tracking-label text-white/70">{item.label}</span>
-            </span>
+        </li>
           ))}
-          </div>
+      </ul>
           <span class="hidden h-5 w-px bg-white/20 sm:block" aria-hidden="true"></span>
           <span class="hidden items-center gap-1.5 text-sm text-white/70 sm:flex">
             <Icon name="users" size="size-3.5" class="shrink-0 text-sky" />
@@ -188,8 +181,8 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
       <h2>Pourquoi choisir l'ACGL ?</h2>
       <p class="mt-3 text-muted">Un club ouvert à tous, que vous soyez novice ou un pilote confirmé.</p>
     </header>
-    <div class="grid gap-6 sm:grid-cols-2">
-      <Card size="lg" class="bg-page">
+    <ul class="grid gap-6 sm:grid-cols-2">
+      <Card as="li" size="lg" class="bg-page">
         <div class="flex items-center gap-3 mb-4">
           <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
             <Icon name="plane" size="size-6" />
@@ -200,7 +193,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
           Une flotte de {fleetCount} avions permettant de répondre à toutes vos envies. Formation, balade, voyage ou encore vol aux instruments.
         </p>
       </Card>
-      <Card size="lg" class="bg-page">
+      <Card as="li" size="lg" class="bg-page">
         <div class="flex items-center gap-3 mb-4">
           <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
             <Icon name="graduation" size="size-6" />
@@ -211,7 +204,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
           {instructorCount} instructeurs disponibles en semaine ou le week-end pour vous accompagner que vous soyez élèves ou déjà pilote.
         </p>
       </Card>
-      <Card size="lg" class="bg-page">
+      <Card as="li" size="lg" class="bg-page">
         <div class="flex items-center gap-3 mb-4">
           <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
             <Icon name="euro" size="size-6" />
@@ -222,7 +215,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
           Association loi 1901 à but non lucratif : coûts calculés au plus juste. Facturation carburant inclus, à la minute, moteur tournant.
         </p>
       </Card>
-      <Card size="lg" class="bg-page">
+      <Card as="li" size="lg" class="bg-page">
         <div class="flex items-center gap-3 mb-4">
           <div class="flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
             <Icon name="shield" size="size-6" />
@@ -233,37 +226,18 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
           Signalement libre, retours d'expérience et accompagnement bienveillant : la sécurité est un état d'esprit partagé par tous.
         </p>
       </Card>
-    </div>
+    </ul>
   </Section>
 
   <CtaBanner
     bg="page"
     title="Nous rencontrer"
     description={contact?.permanence
-      ? `Une permanence club à lieu ${contact.permanence}`
-      : "Contactez nous pour organiser une rencontre dans nos locaux."}
+      ? `Une permanence club a lieu ${contact.permanence}`
+      : "Contactez-nous pour organiser une rencontre dans nos locaux."}
     primaryHref="/contact"
     primaryLabel="Voir les infos pratiques"
   >
   </CtaBanner>
 </MainLayout>
 
-<style is:global>
-  .site-header .brand {
-    gap: 0;
-    transition: gap 300ms ease;
-  }
-  .site-header.is-scrolled .brand {
-    gap: 0.75rem; /* gap-3 */
-  }
-  .brand-logo {
-    opacity: 0;
-    width: 0;
-    overflow: hidden;
-    transition: opacity 300ms ease, width 300ms ease;
-  }
-  .site-header.is-scrolled .brand-logo {
-    opacity: 1;
-    width: 3rem; /* size-12 */
-  }
-</style>
