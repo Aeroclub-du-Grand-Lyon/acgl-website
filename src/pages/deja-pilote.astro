@@ -40,9 +40,9 @@ const benefits = [
 
   <Section id="join" labelledby="join-heading" bg="surface">
     <h2 id="join-heading" class="mb-10">Pourquoi rejoindre l'ACGL ?</h2>
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {benefits.map(({ icon, title, desc }) => (
-        <Card class="bg-page">
+        <Card as="li" class="bg-page">
           <div
             class="mb-4 flex size-10 items-center justify-center rounded-lg bg-light-frost text-brand"
             aria-hidden="true"
@@ -53,7 +53,7 @@ const benefits = [
           <p class="m-0 text-sm leading-relaxed text-muted">{desc}</p>
         </Card>
       ))}
-    </div>
+    </ul>
   </Section>
 
   <Section id="fleet" labelledby="fleet-heading" bg="page">
@@ -66,9 +66,9 @@ const benefits = [
       </div>
       <ButtonLink href="/flotte" variant="outline-dark">Voir toute la flotte</ButtonLink>
     </div>
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {fleet.slice(0, 6).map((aircraft) => (
-        <Card size="sm" class="flex items-center gap-4">
+        <Card as="li" size="sm" class="flex items-center gap-4">
           <div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
             <Icon name="plane" />
           </div>
@@ -78,7 +78,7 @@ const benefits = [
           </div>
         </Card>
       ))}
-    </div>
+    </ul>
   </Section>
 
   {clubMembership?.data.normal && fixedFees?.data.normal && (

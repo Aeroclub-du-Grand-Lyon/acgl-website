@@ -7,18 +7,6 @@ import Section from "../components/Section.astro";
 import Card from "../components/Card.astro";
 import Icon from "../components/Icon.astro";
 import MainLayout from "../layouts/MainLayout.astro";
-const surfaceLinkCardLeadIconSm =
-  "mb-4 flex size-10 items-center justify-center rounded-lg bg-brand/10 text-brand transition-[transform,background-color,color] duration-[250ms] group-hover:scale-110 group-hover:bg-brand group-hover:text-white";
-
-const surfaceLinkCardTitle =
-  "mb-2 text-lg transition-colors duration-[250ms] group-hover:text-brand";
-
-const surfaceLinkCardCta =
-  "mt-auto flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors duration-[250ms] group-hover:text-navy";
-
-const surfaceLinkCardCtaArrow =
-  "transition-transform duration-[250ms] group-hover:translate-x-1";
-
 const allLinks = await getCollection("links");
 const sorted = allLinks.sort((a, b) => a.data.order - b.data.order);
 
@@ -38,7 +26,7 @@ const resources = sorted.filter((l) => l.data.category === "resource");
   {partners.length > 0 && (
     <Section id="partners" labelledby="partners-heading" bg="surface">
       <h2 id="partners-heading" class="mb-8">Partenaires</h2>
-      <div class="grid gap-6 md:grid-cols-3">
+      <ul class="grid gap-6 md:grid-cols-3">
         {partners.map((link) => (
           <Card
             as="a"
@@ -48,27 +36,27 @@ const resources = sorted.filter((l) => l.data.category === "resource");
             variant="surfaceLink"
             class="h-full bg-page"
           >
-            <div class={surfaceLinkCardLeadIconSm} aria-hidden="true">
+            <div class="card-surface-icon-sq" aria-hidden="true">
               <Icon name="external-link" />
             </div>
-            <h3 class:list={[surfaceLinkCardTitle, "text-base"]}>{link.data.key}</h3>
+            <h3 class="text-base card-surface-title">{link.data.key}</h3>
             <p class="mb-4 flex-1 text-sm leading-relaxed text-muted">
               {link.data.description}
             </p>
-            <span class={surfaceLinkCardCta}>
+            <span class="card-surface-cta">
               Visiter le site
-              <Icon name="arrow-right" size="size-3.5" class={surfaceLinkCardCtaArrow} />
+              <Icon name="arrow-right" size="size-3.5" class="card-surface-cta-arrow" />
             </span>
           </Card>
         ))}
-      </div>
+      </ul>
     </Section>
   )}
 
   {resources.length > 0 && (
     <Section id="useful-links" labelledby="useful-links-heading" bg="page">
       <h2 id="useful-links-heading" class="mb-8">Liens utiles</h2>
-      <div class="grid gap-6 md:grid-cols-3">
+      <ul class="grid gap-6 md:grid-cols-3">
         {resources.map((link) => (
           <Card
             as="a"
@@ -78,20 +66,20 @@ const resources = sorted.filter((l) => l.data.category === "resource");
             variant="surfaceLink"
             class="h-full bg-surface"
           >
-            <div class={surfaceLinkCardLeadIconSm} aria-hidden="true">
+            <div class="card-surface-icon-sq" aria-hidden="true">
               <Icon name="external-link" />
             </div>
-            <h3 class:list={[surfaceLinkCardTitle, "text-base"]}>{link.data.key}</h3>
+            <h3 class="text-base card-surface-title">{link.data.key}</h3>
             <p class="mb-4 flex-1 text-sm leading-relaxed text-muted">
               {link.data.description}
             </p>
-            <span class={surfaceLinkCardCta}>
+            <span class="card-surface-cta">
               Visiter le site
-              <Icon name="arrow-right" size="size-3.5" class={surfaceLinkCardCtaArrow} />
+              <Icon name="arrow-right" size="size-3.5" class="card-surface-cta-arrow" />
             </span>
           </Card>
         ))}
-      </div>
+      </ul>
     </Section>
   )}
 

@@ -120,8 +120,7 @@ const inputBase =
   const form = document.getElementById("contact-form") as HTMLFormElement;
   const submitBtn = document.getElementById("contact-submit") as HTMLButtonElement;
 
-  // Tailwind classes for the error state on inputs
-  const INPUT_ERR = ["border-signal", "focus-visible:ring-signal/20", "focus-visible:border-signal"];
+  const INPUT_ERROR_CLASSES = ["border-signal", "focus-visible:ring-signal/20", "focus-visible:border-signal"];
 
   const urlSubject = new URLSearchParams(location.search).get("subject");
   if (urlSubject) {
@@ -137,7 +136,7 @@ const inputBase =
       (el as HTMLElement).textContent = "";
     });
     form.querySelectorAll("input, textarea").forEach((el) => {
-      el.classList.remove(...INPUT_ERR);
+      el.classList.remove(...INPUT_ERROR_CLASSES);
     });
 
     submitBtn.disabled = true;
@@ -171,7 +170,7 @@ const inputBase =
           errEl.textContent = messages[0] as string;
           errEl.hidden = false;
         }
-        inputEl?.classList.add(...INPUT_ERR);
+        inputEl?.classList.add(...INPUT_ERROR_CLASSES);
       }
     } else {
       (document.getElementById("error-general") as HTMLElement).hidden = false;
