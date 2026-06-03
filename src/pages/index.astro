@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
+import heroImage from "../assets/hero.jpg";
 import ButtonLink from "../components/ButtonLink.astro";
 import Card from "../components/Card.astro";
 import CtaBanner from "../components/CtaBanner.astro";
@@ -68,11 +69,10 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
   >
     <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       <Image
-        src="/images/hero.jpg"
+        src={heroImage}
         alt=""
         class="h-full w-full object-cover object-center"
-        width=1920
-        height=1080
+        width={1920}
         loading="eager"
         fetchpriority="high"
         decoding="async"

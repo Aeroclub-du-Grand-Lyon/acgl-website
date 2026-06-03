@@ -43,16 +43,28 @@ function equipmentPills(text: string) {
             class="scroll-mt-header-h mx-auto flex h-full w-full flex-col overflow-hidden"
           >
             <div class="shrink-0 aspect-[3/1.5] overflow-hidden rounded-t-2xl bg-line">
-              <Image
-                class="h-full w-full object-cover"
-                src={aircraft.data.photo ? aircraft.data.photo : fleetPhotoFallback}
-                alt={`${aircraft.data.key}, immatriculation ${aircraft.data.registration}`}
-                width="480"
-                height="320"
-                loading={index === 0 ? "eager" : "lazy"}
-                fetchpriority={index === 0 ? "high" : undefined}
-                decoding="async"
-              />
+              {aircraft.data.photo ? (
+                <Image
+                  class="h-full w-full object-cover"
+                  src={aircraft.data.photo}
+                  alt={`${aircraft.data.key}, immatriculation ${aircraft.data.registration}`}
+                  width={640}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  fetchpriority={index === 0 ? "high" : undefined}
+                  decoding="async"
+                />
+              ) : (
+                <Image
+                  class="h-full w-full object-cover"
+                  src={fleetPhotoFallback}
+                  alt={`${aircraft.data.key}, immatriculation ${aircraft.data.registration}`}
+                  width={480}
+                  height={320}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  fetchpriority={index === 0 ? "high" : undefined}
+                  decoding="async"
+                />
+              )}
             </div>
             <div class="flex flex-1 flex-col p-3 sm:p-6 gap-5">
               <div class="flex flex-wrap items-center gap-2">

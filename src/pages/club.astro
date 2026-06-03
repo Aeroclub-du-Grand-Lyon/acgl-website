@@ -6,9 +6,9 @@ import Section from "../components/Section.astro";
 import Card from "../components/Card.astro";
 import Badge from "../components/Badge.astro";
 import Icon from "../components/Icon.astro";
+import Carousel from "../components/Carousel.astro";
 import CtaBanner from "../components/CtaBanner.astro";
 import MainLayout from "../layouts/MainLayout.astro";
-
 
 const allBoard = (await getCollection("board")).sort((a, b) => a.data.order - b.data.order);
 const executive = allBoard.filter((m) => m.data.group === "executive");
@@ -20,6 +20,9 @@ const commitments = commitmentEntries[0]?.data.items ?? [];
 
 const clubEventsEntries = await getCollection("clubEvents");
 const clubEvents = clubEventsEntries[0]?.data.items ?? [];
+
+const galleryEntries = await getCollection("clubGallery");
+const galleryImages = galleryEntries[0]?.data.images ?? [];
 ---
 
 <MainLayout
@@ -42,14 +45,8 @@ const clubEvents = clubEventsEntries[0]?.data.items ?? [];
           Basé sur l'aéroport de Lyon Bron (LFLY), l'un des rares terrains contrôlés en zone urbaine dense de France, l'ACGL offre un environnement de formation exigeant et stimulant : contact radio avec la tour dès les premiers vols, espace aérien complexe, et les Alpes en toile de fond les jours de bonne visibilité.
         </p>
       </div>
-      <aside class="lg:w-80 xl:w-96">
-        <div class="flex min-h-64 items-center justify-center rounded-2xl border-2 border-dashed border-line bg-light-frost/50 lg:h-full">
-          <div class="flex flex-col items-center gap-2 p-8 text-center">
-            <Icon name="runway" size="size-10" class="text-brand/30" />
-            <p class="text-sm font-medium text-ink">Photo à venir</p>
-            <p class="text-xs text-muted">Vue de l'aéroport de Lyon Bron (LFLY)</p>
-          </div>
-        </div>
+      <aside class="lg:w-140">
+        <Carousel images={galleryImages} />
       </aside>
     </div>
   </Section>
