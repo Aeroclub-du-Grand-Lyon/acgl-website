@@ -275,22 +275,18 @@
 #nav-mobile {
   visibility: hidden;
   opacity: 0;
-  transform: translateY(-6px);
   pointer-events: none;
   transition:
-    transform 0.25s var(--ease-in-out),
-    opacity 0.2s ease,
+    opacity 0.25s ease,
     visibility 0s linear 0.25s;
 }
 
 #nav-mobile.is-open {
   visibility: visible;
   opacity: 1;
-  transform: translateY(0);
   pointer-events: auto;
   transition:
-    transform 0.25s var(--ease-in-out),
-    opacity 0.2s ease,
+    opacity 0.25s ease,
     visibility 0s linear 0s;
 }
 

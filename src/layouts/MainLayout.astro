@@ -110,7 +110,7 @@ const jsonLd = {
     <meta name="twitter:image" content={ogImageUrl} />
 
     <link rel="canonical" href={canonicalUrl} />
-    <link rel="icon" type="image/svg+xml" href="/logo-mini.svg" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -139,10 +139,10 @@ const jsonLd = {
       <div class="container">
         <div class="flex items-center justify-between py-[0.65rem]">
           <a href="/" class="brand flex shrink-0 items-center gap-3 no-underline">
-            <Image src="/logo-mini.svg" alt="Logo ACGL" class="brand-logo size-12" width="48" height="48" />
+            <Image src="/logo.svg" alt="Logo ACGL" class="brand-logo size-12" width="48" height="48" />
             <div class="leading-snug">
               <div class="font-display text-xs sm:text-sm md:text-lg uppercase font-bold tracking-tight">Aéroclub du Grand Lyon</div>
-              <div class="brand-sub text-xs tracking-label">
+              <div class="font-display brand-sub text-xs tracking-label">
                 Aéroport Lyon Bron
               </div>
             </div>
@@ -210,7 +210,7 @@ const jsonLd = {
 
     <div id="nav-backdrop" class="fixed inset-0 z-[98] bg-black/35 opacity-0 pointer-events-none transition-opacity duration-[250ms] ease-in-out [&.is-open]:opacity-100 [&.is-open]:pointer-events-auto lg:hidden" aria-hidden="true"></div>
 
-    <nav id="nav-mobile" aria-label="Menu de navigation mobile" aria-hidden="true" class="fixed inset-x-0 top-header-h z-[99] border-b border-line bg-surface px-4 py-2 pb-3 shadow-acgl-lg lg:hidden">
+    <nav id="nav-mobile" aria-label="Menu de navigation mobile" aria-hidden="true" class="fixed inset-x-0 top-header-h bottom-0 z-[99] overflow-y-auto bg-surface px-4 py-2 pb-3 lg:hidden">
       <ul class="m-0 flex list-none flex-col gap-0.5 p-0" role="list">
         {navLinks.map((item) =>
           item.children ? (
@@ -262,12 +262,13 @@ const jsonLd = {
           <div class="grid gap-12 py-14 md:grid-cols-[1fr_auto_auto] md:gap-16 md:py-16 lg:gap-20">
             <div class="flex flex-col items-center gap-5 md:flex-row md:items-start md:gap-6">
               <div class="shrink-0">
-                <Image src="/logo-mini.svg" class="size-48" alt="ACGL" width="144" height="144" />
+                <Image src="/logo-vertical.svg" class="w-[clamp(100px,30vw,240px)] h-auto md:hidden" alt="ACGL" width="240" height="240" />
+                <Image src="/logo.svg" class="hidden md:block size-48" alt="ACGL" width="144" height="144" />
               </div>
               <div class="flex flex-col items-center gap-4 md:items-start">
-                <div class="flex flex-col gap-1">
-                  <span class="text-center font-display text-lg font-bold uppercase leading-tight text-white md:text-left">Aéroclub du Grand Lyon</span>
-                  <span class="text-center text-xs tracking-label-wide text-white/50 md:text-left">LFLY · Aéroport Lyon Bron</span>
+                <div class="flex flex-col gap-1 hidden md:flex">
+                  <span class="text-center font-display text-base font-bold uppercase leading-tight text-white md:text-left">Aéroclub du Grand Lyon</span>
+                  <span class="text-center text-xs tracking-label-wide text-white/50 md:text-left">Aéroport Lyon Bron</span>
                 </div>
                 {contact?.address && (
                   <p class="text-center text-sm leading-relaxed text-white/65 md:text-left">
