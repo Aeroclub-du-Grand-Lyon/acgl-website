@@ -22,6 +22,7 @@ export default config({
         "instructors",
         "clubEvents",
         "commitments",
+        "clubGallery",
         "contact",
         "socialLinks",
         "links",
@@ -247,6 +248,29 @@ export default config({
         ),
       },
     }),
+
+    clubGallery: singleton({
+      label: "Galerie du club",
+      path: "src/content/settings/club-gallery",
+      format: { data: "yaml" },
+      schema: {
+        images: fields.array(
+          fields.object({
+            src: fields.image({
+              label: "Photo",
+              description: "Format paysage recommandé (ex. 1200×800). Optimisée automatiquement à la construction.",
+              directory: "src/assets/club",
+              publicPath: "../../assets/club/",
+            }),
+            alt: fields.text({ label: "Texte alternatif" }),
+          }),
+          {
+            label: "Photos",
+            itemLabel: (props) => props.fields.alt?.value ?? "Photo",
+          },
+        ),
+      },
+    }),
   },
   collections: {
     fleet: collection({
@@ -266,9 +290,9 @@ export default config({
         photo: fields.image({
           label: "Photo",
           description:
-            "Image affichée sur la page Flotte. Format paysage recommandé (ex. 1200×800).",
-          directory: "public/images/fleet",
-          publicPath: "/images/fleet/",
+            "Image affichée sur la page Flotte. Format paysage recommandé (ex. 1200×800). Optimisée automatiquement à la construction.",
+          directory: "src/assets/fleet",
+          publicPath: "../../assets/fleet/",
           validation: { isRequired: false },
         }),
         registration: fields.text({ label: "Immatriculation" }),
@@ -440,6 +464,13 @@ export default config({
             { label: "Piste d'atterrissage", value: "runway" },
           ],
           defaultValue: "plane",
+        }),
+        photo: fields.image({
+          label: "Photo",
+          description: "Image illustrant l'offre. Format paysage recommandé (ex. 1200×800). Optimisée automatiquement à la construction.",
+          directory: "src/assets/offers",
+          publicPath: "../../assets/offers/",
+          validation: { isRequired: false },
         }),
         tagline: fields.text({
           label: "Accroche courte",

@@ -20,30 +20,25 @@ function normalizeEquipment(raw: unknown): string {
 
 const fleet = defineCollection({
   loader: glob({ pattern: "*.yaml", base: "./src/content/fleet" }),
-  schema: z.object({
-    key: z.string(),
-    registration: z.string(),
-    engine: z.string(),
-    seats: z.coerce.number().int().positive(),
-    speed: z.string(),
-    autonomy: z.string(),
-    usage: z.string(),
-    equipment: z.unknown().transform(normalizeEquipment),
-    photo: z
-      .preprocess(
-        (v) =>
-          v === null || v === undefined || v === "" ? undefined : String(v),
-        z.string().min(1),
-      )
-      .optional(),
-    normal: emptyToUndefined,
-    reduced: emptyToUndefined,
-    ifrNormal: emptyToUndefined,
-    ifrReduced: emptyToUndefined,
-    schoolAircraft: z.boolean().default(false),
-    pricingNotes: emptyToUndefined,
-    order: z.coerce.number().int(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      key: z.string(),
+      registration: z.string(),
+      engine: z.string(),
+      seats: z.coerce.number().int().positive(),
+      speed: z.string(),
+      autonomy: z.string(),
+      usage: z.string(),
+      equipment: z.unknown().transform(normalizeEquipment),
+      photo: image().optional(),
+      normal: emptyToUndefined,
+      reduced: emptyToUndefined,
+      ifrNormal: emptyToUndefined,
+      ifrReduced: emptyToUndefined,
+      schoolAircraft: z.boolean().default(false),
+      pricingNotes: emptyToUndefined,
+      order: z.coerce.number().int(),
+    }),
 });
 
 const pricing = defineCollection({
@@ -162,6 +157,24 @@ const commitments = defineCollection({
   }),
 });
 
+const clubGallery = defineCollection({
+  loader: glob({
+    pattern: "club-gallery.yaml",
+    base: "./src/content/settings",
+  }),
+  schema: ({ image }) =>
+    z.object({
+      images: z
+        .array(
+          z.object({
+            src: image(),
+            alt: z.string(),
+          }),
+        )
+        .default([]),
+    }),
+});
+
 const clubEvents = defineCollection({
   loader: glob({
     pattern: "club-events.yaml",
@@ -180,17 +193,19 @@ const clubEvents = defineCollection({
 
 const offers = defineCollection({
   loader: glob({ pattern: "*.yaml", base: "./src/content/offers" }),
-  schema: z.object({
-    title: z.string(),
-    icon: z.enum(["plane", "clock", "gift", "headset", "wind", "award", "plane-ticket", "pilot-cap", "runway"]).default("plane"),
-    tagline: emptyToUndefined,
-    description: z.string(),
-    duration: emptyToUndefined,
-    price: emptyToUndefined,
-    capacity: emptyToUndefined,
-    notes: emptyToUndefined,
-    order: z.coerce.number().int(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      icon: z.enum(["plane", "clock", "gift", "headset", "wind", "award", "plane-ticket", "pilot-cap", "runway"]).default("plane"),
+      photo: image().optional(),
+      tagline: emptyToUndefined,
+      description: z.string(),
+      duration: emptyToUndefined,
+      price: emptyToUndefined,
+      capacity: emptyToUndefined,
+      notes: emptyToUndefined,
+      order: z.coerce.number().int(),
+    }),
 });
 
 const links = defineCollection({
@@ -238,6 +253,7 @@ export const collections = {
   socialLinksSettings,
   pricingDetailsSettings,
   commitments,
+  clubGallery,
   clubEvents,
   offers,
   ratings,

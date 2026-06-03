@@ -11,7 +11,7 @@ equipment:
   - Glass cockpit
   - GPS
   - Parachute de cellule
-photo: /images/fleet/viper-sd4/photo.jpg
+photo: ../../assets/fleet/viper-sd4/photo.jpg
 normal: 159 €/h
 reduced: 129 €/h
 schoolAircraft: true

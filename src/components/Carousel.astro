@@ -1,0 +1,96 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  images: { src: ImageMetadata; alt: string }[];
+  class?: string;
+}
+
+const { images, class: className } = Astro.props;
+const id = `carousel-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+{images.length > 0 && (
+  <div id={id} class:list={["carousel group relative overflow-hidden rounded-2xl", className]} aria-roledescription="carousel" aria-label="Galerie photos du club">
+    <div class="carousel-track flex transition-transform duration-500 ease-in-out">
+      {images.map((img, i) => (
+        <div class="w-full shrink-0 aspect-[3/2]" role="group" aria-roledescription="slide" aria-label={`Photo ${i + 1} sur ${images.length}`}>
+          <Image
+            src={img.src}
+            alt={img.alt}
+            width={768}
+            class="h-full w-full object-cover"
+          />
+        </div>
+      ))}
+    </div>
+
+    {images.length > 1 && (
+      <>
+        <button
+          type="button"
+          class="carousel-prev absolute left-2 top-1/2 -translate-y-1/2 flex size-9 items-center justify-center rounded-full bg-black/40 text-white opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:bg-black/60 group-hover:opacity-100 focus-visible:opacity-100"
+          aria-label="Photo précédente"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="size-4"><polyline points="15 18 9 12 15 6" /></svg>
+        </button>
+        <button
+          type="button"
+          class="carousel-next absolute right-2 top-1/2 -translate-y-1/2 flex size-9 items-center justify-center rounded-full bg-black/40 text-white opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:bg-black/60 group-hover:opacity-100 focus-visible:opacity-100"
+          aria-label="Photo suivante"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="size-4"><polyline points="9 18 15 12 9 6" /></svg>
+        </button>
+        <div class="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5" role="tablist" aria-label="Sélectionner une photo">
+          {images.map((_, i) => (
+            <button
+              type="button"
+              role="tab"
+              class:list={["carousel-dot size-2 rounded-full transition-[background-color,transform] duration-200", i === 0 ? "bg-white scale-125" : "bg-white/50"]}
+              aria-selected={i === 0 ? "true" : "false"}
+              aria-label={`Photo ${i + 1}`}
+            />
+          ))}
+        </div>
+      </>
+    )}
+  </div>
+)}
+
+<script>
+  document.querySelectorAll<HTMLElement>(".carousel").forEach((el) => {
+    const track = el.querySelector<HTMLElement>(".carousel-track");
+    const dots = el.querySelectorAll<HTMLButtonElement>(".carousel-dot");
+    const prev = el.querySelector<HTMLButtonElement>(".carousel-prev");
+    const next = el.querySelector<HTMLButtonElement>(".carousel-next");
+    if (!track) return;
+
+    const count = track.children.length;
+    let current = 0;
+    let timer: ReturnType<typeof setInterval>;
+
+    function go(idx: number) {
+      current = ((idx % count) + count) % count;
+      track!.style.transform = `translateX(-${current * 100}%)`;
+      dots.forEach((d, i) => {
+        const active = i === current;
+        d.setAttribute("aria-selected", active ? "true" : "false");
+        d.classList.toggle("bg-white", active);
+        d.classList.toggle("scale-125", active);
+        d.classList.toggle("bg-white/50", !active);
+      });
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      timer = setInterval(() => go(current + 1), 5000);
+    }
+
+    prev?.addEventListener("click", () => { go(current - 1); resetTimer(); });
+    next?.addEventListener("click", () => { go(current + 1); resetTimer(); });
+    dots.forEach((d, i) => d.addEventListener("click", () => { go(i); resetTimer(); }));
+
+    resetTimer();
+  });
+</script>
