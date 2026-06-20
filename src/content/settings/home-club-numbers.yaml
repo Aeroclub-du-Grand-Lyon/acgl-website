@@ -1,7 +1,7 @@
 stats:
   - value: 8
     label: avions
-  - value: 15
+  - value: 16
     label: instructeurs
   - value: 170
     label: membres
