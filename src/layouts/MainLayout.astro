@@ -9,12 +9,14 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  ogImageAlt?: string;
 }
 
 const {
   title,
   description = "Aéroclub du Grand Lyon - Formation au pilotage et vols découverte à Lyon Bron",
-  ogImage = "/images/hero.jpg",
+  ogImage = "/images/og-image.jpg",
+  ogImageAlt = "Aéroclub du Grand Lyon - aviation à Lyon Bron",
 } = Astro.props;
 
 const currentPath = Astro.url.pathname || "/";
@@ -99,8 +101,10 @@ const jsonLd = {
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="673" />
+    <meta property="og:image:height" content="354" />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:site_name" content="Aéroclub du Grand Lyon" />
 
@@ -108,9 +112,15 @@ const jsonLd = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
 
     <link rel="canonical" href={canonicalUrl} />
-    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="/logo-square.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -139,7 +149,7 @@ const jsonLd = {
       <div class="container">
         <div class="flex items-center justify-between py-[0.65rem]">
           <a href="/" class="brand flex shrink-0 items-center gap-3 no-underline">
-            <Image src="/logo.svg" alt="Logo ACGL" class="brand-logo size-12" width="48" height="48" />
+            <Image src="/logo-square.svg" alt="Logo ACGL" class="brand-logo size-12" width="48" height="48" />
             <div class="leading-snug">
               <div class="font-display text-xs sm:text-sm md:text-lg uppercase font-bold tracking-tight">Aéroclub du Grand Lyon</div>
               <div class="font-display brand-sub text-xs tracking-label">
@@ -263,7 +273,7 @@ const jsonLd = {
             <div class="flex flex-col items-center gap-5 md:flex-row md:items-start md:gap-6">
               <div class="shrink-0">
                 <Image src="/logo-vertical.svg" class="w-[clamp(100px,30vw,240px)] h-auto md:hidden" alt="ACGL" width="240" height="240" />
-                <Image src="/logo.svg" class="hidden md:block size-48" alt="ACGL" width="144" height="144" />
+                <Image src="/logo-square.svg" class="hidden md:block size-48" alt="ACGL" width="144" height="144" />
               </div>
               <div class="flex flex-col items-center gap-4 md:items-start">
                 <div class="flex flex-col gap-1 hidden md:flex">

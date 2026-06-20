@@ -90,11 +90,11 @@ const galleryImages = galleryEntries[0]?.data.images ?? [];
         {instructors.map((instructor) => {
           const { examiner, nightRating, ifrRating, mountainRating, status } = instructor.data;
           const badges = [
-            { label: "FE(A)", always: false, show: examiner, highlight: true },
-            { label: "FI(A)", always: true, highlight: false },
-            { label: "Nuit", always: false, show: nightRating, highlight: false },
-            { label: "Montagne", always: false, show: mountainRating, highlight: false },
-            { label: "IFR", always: false, show: ifrRating, highlight: false }
+            { label: "FE(A)", description: "Examinateur avion", always: false, show: examiner, highlight: true },
+            { label: "FI(A)", description: "Instructeur avion", always: true, highlight: false },
+            { label: "Nuit", description: "Instructeur vol de nuit", always: false, show: nightRating, highlight: false },
+            { label: "Montagne", description: "Instructeur vol en montagne", always: false, show: mountainRating, highlight: false },
+            { label: "IFR", description: "Instructeur vol aux instruments", always: false, show: ifrRating, highlight: false }
           ].filter((b) => b.always || b.show);
           return (
             <Card as="li" size="sm" class="bg-page">
@@ -114,9 +114,27 @@ const galleryImages = galleryEntries[0]?.data.images ?? [];
               </div>
               <div class="mt-5 flex flex-wrap gap-1.5">
                 {badges.map((b) => (
-                  <Badge variant={b.highlight ? "muted" : "default"}>
-                    {b.label}
-                  </Badge>
+                  <span class="group relative inline-flex">
+                    <Badge
+                      variant={b.highlight ? "muted" : "default"}
+                      tabindex="0"
+                      role="button"
+                      aria-label={`${b.label} : ${b.description}`}
+                      class="cursor-help focus:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1"
+                    >
+                      {b.label}
+                    </Badge>
+                    <span
+                      role="tooltip"
+                      class="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-ink px-2.5 py-1.5 text-xs font-medium normal-case tracking-normal text-white opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
+                    >
+                      {b.description}
+                      <span
+                        class="absolute left-1/2 top-full size-0 -translate-x-1/2 border-4 border-transparent border-t-ink"
+                        aria-hidden="true"
+                      ></span>
+                    </span>
+                  </span>
                 ))}
               </div>
             </Card>

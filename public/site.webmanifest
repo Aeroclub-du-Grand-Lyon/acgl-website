@@ -1,0 +1,22 @@
+{
+  "name": "Aéroclub du Grand Lyon",
+  "short_name": "ACGL",
+  "description": "Formation au pilotage et vols découverte à Lyon Bron",
+  "lang": "fr",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#04205a",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
