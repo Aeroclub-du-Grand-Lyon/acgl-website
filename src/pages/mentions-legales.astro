@@ -1,0 +1,143 @@
+---
+import { getCollection } from "astro:content";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+
+const contactEntries = await getCollection("contactSettings");
+const contact = contactEntries[0]?.data;
+
+const board = (await getCollection("board")).sort((a, b) => a.data.order - b.data.order);
+const president = board.find((m) => m.data.role?.toLowerCase().includes("président"));
+
+const addressLine = contact?.address
+  ? `${contact.address.street}, ${contact.address.postalCode} ${contact.address.city}`
+  : "Aéroport de Lyon Bron, avenue Louis Mouillard, 69500 Bron";
+---
+
+<MainLayout
+  title="Mentions légales - Aéroclub du Grand Lyon"
+  description="Mentions légales du site de l'Aéroclub du Grand Lyon : éditeur, hébergement, propriété intellectuelle et traitement des données personnelles (RGPD)."
+>
+  <PageHero
+    title="Mentions légales"
+    description="Informations légales relatives au site de l'Aéroclub du Grand Lyon et à son utilisation."
+  />
+
+  <Section bg="surface" border={false}>
+    <div>
+      <p class="mb-12 text-base leading-relaxed text-muted">
+        En vertu de la loi du 6 janvier 1978, modifiée le 7 août 2004, et de l'article 6 de la
+        loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, il est précisé
+        aux utilisateurs du site les informations suivantes relatives à son édition et à son suivi.
+      </p>
+
+      <div class="flex flex-col gap-12">
+        <section aria-labelledby="editeur-heading">
+          <h2 id="editeur-heading" class="mb-4">Éditeur du site</h2>
+          <dl class="grid gap-3 sm:grid-cols-[auto_1fr]">
+            <dt class="font-semibold text-ink">Propriétaire</dt>
+            <dd class="text-muted">Aéroclub du Grand Lyon — Association loi 1901</dd>
+
+            <dt class="font-semibold text-ink">Adresse</dt>
+            <dd class="text-muted">{addressLine}</dd>
+
+            {contact?.phone && (
+              <>
+                <dt class="font-semibold text-ink">Téléphone</dt>
+                <dd class="text-muted">{contact.phone}</dd>
+              </>
+            )}
+
+            <dt class="font-semibold text-ink">Directeur de la publication</dt>
+            <dd class="text-muted">{president ? president.data.key : "Le Président"} (Président)</dd>
+
+            <dt class="font-semibold text-ink">Crédit photos et vidéos</dt>
+            <dd class="text-muted">
+              Les photos et vidéos utilisées sur le site sont fournies par l'Aéroclub du Grand Lyon.
+            </dd>
+          </dl>
+        </section>
+
+        <section aria-labelledby="hebergement-heading">
+          <h2 id="hebergement-heading" class="mb-4">Hébergement</h2>
+          <p class="text-base leading-relaxed text-muted">
+            Le site est hébergé par <strong class="font-semibold text-ink">Vercel Inc.</strong>,
+            340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis —{" "}
+            <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" class="text-brand underline-offset-2 hover:underline">vercel.com</a>.
+          </p>
+        </section>
+
+        <section aria-labelledby="conditions-heading">
+          <h2 id="conditions-heading" class="mb-4">Conditions d'utilisation</h2>
+          <p class="mb-4 text-base leading-relaxed text-muted">
+            Ce site est un site d'information soumis aux lois françaises en vigueur et aux présentes
+            conditions d'utilisation. Il s'adresse aux internautes, adhérents ou non-adhérents de
+            l'association « Aéroclub du Grand Lyon ». Les internautes acceptent les conditions
+            d'utilisation énoncées ci-après.
+          </p>
+        </section>
+
+        <section aria-labelledby="informations-heading">
+          <h2 id="informations-heading" class="mb-4">Informations mises à disposition</h2>
+          <p class="mb-4 text-base leading-relaxed text-muted">
+            Le contenu mis à disposition sur le site est divulgué à titre informatif et peut être
+            susceptible d'être modifié sans préavis. L'Aéroclub du Grand Lyon ne peut être tenu
+            responsable en cas de mauvaise utilisation du site ou en cas d'indisponibilité temporaire
+            (cas de force majeure, période de maintenance ou incident technique).
+          </p>
+          <p class="text-base leading-relaxed text-muted">
+            Une interruption pour raison de maintenance technique peut toutefois être décidée par
+            l'Aéroclub du Grand Lyon, qui s'efforcera alors de communiquer préalablement aux
+            utilisateurs la période et la durée de l'intervention.
+          </p>
+        </section>
+
+        <section aria-labelledby="rgpd-heading">
+          <h2 id="rgpd-heading" class="mb-4">Traitement des données / RGPD</h2>
+          <p class="mb-4 text-base leading-relaxed text-muted">
+            La consultation du site internet ne donne lieu à aucun traitement de données par le club
+            lui-même.
+          </p>
+          <p class="mb-4 text-base leading-relaxed text-muted">
+            La demande d'information de l'internaute au travers des divers formulaires de contact ne
+            fait l'objet d'aucun traitement de données hors du cadre strictement nécessaire à la
+            fourniture de la réponse qui doit être apportée au demandeur. Les informations fournies
+            par l'internaute sont détruites après avoir répondu à sa demande.
+          </p>
+          <p class="text-base leading-relaxed text-muted">
+            L'hébergement du site est assuré par Vercel, dont les serveurs peuvent collecter, dans
+            leurs journaux techniques, des informations nécessaires au maintien en fonctionnement du
+            site, dont votre adresse de protocole internet (IP). Toutes les données personnelles
+            collectées sont détruites avant la fin de la période de rétention autorisée par le RGPD.
+          </p>
+        </section>
+
+        <section aria-labelledby="propriete-heading">
+          <h2 id="propriete-heading" class="mb-4">Droits de propriété intellectuelle</h2>
+          <p class="mb-4 text-base leading-relaxed text-muted">
+            Le site de l'Aéroclub du Grand Lyon doit être considéré comme un tout indissociable.
+            L'ensemble du site relève de la législation sur le droit d'auteur et la propriété
+            intellectuelle (loi n° 78-87 du 6 janvier 1978, loi n° 2004-801 du 6 août 2004, article
+            L. 226-13 du Code pénal et Directive Européenne du 24 octobre 1995). Par conséquent, toute
+            reproduction totale ou partielle de ce site est interdite.
+          </p>
+          <p class="text-base leading-relaxed text-muted">
+            Le non-respect de ces stipulations constitue une contrefaçon susceptible d'engager la
+            responsabilité civile et/ou pénale du contrevenant.
+          </p>
+        </section>
+
+        <section aria-labelledby="responsabilite-heading">
+          <h2 id="responsabilite-heading" class="mb-4">Limitation de responsabilité</h2>
+          <p class="text-base leading-relaxed text-muted">
+            Alors que nous avons effectué toutes les démarches pour nous assurer de la fiabilité des
+            informations contenues sur ce site internet, l'association Aéroclub du Grand Lyon ne peut
+            encourir aucune responsabilité du fait d'erreurs, d'omissions, ou pour les résultats qui
+            pourraient être obtenus par l'usage de ces informations.
+          </p>
+        </section>
+      </div>
+    </div>
+  </Section>
+</MainLayout>
