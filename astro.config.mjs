@@ -12,7 +12,11 @@ export default defineConfig({
   integrations: [
     react(),
     keystatic(),
-    sitemap(),
+    sitemap({
+      lastmod: new Date(),
+      filter: (page) =>
+        !page.includes("/keystatic") && !page.includes("/api/"),
+    }),
   ],
   vite: {
     plugins: [tailwindcss()],

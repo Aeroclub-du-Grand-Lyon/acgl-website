@@ -9,7 +9,7 @@ equipment:
 engine: Électrique 57,6 kW
 seats: 2
 speed: 180 km/h
-autonomy: 1h20
+autonomy: 45 min + réserve réglementaire
 normal: 90 €/h
 schoolAircraft: true
 order: 1
