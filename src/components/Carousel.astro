@@ -15,13 +15,21 @@ const id = `carousel-${Math.random().toString(36).slice(2, 8)}`;
   <div id={id} class:list={["carousel group relative overflow-hidden rounded-2xl", className]} aria-roledescription="carousel" aria-label="Galerie photos du club">
     <div class="carousel-track flex transition-transform duration-500 ease-in-out">
       {images.map((img, i) => (
-        <div class="w-full shrink-0 aspect-[3/2]" role="group" aria-roledescription="slide" aria-label={`Photo ${i + 1} sur ${images.length}`}>
+        <div class="relative w-full shrink-0 aspect-[3/2] overflow-hidden" role="group" aria-roledescription="slide" aria-label={`Photo ${i + 1} sur ${images.length}`}>
           <Image
             src={img.src}
             alt={img.alt}
             width={768}
             class="h-full w-full object-cover"
           />
+          {img.alt && (
+            <div
+              class:list={["pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent px-4 pt-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-within:opacity-100", images.length > 1 ? "pb-9" : "pb-4"]}
+              aria-hidden="true"
+            >
+              <p class="text-sm font-medium leading-snug text-white drop-shadow-sm">{img.alt}</p>
+            </div>
+          )}
         </div>
       ))}
     </div>

@@ -4,7 +4,7 @@ import { getCollection } from "astro:content";
 import heroImage from "../assets/hero.jpg";
 import ButtonLink from "../components/ButtonLink.astro";
 import Card from "../components/Card.astro";
-import CtaBanner from "../components/CtaBanner.astro";
+import Carousel from "../components/Carousel.astro";
 import Icon from "../components/Icon.astro";
 import MainLayout from "../layouts/MainLayout.astro";
 import Section from "../components/Section.astro";
@@ -22,6 +22,23 @@ const fleetCount = fleet.length;
 
 const instructors = await getCollection("instructors");
 const instructorCount = instructors.length;
+
+const galleryEntries = await getCollection("clubGallery");
+const galleryImages = galleryEntries[0]?.data.images ?? [];
+
+const phoneHref = contact?.phone ? `tel:${contact.phone.replace(/\s+/g, "")}` : undefined;
+const addressLine = contact?.address
+  ? `${contact.address.street}, ${contact.address.postalCode} ${contact.address.city}`
+  : undefined;
+
+const visitItems: { icon: string; label: string; value: string; href?: string }[] = [
+  addressLine && { icon: "map-pin", label: "Adresse", value: addressLine },
+  contact?.permanence && {
+    icon: "clock",
+    label: "Permanence club",
+    value: contact.permanence.charAt(0).toUpperCase() + contact.permanence.slice(1),
+  },
+].filter(Boolean) as { icon: string; label: string; value: string; href?: string }[];
 
 const pathCards: { href: string; icon: string; label: string; title: string; desc: string; cta: string }[] = [
   {
@@ -260,15 +277,62 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
     </ul>
   </Section>
 
-  <CtaBanner
-    bg="page"
-    title="Nous rencontrer"
-    description={contact?.permanence
-      ? `Une permanence club a lieu ${contact.permanence}`
-      : "Contactez-nous pour organiser une rencontre dans nos locaux."}
-    primaryHref="/contact"
-    primaryLabel="Voir les infos pratiques"
-  >
-  </CtaBanner>
+  <section class="bg-page py-14 lg:py-20" aria-labelledby="visit-heading">
+    <div class="container">
+      <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <div class="order-2 lg:order-1">
+          <p class="mb-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-label text-brand">
+            <Icon name="map-pin" size="size-4" />
+            Aéroport de Lyon Bron · LFLY
+          </p>
+          <h2 id="visit-heading" class="mb-4">Venez nous rencontrer</h2>
+          <p class="mb-8 max-w-prose leading-relaxed text-muted">
+            Poussez la porte du club, sans aucun engagement. Curieux d'un premier vol ou pilote en quête d'une nouvelle base, nos membres vous accueillent volontiers autour d'un café, hangar et pistes en toile de fond.
+          </p>
+
+          {visitItems.length > 0 && (
+            <ul class="mb-8 flex flex-col gap-4">
+              {visitItems.map((item) => (
+                <li class="flex items-start gap-3">
+                  <span
+                    class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-light-frost text-brand"
+                    aria-hidden="true"
+                  >
+                    <Icon name={item.icon} size="size-4" />
+                  </span>
+                  <span class="min-w-0">
+                    <span class="block text-xs font-semibold uppercase tracking-label text-muted">{item.label}</span>
+                    {item.href ? (
+                      <a href={item.href} class="text-sm font-medium text-ink no-underline transition-colors hover:text-brand">
+                        {item.value}
+                      </a>
+                    ) : (
+                      <span class="text-sm font-medium text-ink">{item.value}</span>
+                    )}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <div class="flex flex-wrap gap-3">
+            <ButtonLink href="/contact" variant="blue">Voir les infos pratiques</ButtonLink>
+            {phoneHref && (
+              <ButtonLink href={phoneHref} variant="outline-dark" class="lg:hidden">
+                <Icon name="phone" size="size-4" />
+                Appeler le club
+              </ButtonLink>
+            )}
+          </div>
+        </div>
+
+        {galleryImages.length > 0 && (
+          <div class="order-1 lg:order-2">
+            <Carousel images={galleryImages} class="shadow-[0_24px_60px_-15px_rgba(4,32,90,0.25)] ring-1 ring-line" />
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
 </MainLayout>
 

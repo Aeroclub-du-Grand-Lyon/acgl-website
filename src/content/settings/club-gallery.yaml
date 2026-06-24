@@ -5,3 +5,7 @@ images:
     alt: Vue de Lyon sous un ciel partiellement nuageux
   - src: ../../assets/club/images/2/src.jpg
     alt: Vue de la côte ouest de la Corse
+  - src: ../../assets/club/images/3/src.jpg
+    alt: Vue de la lagune de Venise
+  - src: ../../assets/club/images/4/src.jpg
+    alt: Vue de la dune du Pilat
