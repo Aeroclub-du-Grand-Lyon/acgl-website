@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import { Image } from 'astro:assets';
+import Analytics from "@vercel/analytics/astro";
 import Icon from "../components/Icon.astro";
 import { toTelHref } from "../lib/phone";
 import "../styles/global.css";
@@ -140,6 +141,7 @@ const jsonLd = {
     <title>{title}</title>
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <Analytics />
     <slot name="head" />
   </head>
   <body>
@@ -478,6 +480,18 @@ const jsonLd = {
           link.addEventListener("click", closeMobileNav);
         });
       })();
+    </script>
+
+    <script>
+      import { track } from "@vercel/analytics";
+
+      document.addEventListener("click", (e) => {
+        const link = e.target instanceof Element ? e.target.closest("a") : null;
+        if (!link) return;
+        const href = link.getAttribute("href") ?? "";
+        if (href.startsWith("tel:")) track("phone_click");
+        else if (href.startsWith("/vol-decouverte")) track("cta_vol_decouverte");
+      });
     </script>
   </body>
 </html>

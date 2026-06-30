@@ -114,6 +114,7 @@ const inputBase =
 
 <script>
   import { actions, isInputError } from "astro:actions";
+  import { track } from "@vercel/analytics";
 
   const formSection = document.getElementById("contact-form-section") as HTMLElement;
   const successEl = document.getElementById("contact-success") as HTMLElement;
@@ -154,6 +155,7 @@ const inputBase =
     });
 
     if (data?.success) {
+      track("contact_form_submit", { subject: String(fd.get("subject") ?? "") });
       formSection.hidden = true;
       successEl.hidden = false;
       return;
