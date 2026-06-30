@@ -17,6 +17,8 @@
   --color-muted: #475569;
   --color-line: #e2e8f0;
 
+  --spacing-header-h: 4.5rem;
+
   --shadow-acgl: 0 1px 3px rgb(4 32 90 / 0.08), 0 8px 32px rgb(4 32 90 / 0.06);
   --shadow-acgl-lg: 0 4px 12px rgb(4 32 90 / 0.1), 0 24px 48px rgb(4 32 90 / 0.1);
 
