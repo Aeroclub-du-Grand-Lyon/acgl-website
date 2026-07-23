@@ -161,14 +161,14 @@ const jsonLd = {
           </a>
 
           <nav id="main-nav" aria-label="Navigation principale" class="main-nav hidden lg:block">
-            <ul class="m-0 flex list-none gap-0.5 p-0" role="list">
+            <ul class="m-0 flex list-none gap-1 p-0 xl:gap-2" role="list">
               {navLinks.map((item) =>
                 item.children ? (
                   <li class="nav-dropdown-wrap">
                     <button
                       type="button"
                       class:list={[
-                        "nav-dropdown-trigger flex cursor-pointer items-center gap-1 rounded-lg border-none bg-transparent px-2.5 py-[0.45rem] text-sm font-medium",
+                        "nav-dropdown-trigger flex cursor-pointer items-center gap-1 rounded-lg border-none bg-transparent px-3 py-[0.45rem] text-sm font-medium xl:px-4",
                         item.children.some((c) => isLinkActive(c.href)) && "is-parent-active",
                       ]}
                       aria-expanded="false"
@@ -193,7 +193,7 @@ const jsonLd = {
                   <li>
                     <a
                       href={item.href!}
-                      class="block rounded-lg px-2.5 py-[0.45rem] text-sm font-medium"
+                      class="block rounded-lg px-3 py-[0.45rem] text-sm font-medium xl:px-4"
                       aria-current={isLinkActive(item.href!) ? "page" : undefined}
                     >
                       {item.label}

@@ -8,6 +8,7 @@ import Carousel from "../components/Carousel.astro";
 import Icon from "../components/Icon.astro";
 import MainLayout from "../layouts/MainLayout.astro";
 import Section from "../components/Section.astro";
+import { toTelHref } from "../lib/phone";
 
 const pathCardLinkClass =
   "group flex h-full flex-col no-underline rounded-2xl border bg-slate-700/80 p-6 transition-colors duration-[250ms] hover:bg-gray-500/40 [box-shadow:inset_0_1px_0_rgba(255,255,255,0.35),0_8px_32px_rgba(0,0,0,0.25)] lg:hover:bg-gray-500/50";
@@ -26,7 +27,7 @@ const instructorCount = instructors.length;
 const galleryEntries = await getCollection("clubGallery");
 const galleryImages = galleryEntries[0]?.data.images ?? [];
 
-const phoneHref = contact?.phone ? `tel:${contact.phone.replace(/\s+/g, "")}` : undefined;
+const phoneHref = contact?.phone ? `tel:${toTelHref(contact.phone)}` : undefined;
 const addressLine = contact?.address
   ? `${contact.address.street}, ${contact.address.postalCode} ${contact.address.city}`
   : undefined;
@@ -318,7 +319,7 @@ const pathCards: { href: string; icon: string; label: string; title: string; des
           <div class="flex flex-wrap gap-3">
             <ButtonLink href="/contact" variant="blue">Voir les infos pratiques</ButtonLink>
             {phoneHref && (
-              <ButtonLink href={phoneHref} variant="outline-dark" class="lg:hidden">
+              <ButtonLink href={phoneHref} variant="outline-dark" class="md:hidden">
                 <Icon name="phone" size="size-4" />
                 Appeler le club
               </ButtonLink>

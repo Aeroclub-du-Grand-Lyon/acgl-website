@@ -99,7 +99,7 @@ const jsonLd = {
 
   <Section labelledby="guarantees-heading" bg="surface">
     <h2 id="guarantees-heading" class="mb-4">Un cadeau sans mauvaise surprise</h2>
-    <p class="mb-10 max-w-2xl text-base leading-relaxed text-muted">
+    <p class="mb-10 text-base leading-relaxed text-muted">
       Le baptême de l'air – que nous appelons aussi vol découverte – est le premier vol en
       avion léger, au départ de l'aéroport de Lyon Bron. Aucune expérience ni condition
       physique particulière n'est requise.
@@ -119,7 +119,7 @@ const jsonLd = {
 
   <Section id="formules" labelledby="formulas-heading" bg="page">
     <h2 id="formulas-heading" class="mb-4">Quelle formule offrir ?</h2>
-    <p class="mb-10 max-w-2xl text-base leading-relaxed text-muted">
+    <p class="mb-10 text-base leading-relaxed text-muted">
       Deux options selon ce que vous voulez faire vivre : découvrir les sensations du vol en
       passager, ou tenir réellement les commandes.
     </p>
@@ -199,9 +199,9 @@ const jsonLd = {
         Demander un bon cadeau
       </ButtonLink>
       {contact?.phone && (
-        <ButtonLink href={`tel:${toTelHref(contact.phone)}`} variant="outline-dark">
+        <ButtonLink href={`tel:${toTelHref(contact.phone)}`} variant="outline-dark" class="md:hidden">
           <Icon name="phone" size="size-4" />
-          {contact.phone}
+          Appeler le club
         </ButtonLink>
       )}
     </div>

@@ -72,18 +72,6 @@ const pageJsonLd = [
   >
   </PageHero>
 
-  <Section labelledby="intro-heading" bg="page">
-    <div class="max-w-2xl">
-      <h2 id="intro-heading" class="mb-4">Baptême de l'air ou vol découverte : de quoi parle-t-on ?</h2>
-      <p class="text-base leading-relaxed text-muted">
-        Le baptême de l'air, aussi appelé vol découverte, est votre premier vol en avion léger
-        au départ de l'aéroport de Lyon Bron. Aux côtés d'un instructeur, vous survolez la région
-        lyonnaise le temps d'un vol d'environ 30 minutes. Aucune expérience ni condition physique
-        particulière n'est requise : il suffit d'avoir envie de découvrir les sensations du vol.
-      </p>
-    </div>
-  </Section>
-
   {offers.map((offer, idx) => {
     const anchor = getAnchor(offer.id);
     const isEven = idx % 2 === 0;
@@ -106,7 +94,7 @@ const pageJsonLd = [
             </div>
           )}
 
-          <div class:list={[!offer.data.photo && "max-w-2xl"]}>
+          <div>
             <div class="mb-4 flex items-center gap-3">
               <div class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
                 <Icon name={iconName} size="size-6" />
@@ -162,16 +150,14 @@ const pageJsonLd = [
   })}
 
   <Section labelledby="gift-heading" bg="page">
-    <div class="max-w-2xl">
-      <h2 id="gift-heading" class="mb-4">Envie de l'offrir plutôt que de le vivre ?</h2>
-      <p class="mb-6 text-base leading-relaxed text-muted">
-        Chaque formule existe en bon cadeau, valable 12 mois. Le bénéficiaire choisit sa date
-        et nous nous adaptons à la météo.
-      </p>
-      <ButtonLink href="/offrir-un-bapteme" variant="outline-dark">
-        Offrir un baptême de l'air
-      </ButtonLink>
-    </div>
+    <h2 id="gift-heading" class="mb-4">Envie de l'offrir plutôt que de le vivre ?</h2>
+    <p class="mb-6 text-base leading-relaxed text-muted">
+      Chaque formule existe en bon cadeau, valable 12 mois. Le bénéficiaire choisit sa date
+      et nous nous adaptons à la météo.
+    </p>
+    <ButtonLink href="/offrir-un-bapteme" variant="outline-dark">
+      Offrir un baptême de l'air
+    </ButtonLink>
   </Section>
 
   <Section labelledby="faq-discovery-heading" bg="surface">
