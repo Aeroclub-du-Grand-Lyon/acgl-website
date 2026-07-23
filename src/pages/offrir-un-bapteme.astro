@@ -1,0 +1,231 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import ButtonLink from "../components/ButtonLink.astro";
+import PageHero from "../components/PageHero.astro";
+import Section from "../components/Section.astro";
+import Card from "../components/Card.astro";
+import Icon from "../components/Icon.astro";
+import FaqAccordion from "../components/FaqAccordion.astro";
+import CtaBanner from "../components/CtaBanner.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import { toTelHref } from "../lib/phone";
+
+const contactEntries = await getCollection("contactSettings");
+const contact = contactEntries[0]?.data;
+
+const offers = (await getCollection("offers"))
+  .filter((offer) => offer.id !== "forfait-initiation")
+  .sort((a, b) => a.data.order - b.data.order);
+
+const faqItems = (await getCollection("faq"))
+  .filter((f) => f.data.page === "discovery-flights")
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((f) => ({ q: f.data.question, a: f.data.answer }));
+
+const guarantees = [
+  {
+    icon: "clock",
+    title: "Valable 12 mois",
+    description:
+      "Le bénéficiaire choisit sa date en toute tranquillité, sans pression de calendrier.",
+  },
+  {
+    icon: "shield",
+    title: "Reporté si la météo l'exige",
+    description:
+      "Si les conditions ne permettent pas de voler, le vol est reporté sans frais. La sécurité prime toujours.",
+  },
+  {
+    icon: "heart",
+    title: "Un vrai moment, pas un objet",
+    description:
+      "Une demi-heure au-dessus de Lyon, aux côtés d'un instructeur du club. Ça ne se range pas dans un placard.",
+  },
+];
+
+const steps = [
+  {
+    icon: "mail",
+    title: "Vous nous écrivez",
+    description:
+      "Un message via le formulaire ou un appel au club suffit. Dites-nous simplement quelle formule vous souhaitez offrir.",
+  },
+  {
+    icon: "gift",
+    title: "Vous recevez le bon cadeau",
+    description:
+      "Nous vous le remettons lors de la permanence du samedi matin, ou nous vous l'envoyons pour que vous puissiez l'offrir.",
+  },
+  {
+    icon: "plane",
+    title: "Le bénéficiaire réserve son vol",
+    description:
+      "Il nous contacte quand il le souhaite dans les 12 mois, et nous convenons ensemble d'une date selon la météo.",
+  },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: "Bon cadeau baptême de l'air à Lyon Bron",
+  description:
+    "Bon cadeau pour un baptême de l'air en avion léger au départ de l'aéroport de Lyon Bron, valable 12 mois.",
+  brand: {
+    "@type": "SportsClub",
+    name: "Aéroclub du Grand Lyon",
+    url: "https://www.acgl.fr",
+  },
+  offers: {
+    "@type": "AggregateOffer",
+    priceCurrency: "EUR",
+    lowPrice: "170",
+    availability: "https://schema.org/InStock",
+    areaServed: "Lyon, Auvergne-Rhône-Alpes",
+  },
+};
+---
+
+<MainLayout
+  title="Offrir un baptême de l'air à Lyon | Bon cadeau vol en avion | ACGL"
+  description="Offrez un baptême de l'air en avion au départ de Lyon Bron, à partir de 170 €. Bon cadeau valable 12 mois, vol reporté sans frais si la météo l'exige."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+
+  <PageHero
+    title="Offrir un baptême de l'air"
+    description="Un bon cadeau pour un vol en avion au-dessus de Lyon, valable 12 mois. Anniversaire, Noël, départ à la retraite : il y a toujours une bonne raison de faire décoller quelqu'un."
+  />
+
+  <Section labelledby="guarantees-heading" bg="surface">
+    <h2 id="guarantees-heading" class="mb-4">Un cadeau sans mauvaise surprise</h2>
+    <p class="mb-10 max-w-2xl text-base leading-relaxed text-muted">
+      Le baptême de l'air – que nous appelons aussi vol découverte – est le premier vol en
+      avion léger, au départ de l'aéroport de Lyon Bron. Aucune expérience ni condition
+      physique particulière n'est requise.
+    </p>
+    <ul class="grid gap-6 md:grid-cols-3" role="list">
+      {guarantees.map((item) => (
+        <Card as="li" class="flex h-full flex-col">
+          <div class="mb-4 flex size-12 shrink-0 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
+            <Icon name={item.icon} size="size-6" />
+          </div>
+          <h3 class="mb-2">{item.title}</h3>
+          <p class="text-sm leading-relaxed text-muted">{item.description}</p>
+        </Card>
+      ))}
+    </ul>
+  </Section>
+
+  <Section id="formules" labelledby="formulas-heading" bg="page">
+    <h2 id="formulas-heading" class="mb-4">Quelle formule offrir ?</h2>
+    <p class="mb-10 max-w-2xl text-base leading-relaxed text-muted">
+      Deux options selon ce que vous voulez faire vivre : découvrir les sensations du vol en
+      passager, ou tenir réellement les commandes.
+    </p>
+    <ul class="grid gap-6 md:grid-cols-2" role="list">
+      {offers.map((offer) => (
+        <Card as="li" size="flush" class="flex h-full flex-col overflow-hidden">
+          {offer.data.photo && (
+            <div class="aspect-[3/1.5] shrink-0 overflow-hidden rounded-t-2xl bg-line">
+              <Image
+                src={offer.data.photo}
+                alt={offer.data.title}
+                width={800}
+                class="h-full w-full object-cover"
+              />
+            </div>
+          )}
+          <div class="flex flex-1 flex-col p-6">
+            <h3 class="mb-2">{offer.data.title}</h3>
+            <p class="mb-6 text-sm leading-relaxed text-muted">{offer.data.description}</p>
+            <dl class="mt-auto grid grid-cols-2 gap-x-6 gap-y-5 border-t border-line pt-6">
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-label text-muted">Durée</dt>
+                <dd class="mt-1 text-sm font-medium text-ink">{offer.data.duration}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-label text-muted">Tarif</dt>
+                <dd class="mt-1 text-sm font-bold text-brand">{offer.data.price}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-label text-muted">Places</dt>
+                <dd class="mt-1 text-sm font-medium text-ink">{offer.data.capacity}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-label text-muted">Départ</dt>
+                <dd class="mt-1 text-sm font-medium text-ink">Lyon Bron (LFLY)</dd>
+              </div>
+            </dl>
+            <div class="mt-8">
+              <ButtonLink
+                href={`/contact?subject=${encodeURIComponent("Bon cadeau - " + offer.data.title)}#formulaire`}
+                variant="blue"
+              >
+                Offrir cette formule
+              </ButtonLink>
+            </div>
+          </div>
+        </Card>
+      ))}
+    </ul>
+    <p class="mt-8 text-sm leading-relaxed text-muted">
+      Vous hésitez ? La page <a href="/vol-decouverte" class="font-medium text-brand hover:text-navy">vols découverte et initiation</a>
+      détaille chaque formule, y compris le forfait de 3 vols pour ceux qui envisagent d'aller plus loin.
+    </p>
+  </Section>
+
+  <Section labelledby="steps-heading" bg="surface">
+    <h2 id="steps-heading" class="mb-10">Comment l'obtenir</h2>
+    <ol class="grid gap-6 md:grid-cols-3" role="list">
+      {steps.map((step, index) => (
+        <li class="flex h-full flex-col">
+          <div class="mb-4 flex items-center gap-3">
+            <div class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-light-frost text-brand" aria-hidden="true">
+              <Icon name={step.icon} size="size-6" />
+            </div>
+            <span class="text-xs font-semibold uppercase tracking-label text-muted">
+              Étape {index + 1}
+            </span>
+          </div>
+          <h3 class="mb-2">{step.title}</h3>
+          <p class="text-sm leading-relaxed text-muted">{step.description}</p>
+        </li>
+      ))}
+    </ol>
+
+    <div class="mt-10 flex flex-wrap gap-3">
+      <ButtonLink href="/contact?subject=Bon%20cadeau%20bapt%C3%AAme%20de%20l%27air#formulaire" variant="blue">
+        Demander un bon cadeau
+      </ButtonLink>
+      {contact?.phone && (
+        <ButtonLink href={`tel:${toTelHref(contact.phone)}`} variant="outline-dark">
+          <Icon name="phone" size="size-4" />
+          {contact.phone}
+        </ButtonLink>
+      )}
+    </div>
+
+    {contact?.permanence && (
+      <p class="mt-6 text-sm leading-relaxed text-muted">
+        Vous pouvez aussi passer nous voir directement :
+        {" "}<strong class="font-semibold text-ink">{contact.permanence}</strong>, au local du club
+        sur l'aéroport de Lyon Bron.
+      </p>
+    )}
+  </Section>
+
+  <Section labelledby="faq-gift-heading" bg="page">
+    <h2 id="faq-gift-heading" class="mb-8">Questions fréquentes</h2>
+    <FaqAccordion items={faqItems} />
+  </Section>
+
+  <CtaBanner
+    title="Faites décoller quelqu'un"
+    description="Contactez-nous pour obtenir un bon cadeau, ou venez nous rencontrer lors de la permanence du samedi matin."
+    primaryHref="/contact?subject=Bon%20cadeau%20bapt%C3%AAme%20de%20l%27air#formulaire"
+    primaryLabel="Demander un bon cadeau"
+    secondaryHref="/vol-decouverte"
+    secondaryLabel="Voir tous les vols"
+  />
+</MainLayout>

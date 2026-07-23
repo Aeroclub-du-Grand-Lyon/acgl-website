@@ -5,10 +5,15 @@ import sitemap from "@astrojs/sitemap";
 import keystatic from "@keystatic/astro";
 import tailwindcss from "@tailwindcss/vite";
 import vercel from "@astrojs/vercel";
+import { legacyRedirects } from "./redirects.mjs";
+
+const site = "https://www.acgl.fr";
 
 export default defineConfig({
-  site: "https://www.acgl.fr",
+  site,
+  trailingSlash: "never",
   adapter: vercel(),
+  redirects: legacyRedirects,
   integrations: [
     react(),
     keystatic(),

@@ -23,7 +23,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "EducationalOrganization",
   name: "Aéroclub du Grand Lyon - École de pilotage",
-  url: "https://acgl.fr/ecole-de-pilotage",
+  url: "https://www.acgl.fr/ecole-de-pilotage",
   description:
     `École de pilotage agréée DGAC basé à Lyon Bron. Formation BIA, LAPL(A) et PPL(A) dispensée par ${instructorCount} instructeurs qualifiés.`,
   address: {
@@ -92,14 +92,14 @@ const trainingSteps = [
 ---
 
 <MainLayout
-  title="École de pilotage à Lyon - Formation PPL(A), LAPL(A) et BIA | ACGL Bron"
-  description={`Apprenez à piloter à Lyon Bron avec l'Aéroclub du Grand Lyon. Formation BIA, LAPL(A) et PPL(A) encadrée par ${instructorCount} instructeurs agréés DGAC.`}
+  title="École de pilotage à Lyon — Cours PPL, permis avion & BIA | ACGL Bron"
+  description={`Cours de pilotage avion à Lyon Bron : passez votre permis de pilote (PPL, LAPL) ou le BIA avec ${instructorCount} instructeurs agréés DGAC. Du premier vol à la licence.`}
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
 
   <PageHero
     title="École de pilotage à Lyon"
-    description={`Formation PPL(A), LAPL(A) et BIA encadrée par nos ${instructorCount} instructeurs qualifiés.`}
+    description={`Des cours de pilotage avion pour passer votre permis de pilote (PPL, LAPL) ou le BIA, encadrés par nos ${instructorCount} instructeurs qualifiés.`}
   />
 
   <Section id="bia" labelledby="bia-heading" bg="surface">
@@ -124,7 +124,7 @@ const trainingSteps = [
     <header class="mb-10">
       <h2 id="licenses-heading">LAPL(A) ou PPL(A) : quelle licence choisir ?</h2>
       <p class="mt-3 text-muted">
-        Les deux licences permettent de piloter un avion monomoteur et d'emmener des passagers. Elles diffèrent par le périmètre autorisé et les exigences réglementaires.
+        Ce qu'on appelle couramment le « permis avion » ou le « brevet de pilote » prend deux formes selon votre projet : la LAPL(A) et la PPL(A). Les deux permettent de piloter un avion monomoteur et d'emmener des passagers ; elles diffèrent par le périmètre autorisé et les exigences réglementaires.
       </p>
     </header>
 

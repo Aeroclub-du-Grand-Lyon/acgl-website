@@ -36,7 +36,7 @@ const pageJsonLd = [
     provider: {
       "@type": "SportsClub",
       name: "Aéroclub du Grand Lyon",
-      url: "https://acgl.fr",
+      url: "https://www.acgl.fr",
     },
     areaServed: "Lyon, Auvergne-Rhône-Alpes",
     offers: {
@@ -59,18 +59,30 @@ const pageJsonLd = [
 ---
 
 <MainLayout
-  title="Vol découverte, initiation et baptême de l'air à Lyon Bron | ACGL"
-  description="Vol découverte en avion léger à Lyon - à partir de 170 €. Prenez les commandes avec un instructeur au-dessus de Lyon. Vol d'initiation, forfait 3 vols et coavionnage Wingly disponibles."
+  title="Baptême de l'air à Lyon Bron — Vol découverte & initiation | ACGL"
+  description="Baptême de l'air en avion léger à Lyon Bron, dès 170 €. Prenez les commandes aux côtés d'un instructeur au-dessus de Lyon : vol découverte, vol d'initiation au pilotage et forfait 3 vols."
 >
   {pageJsonLd.map((ld) => (
     <script type="application/ld+json" set:html={JSON.stringify(ld)} slot="head" />
   ))}
 
   <PageHero
-    title="Vols découverte & initiation au pilotage"
-    description="Votre première fois dans un cockpit, ou un cadeau inoubliable au départ de l'aéroport de Bron."
+    title="Baptême de l'air & initiation au pilotage"
+    description="Votre première fois dans un cockpit, ou un cadeau inoubliable au départ de l'aéroport de Lyon Bron."
   >
   </PageHero>
+
+  <Section labelledby="intro-heading" bg="page">
+    <div class="max-w-2xl">
+      <h2 id="intro-heading" class="mb-4">Baptême de l'air ou vol découverte : de quoi parle-t-on ?</h2>
+      <p class="text-base leading-relaxed text-muted">
+        Le baptême de l'air, aussi appelé vol découverte, est votre premier vol en avion léger
+        au départ de l'aéroport de Lyon Bron. Aux côtés d'un instructeur, vous survolez la région
+        lyonnaise le temps d'un vol d'environ 30 minutes. Aucune expérience ni condition physique
+        particulière n'est requise : il suffit d'avoir envie de découvrir les sensations du vol.
+      </p>
+    </div>
+  </Section>
 
   {offers.map((offer, idx) => {
     const anchor = getAnchor(offer.id);
@@ -149,7 +161,20 @@ const pageJsonLd = [
     );
   })}
 
-  <Section labelledby="faq-discovery-heading" bg="page">
+  <Section labelledby="gift-heading" bg="page">
+    <div class="max-w-2xl">
+      <h2 id="gift-heading" class="mb-4">Envie de l'offrir plutôt que de le vivre ?</h2>
+      <p class="mb-6 text-base leading-relaxed text-muted">
+        Chaque formule existe en bon cadeau, valable 12 mois. Le bénéficiaire choisit sa date
+        et nous nous adaptons à la météo.
+      </p>
+      <ButtonLink href="/offrir-un-bapteme" variant="outline-dark">
+        Offrir un baptême de l'air
+      </ButtonLink>
+    </div>
+  </Section>
+
+  <Section labelledby="faq-discovery-heading" bg="surface">
     <h2 id="faq-discovery-heading" class="mb-8">Questions fréquentes</h2>
     <FaqAccordion items={faqItems} />
   </Section>
