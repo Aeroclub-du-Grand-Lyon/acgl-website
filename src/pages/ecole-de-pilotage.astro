@@ -50,7 +50,7 @@ const jsonLd = {
         itemOffered: {
           "@type": "Course",
           name: "Licence LAPL(A)",
-          description: "Licence de pilote d'avion léger - vols VFR de jour, passagers, Europe.",
+          description: "Licence de pilote d'avion léger - vols VFR de jour en Europe, emport de passagers sous conditions.",
         },
       },
       {
@@ -72,14 +72,16 @@ const biaChecks = [
 ];
 
 const laplPoints = [
-  "Minimum 30 heures de vol (dont 15 h en double commande, 6 h en solo)",
-  "Vols VFR de jour, passagers, en Europe",
+  "Minimum 30 heures de vol (dont 15 h en double commande, 5 h en solo)",
+  "Vols VFR de jour, en Europe, sur avions jusqu'à 2 000 kg",
+  "Emport de passagers après 10 h de vol supplémentaires, sur autorisation de l'instructeur",
   "Certificat médical LAPL (réalisable chez un médecin généraliste agréé)",
 ];
 
 const pplPoints = [
   "Minimum 45 heures de vol (dont 25 h en double commande, 10 h en solo)",
-  "Vols VFR et IFR, passagers, sans limite de masse avion",
+  "Vols VFR et IFR, passagers dès l'obtention de la licence",
+  "Avions jusqu'à 5 700 kg de masse maximale au décollage",
   "Porte d'entrée vers les qualifications vol de nuit, IFR et montagne",
 ];
 
@@ -92,8 +94,8 @@ const trainingSteps = [
 ---
 
 <MainLayout
-  title="École de pilotage à Lyon — Cours PPL, permis avion & BIA | ACGL Bron"
-  description={`Cours de pilotage avion à Lyon Bron : passez votre permis de pilote (PPL, LAPL) ou le BIA avec ${instructorCount} instructeurs agréés DGAC. Du premier vol à la licence.`}
+  title="École de pilotage à Lyon — Formation PPL ou LAPL, licence avion | ACGL"
+  description={`Cours de pilotage avion à Lyon Bron : passez votre licence de pilote (PPL, LAPL) avec ${instructorCount} instructeurs agréés DGAC. Du premier vol à la licence.`}
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
 
@@ -124,7 +126,7 @@ const trainingSteps = [
     <header class="mb-10">
       <h2 id="licenses-heading">LAPL(A) ou PPL(A) : quelle licence choisir ?</h2>
       <p class="mt-3 text-muted">
-        Ce qu'on appelle couramment le « permis avion » ou le « brevet de pilote » prend deux formes selon votre projet : la LAPL(A) et la PPL(A). Les deux permettent de piloter un avion monomoteur et d'emmener des passagers ; elles diffèrent par le périmètre autorisé et les exigences réglementaires.
+        Ce qu'on appelle couramment le « brevet de pilote » prend deux formes selon votre projet : la LAPL(A) et la PPL(A). Les deux permettent de piloter un avion monomoteur ; elles diffèrent par le périmètre autorisé, les conditions d'emport de passagers et les exigences réglementaires.
       </p>
     </header>
 
@@ -135,7 +137,7 @@ const trainingSteps = [
           <Badge variant="muted">Licence européenne</Badge>
         </div>
         <p class="mb-5 text-sm leading-relaxed text-muted">
-          La <strong class="font-semibold text-ink">Licence de Pilote d'Avion Léger</strong> (light aircraft pilot license) est une licence européenne permettant de voler uniquement sur le territoire européen, avec maximum 3 passagers, sur des avions dont la masse maximale est de 2 000 kg.
+          La <strong class="font-semibold text-ink">Licence de Pilote d'Avion Léger</strong> (light aircraft pilot license) est une licence européenne permettant de voler uniquement sur le territoire européen, sur des avions dont la masse maximale est de 2 000 kg. L'emport de passagers (3 au maximum) n'est autorisé qu'après <strong class="font-semibold text-ink">10 heures de vol supplémentaires</strong> effectuées après la délivrance de la licence, et sur autorisation de votre instructeur : si votre projet est de voler accompagné dès le départ, la PPL(A) et ses 45 heures sont souvent le choix le plus direct.
         </p>
         <ul class="m-0 flex list-none flex-col gap-3 p-0 text-sm" role="list">
           {laplPoints.map((text) => (

@@ -15,7 +15,7 @@ const contactEntries = await getCollection("contactSettings");
 const contact = contactEntries[0]?.data;
 
 const offers = (await getCollection("offers"))
-  .filter((offer) => offer.id !== "forfait-initiation")
+  .filter((offer) => offer.id !== "forfait-decouverte")
   .sort((a, b) => a.data.order - b.data.order);
 
 const faqItems = (await getCollection("faq"))
