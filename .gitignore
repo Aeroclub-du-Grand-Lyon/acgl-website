@@ -4,6 +4,7 @@ dist/
 .claude/
 .vercel/
 .wrangler/
+.pnpm-store/
 
 # dependencies
 node_modules/
