@@ -1,14 +1,31 @@
-// Generates the favicon set from public/logo-square.png.
+// Syncs the site logos from design/logo and generates the favicon set.
 // Run with: node scripts/generate-favicons.mjs
 import sharp from "sharp";
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const publicDir = join(root, "public");
+const designDir = join(root, "design", "logo");
 const source = join(publicDir, "logo-square.png");
 const background = { r: 255, g: 255, b: 255, alpha: 1 };
+
+// Circle logo, used as-is for the header, footer and SVG favicon.
+const circleSvg = await readFile(join(designDir, "cercle", "logo-cercle.svg"), "utf8");
+await writeFile(join(publicDir, "logo-square.svg"), circleSvg);
+console.log("wrote logo-square.svg");
+
+// Vertical logo is displayed on navy backgrounds: switch the text group to white.
+const verticalSvg = await readFile(join(designDir, "vertical", "logo-vertical.svg"), "utf8");
+const textGroup = /<g\s+id="g3-9"[\s\S]*?<\/g>/;
+if (!textGroup.test(verticalSvg)) throw new Error("text group g3-9 not found in logo-vertical.svg");
+const whiteVerticalSvg = verticalSvg.replace(textGroup, (group) => group.replaceAll("#04205a", "#ffffff"));
+await writeFile(join(publicDir, "logo-vertical.svg"), whiteVerticalSvg);
+console.log("wrote logo-vertical.svg (white text)");
+
+await sharp(Buffer.from(circleSvg), { density: 300 }).resize(781, 781).png().toFile(source);
+console.log("wrote logo-square.png (781x781)");
 
 const pngTargets = [
   { name: "favicon-16x16.png", size: 16 },
